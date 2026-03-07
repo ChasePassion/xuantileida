@@ -1,0 +1,33 @@
+<view class="topic-card" bind:tap="onTap">
+  <view class="card-header">
+    <view class="rank-badge rank-{{topic.rank <= 3 ? 'hot' : 'normal'}}">
+      <text>{{topic.rank}}</text>
+    </view>
+    <view class="card-title-wrap">
+      <text class="card-title">{{topic.keyword}}</text>
+      <text class="card-category" wx:if="{{topic.categoryName}}">{{topic.categoryName}}</text>
+    </view>
+    <view class="heat-score">
+      <text class="heat-num">{{topic.heatScore}}</text>
+      <text class="heat-label">热度</text>
+    </view>
+  </view>
+
+  <view class="card-body" wx:if="{{topic.reason}}">
+    <text class="card-reason ellipsis-2">{{topic.reason}}</text>
+  </view>
+
+  <view class="card-footer">
+    <view class="footer-item">
+      <text class="footer-icon">▶</text>
+      <text class="footer-text">{{topic.videoCount || 0}}个视频</text>
+    </view>
+    <view class="footer-item" wx:if="{{topic.maxLikes}}">
+      <text class="footer-icon">♥</text>
+      <text class="footer-text">最高{{topic.maxLikesFormatted || topic.maxLikes}}</text>
+    </view>
+    <view class="footer-arrow">
+      <text>›</text>
+    </view>
+  </view>
+</view>

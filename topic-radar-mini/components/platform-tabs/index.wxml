@@ -1,0 +1,11 @@
+<view class="platform-tabs">
+  <view
+    wx:for="{{platforms}}"
+    wx:key="key"
+    class="tab-item {{current === item.key ? 'active' : ''}}"
+    data-key="{{item.key}}"
+    bind:tap="onTap"
+  >
+    <text>{{item.label}}</text>
+  </view>
+</view>

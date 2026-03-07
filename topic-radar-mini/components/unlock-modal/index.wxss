@@ -1,0 +1,97 @@
+.modal-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 999;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.modal-body {
+  width: 100%;
+  background: #fff;
+  border-radius: 32rpx 32rpx 0 0;
+  padding: 48rpx 40rpx;
+  padding-bottom: calc(48rpx + env(safe-area-inset-bottom));
+}
+
+.modal-title {
+  font-size: 34rpx;
+  font-weight: 700;
+  color: #1A1A2E;
+  text-align: center;
+}
+
+.modal-desc {
+  font-size: 26rpx;
+  color: #6B7280;
+  text-align: center;
+  margin-top: 12rpx;
+  margin-bottom: 40rpx;
+}
+
+.price-row, .balance-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24rpx 0;
+}
+
+.price-row {
+  border-bottom: 1rpx solid #F3F4F6;
+}
+
+.price-label, .balance-label {
+  font-size: 28rpx;
+  color: #6B7280;
+}
+
+.price-val {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #5B5FE6;
+}
+
+.balance-val {
+  font-size: 28rpx;
+  color: #374151;
+}
+
+.text-danger {
+  color: #EF4444 !important;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 24rpx;
+  margin-top: 40rpx;
+}
+
+.btn-cancel {
+  flex: 1;
+  text-align: center;
+  padding: 24rpx 0;
+  border-radius: 16rpx;
+  background: #F3F4F6;
+  color: #6B7280;
+  font-size: 28rpx;
+}
+
+.btn-confirm {
+  flex: 2;
+  text-align: center;
+  padding: 24rpx 0;
+  border-radius: 16rpx;
+  background: #5B5FE6;
+  color: #fff;
+  font-size: 28rpx;
+  font-weight: 600;
+}
+
+.btn-confirm.disabled {
+  opacity: 0.6;
+}

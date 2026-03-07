@@ -1,0 +1,88 @@
+.video-card {
+  background: #fff;
+  border-radius: 20rpx;
+  overflow: hidden;
+  box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.04);
+}
+
+.cover-wrap {
+  position: relative;
+  width: 100%;
+  height: 280rpx;
+  background: #F3F4F6;
+}
+
+.cover-img {
+  width: 100%;
+  height: 100%;
+}
+
+.duration-tag {
+  position: absolute;
+  bottom: 12rpx;
+  right: 12rpx;
+  background: rgba(0,0,0,0.6);
+  color: #fff;
+  font-size: 22rpx;
+  padding: 4rpx 12rpx;
+  border-radius: 8rpx;
+}
+
+.platform-tag {
+  position: absolute;
+  top: 12rpx;
+  left: 12rpx;
+  color: #fff;
+  font-size: 20rpx;
+  padding: 4rpx 12rpx;
+  border-radius: 8rpx;
+}
+
+.info-wrap {
+  padding: 20rpx 24rpx;
+}
+
+.video-title {
+  font-size: 26rpx;
+  font-weight: 500;
+  color: #1A1A2E;
+  line-height: 1.4;
+  min-height: 72rpx;
+}
+
+.creator-row {
+  margin-top: 12rpx;
+}
+
+.creator-name {
+  font-size: 22rpx;
+  color: #9CA3AF;
+}
+
+.stats-row {
+  display: flex;
+  align-items: center;
+  margin-top: 12rpx;
+  gap: 20rpx;
+}
+
+.stat {
+  display: flex;
+  align-items: center;
+  font-size: 22rpx;
+  color: #9CA3AF;
+  gap: 4rpx;
+}
+
+.stat-icon {
+  font-size: 22rpx;
+}
+
+.report-tag {
+  margin-left: auto;
+  background: rgba(91,95,230,0.1);
+  color: #5B5FE6;
+  font-size: 20rpx;
+  padding: 4rpx 12rpx;
+  border-radius: 6rpx;
+}

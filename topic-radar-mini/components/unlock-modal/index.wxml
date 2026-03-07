@@ -1,0 +1,23 @@
+<view class="modal-mask" wx:if="{{visible}}" bind:tap="onClose">
+  <view class="modal-body" catch:tap="preventBubble">
+    <view class="modal-title">解锁完整报告</view>
+    <view class="modal-desc">解锁后可查看详细维度评语、脚本拆解和内容摘要</view>
+
+    <view class="price-row">
+      <text class="price-label">解锁价格</text>
+      <text class="price-val">{{price}} 雷达币</text>
+    </view>
+    <view class="balance-row">
+      <text class="balance-label">当前余额</text>
+      <text class="balance-val {{insufficient ? 'text-danger' : ''}}">{{balance}} 雷达币</text>
+    </view>
+
+    <view class="modal-actions">
+      <view class="btn-cancel" bind:tap="onClose">取消</view>
+      <view class="btn-confirm {{loading ? 'disabled' : ''}}" bind:tap="onConfirm">
+        <text wx:if="{{!insufficient}}">{{loading ? '解锁中...' : '确认解锁'}}</text>
+        <text wx:else>去充值</text>
+      </view>
+    </view>
+  </view>
+</view>

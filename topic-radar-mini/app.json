@@ -1,0 +1,48 @@
+{
+  "pages": [
+    "pages/discover/index",
+    "pages/square/index",
+    "pages/profile/index",
+    "pages/topic-detail/index",
+    "pages/video-detail/index",
+    "pages/recharge/index",
+    "pages/my-unlocks/index",
+    "pages/settings/index"
+  ],
+  "window": {
+    "navigationBarBackgroundColor": "#ffffff",
+    "navigationBarTitleText": "选题雷达",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#F5F6FA",
+    "backgroundTextStyle": "dark"
+  },
+  "tabBar": {
+    "color": "#999999",
+    "selectedColor": "#5B5FE6",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/discover/index",
+        "text": "选题发现",
+        "iconPath": "images/tab-discover.png",
+        "selectedIconPath": "images/tab-discover-active.png"
+      },
+      {
+        "pagePath": "pages/square/index",
+        "text": "拆解广场",
+        "iconPath": "images/tab-square.png",
+        "selectedIconPath": "images/tab-square-active.png"
+      },
+      {
+        "pagePath": "pages/profile/index",
+        "text": "我的",
+        "iconPath": "images/tab-profile.png",
+        "selectedIconPath": "images/tab-profile-active.png"
+      }
+    ]
+  },
+  "usingComponents": {},
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents"
+}

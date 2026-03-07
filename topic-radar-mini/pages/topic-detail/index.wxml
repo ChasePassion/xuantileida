@@ -1,0 +1,35 @@
+<view class="page-topic-detail">
+  <!-- 选题信息 -->
+  <view class="topic-header card" wx:if="{{topic}}">
+    <view class="topic-keyword">{{topic.keyword}}</view>
+    <view class="topic-meta">
+      <text class="badge badge-primary" wx:if="{{topic.categoryName}}">{{topic.categoryName}}</text>
+      <text class="heat-text">热度 {{topic.heatScore}}</text>
+    </view>
+    <view class="topic-reason" wx:if="{{topic.reason}}">{{topic.reason}}</view>
+    <view class="topic-angles" wx:if="{{topic.angles && topic.angles.length > 0}}">
+      <text class="angles-title">推荐角度:</text>
+      <view class="angle-tags">
+        <text class="angle-tag" wx:for="{{topic.angles}}" wx:key="*this">{{item}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 平台筛选 -->
+  <platform-tabs current="{{currentPlatform}}" bind:change="onPlatformChange" />
+
+  <!-- 视频网格 -->
+  <view class="video-grid" wx:if="{{!loading}}">
+    <view class="video-grid-item" wx:for="{{videos}}" wx:key="id">
+      <video-card video="{{item}}" />
+    </view>
+
+    <view class="empty-state" wx:if="{{videos.length === 0}}">
+      <text class="empty-text">该平台暂无关联视频</text>
+    </view>
+  </view>
+
+  <view class="loading-wrap" wx:if="{{loading}}">
+    <text class="text-hint">加载中...</text>
+  </view>
+</view>

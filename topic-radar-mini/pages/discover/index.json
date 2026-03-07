@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "选题发现",
+  "enablePullDownRefresh": true,
+  "usingComponents": {
+    "stats-card": "/components/stats-card/index",
+    "platform-tabs": "/components/platform-tabs/index",
+    "topic-card": "/components/topic-card/index"
+  }
+}

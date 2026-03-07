@@ -1,0 +1,72 @@
+<view class="page-settings" wx:if="{{!loading}}">
+  <!-- 关注行业 -->
+  <view class="section">
+    <view class="section-title">关注行业</view>
+    <view class="section-desc">选择你关注的行业，获取更精准的选题推荐</view>
+    <view class="tag-grid">
+      <view
+        class="tag-item {{selectedCategories.indexOf(item.slug) >= 0 ? 'selected' : ''}}"
+        wx:for="{{categories}}"
+        wx:key="slug"
+        data-slug="{{item.slug}}"
+        bind:tap="onCategoryToggle"
+      >
+        <text>{{item.name}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 点赞门槛 -->
+  <view class="section">
+    <view class="section-title">点赞门槛</view>
+    <view class="option-row">
+      <view
+        class="option-item {{likeThreshold === item.value ? 'selected' : ''}}"
+        wx:for="{{thresholdOptions}}"
+        wx:key="value"
+        data-value="{{item.value}}"
+        bind:tap="onThresholdChange"
+      >
+        <text>{{item.label}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 时间范围 -->
+  <view class="section">
+    <view class="section-title">时间范围</view>
+    <view class="option-row">
+      <view
+        class="option-item {{timeRangeDays === item.value ? 'selected' : ''}}"
+        wx:for="{{timeOptions}}"
+        wx:key="value"
+        data-value="{{item.value}}"
+        bind:tap="onTimeChange"
+      >
+        <text>{{item.label}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 推送开关 -->
+  <view class="section">
+    <view class="switch-row">
+      <view>
+        <view class="section-title" style="margin-bottom:0">每日推送</view>
+        <view class="section-desc">每天早8点推送今日选题</view>
+      </view>
+      <switch checked="{{pushEnabled}}" color="#5B5FE6" bind:change="onPushChange" />
+    </view>
+  </view>
+
+  <!-- 保存按钮 -->
+  <view class="save-section safe-bottom">
+    <view class="btn-primary save-btn {{saving ? 'disabled' : ''}}" bind:tap="onSave">
+      {{saving ? '保存中...' : '保存设置'}}
+    </view>
+  </view>
+</view>
+
+<view class="loading-wrap" wx:if="{{loading}}">
+  <text class="text-hint">加载中...</text>
+</view>

@@ -1,0 +1,54 @@
+.page-my-unlocks {
+  min-height: 100vh;
+  background: var(--color-bg);
+  padding: 16rpx 0 40rpx;
+}
+
+.unlock-item {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  margin: 0 24rpx 16rpx;
+  border-radius: 16rpx;
+  padding: 28rpx 24rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.04);
+}
+
+.unlock-info {
+  flex: 1;
+  overflow: hidden;
+}
+
+.unlock-title {
+  font-size: 28rpx;
+  font-weight: 500;
+  color: #1A1A2E;
+  display: block;
+  margin-bottom: 12rpx;
+}
+
+.unlock-meta {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+}
+
+.score-badge {
+  background: rgba(91,95,230,0.1);
+  color: #5B5FE6;
+  font-size: 22rpx;
+  font-weight: 600;
+  padding: 4rpx 16rpx;
+  border-radius: 8rpx;
+}
+
+.unlock-time {
+  font-size: 22rpx;
+  color: #9CA3AF;
+}
+
+.unlock-arrow {
+  font-size: 36rpx;
+  color: #D1D5DB;
+  margin-left: 12rpx;
+}

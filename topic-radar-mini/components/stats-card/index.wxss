@@ -1,0 +1,48 @@
+.stats-card {
+  background: linear-gradient(135deg, #5B5FE6 0%, #7C3AED 100%);
+  border-radius: 24rpx;
+  padding: 40rpx 32rpx 28rpx;
+  margin: 24rpx;
+  color: #fff;
+}
+
+.stats-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+}
+
+.stat-num {
+  font-size: 48rpx;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.stat-label {
+  font-size: 22rpx;
+  opacity: 0.8;
+  margin-top: 8rpx;
+}
+
+.stat-divider {
+  width: 1rpx;
+  height: 48rpx;
+  background: rgba(255,255,255,0.2);
+}
+
+.stats-time {
+  margin-top: 20rpx;
+  text-align: center;
+}
+
+.time-text {
+  font-size: 22rpx;
+  opacity: 0.6;
+}

@@ -1,0 +1,70 @@
+.page-topic-detail {
+  min-height: 100vh;
+  background: var(--color-bg);
+  padding-bottom: 40rpx;
+}
+
+.topic-header {
+  margin-top: 16rpx;
+}
+
+.topic-keyword {
+  font-size: 36rpx;
+  font-weight: 700;
+  color: #1A1A2E;
+  margin-bottom: 16rpx;
+}
+
+.topic-meta {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  margin-bottom: 16rpx;
+}
+
+.heat-text {
+  font-size: 24rpx;
+  color: #EF4444;
+  font-weight: 600;
+}
+
+.topic-reason {
+  font-size: 26rpx;
+  color: #6B7280;
+  line-height: 1.6;
+  margin-bottom: 20rpx;
+}
+
+.angles-title {
+  font-size: 24rpx;
+  color: #9CA3AF;
+  display: block;
+  margin-bottom: 12rpx;
+}
+
+.angle-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12rpx;
+}
+
+.angle-tag {
+  padding: 8rpx 20rpx;
+  background: rgba(91,95,230,0.06);
+  color: #5B5FE6;
+  border-radius: 20rpx;
+  font-size: 24rpx;
+}
+
+/* 视频网格 */
+.video-grid {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 16rpx 12rpx;
+}
+
+.video-grid-item {
+  width: 50%;
+  padding: 12rpx;
+  box-sizing: border-box;
+}

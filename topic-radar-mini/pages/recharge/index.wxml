@@ -1,0 +1,32 @@
+<view class="page-recharge">
+  <!-- 当前余额 -->
+  <view class="balance-section">
+    <text class="balance-label">当前余额</text>
+    <text class="balance-num">{{balance}}</text>
+    <text class="balance-unit">雷达币</text>
+  </view>
+
+  <!-- 充值套餐 -->
+  <view class="section-title">选择充值金额</view>
+  <view class="package-grid">
+    <view
+      class="package-item {{selectedAmount === item.amount ? 'selected' : ''}}"
+      wx:for="{{packages}}"
+      wx:key="amount"
+      data-amount="{{item.amount}}"
+      bind:tap="onSelectPackage"
+    >
+      <text class="pkg-tag" wx:if="{{item.tag}}">{{item.tag}}</text>
+      <text class="pkg-amount">{{item.label}}</text>
+      <text class="pkg-price">{{item.price}}</text>
+    </view>
+  </view>
+
+  <!-- 充值按钮 -->
+  <view class="action-section safe-bottom">
+    <view class="btn-primary recharge-btn {{loading ? 'disabled' : ''}}" bind:tap="onRecharge">
+      {{loading ? '处理中...' : '立即充值 ' + selectedAmount + ' 雷达币'}}
+    </view>
+    <text class="recharge-note">充值即表示同意《用户服务协议》</text>
+  </view>
+</view>

@@ -1,0 +1,33 @@
+<view class="video-card" bind:tap="onTap">
+  <view class="cover-wrap">
+    <image
+      class="cover-img"
+      src="{{video.coverUrl || '/images/default-cover.png'}}"
+      mode="aspectFill"
+    />
+    <view class="duration-tag" wx:if="{{durationText}}">{{durationText}}</view>
+    <view class="platform-tag" style="background:{{platformColorVal}}">
+      <text>{{platformName}}</text>
+    </view>
+  </view>
+
+  <view class="info-wrap">
+    <text class="video-title ellipsis-2">{{video.title}}</text>
+    <view class="creator-row" wx:if="{{video.creator || video.creatorName}}">
+      <text class="creator-name">{{video.creator.name || video.creatorName || ''}}</text>
+    </view>
+    <view class="stats-row">
+      <view class="stat">
+        <text class="stat-icon">♥</text>
+        <text>{{likesText}}</text>
+      </view>
+      <view class="stat">
+        <text class="stat-icon">💬</text>
+        <text>{{commentsText}}</text>
+      </view>
+      <view class="report-tag" wx:if="{{video.hasReport}}">
+        <text>有拆解</text>
+      </view>
+    </view>
+  </view>
+</view>

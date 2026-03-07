@@ -1,0 +1,40 @@
+<view class="page-square">
+  <!-- 平台筛选 -->
+  <platform-tabs current="{{currentPlatform}}" bind:change="onPlatformChange" />
+
+  <!-- 报告列表 -->
+  <view class="report-list" wx:if="{{!loading}}">
+    <view
+      class="report-item"
+      wx:for="{{reports}}"
+      wx:key="videoId"
+      wx:if="{{!currentPlatform || item.platform === currentPlatform}}"
+      data-id="{{item.videoId}}"
+      bind:tap="onReportTap"
+    >
+      <image class="report-cover" src="{{item.coverUrl}}" mode="aspectFill" />
+      <view class="report-info">
+        <text class="report-title ellipsis-2">{{item.title}}</text>
+        <view class="report-meta">
+          <text class="platform-dot" style="background:{{item.platformColor}}"></text>
+          <text class="meta-text">{{item.platformName}}</text>
+          <text class="meta-sep">·</text>
+          <text class="meta-text">♥ {{item.likesText}}</text>
+        </view>
+        <view class="report-topic" wx:if="{{item.topicKeyword}}">
+          <text class="topic-tag">{{item.topicKeyword}}</text>
+        </view>
+      </view>
+      <view class="report-arrow">›</view>
+    </view>
+
+    <view class="empty-state" wx:if="{{reports.length === 0}}">
+      <text class="empty-text">暂无拆解报告</text>
+      <text class="empty-sub">选题抓取后将自动生成分析</text>
+    </view>
+  </view>
+
+  <view class="loading-wrap" wx:if="{{loading}}">
+    <text class="text-hint">加载中...</text>
+  </view>
+</view>

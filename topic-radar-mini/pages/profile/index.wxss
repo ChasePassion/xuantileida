@@ -1,0 +1,136 @@
+.page-profile {
+  min-height: 100vh;
+  background: var(--color-bg);
+  padding-bottom: 40rpx;
+}
+
+/* 用户卡片 */
+.user-card {
+  background: linear-gradient(135deg, #5B5FE6 0%, #7C3AED 100%);
+  padding: 60rpx 40rpx 48rpx;
+  display: flex;
+  align-items: center;
+}
+
+.avatar-wrap {
+  width: 112rpx;
+  height: 112rpx;
+  border-radius: 50%;
+  border: 4rpx solid rgba(255,255,255,0.3);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.avatar {
+  width: 100%;
+  height: 100%;
+}
+
+.user-info {
+  margin-left: 28rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 12rpx;
+}
+
+.user-name {
+  font-size: 36rpx;
+  font-weight: 700;
+  color: #fff;
+}
+
+.user-plan {
+  align-self: flex-start;
+  background: rgba(255,255,255,0.2) !important;
+  color: #fff !important;
+}
+
+/* 余额 */
+.balance-card {
+  margin-top: -16rpx;
+  position: relative;
+  z-index: 1;
+}
+
+.balance-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16rpx;
+}
+
+.balance-title {
+  font-size: 26rpx;
+  color: #6B7280;
+}
+
+.recharge-btn {
+  padding: 8rpx 28rpx;
+  background: #5B5FE6;
+  color: #fff;
+  border-radius: 24rpx;
+  font-size: 24rpx;
+  font-weight: 600;
+}
+
+.balance-num {
+  font-size: 56rpx;
+  font-weight: 800;
+  color: #1A1A2E;
+}
+
+/* 统计 */
+.stat-row {
+  display: flex;
+}
+
+.stat-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8rpx;
+}
+
+.stat-num {
+  font-size: 40rpx;
+  font-weight: 700;
+  color: #1A1A2E;
+}
+
+.stat-label {
+  font-size: 22rpx;
+  color: #9CA3AF;
+}
+
+/* 菜单 */
+.menu-card {
+  padding: 0 32rpx;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  padding: 32rpx 0;
+  border-bottom: 1rpx solid #F3F4F6;
+}
+
+.menu-item:last-child {
+  border-bottom: none;
+}
+
+.menu-icon {
+  font-size: 36rpx;
+  margin-right: 20rpx;
+}
+
+.menu-label {
+  flex: 1;
+  font-size: 28rpx;
+  color: #374151;
+}
+
+.menu-arrow {
+  font-size: 36rpx;
+  color: #D1D5DB;
+}

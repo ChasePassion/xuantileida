@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "选题详情",
+  "usingComponents": {
+    "platform-tabs": "/components/platform-tabs/index",
+    "video-card": "/components/video-card/index"
+  }
+}

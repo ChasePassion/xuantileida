@@ -1,0 +1,102 @@
+<view class="page-video-detail">
+  <!-- 视频封面 -->
+  <view class="video-cover" wx:if="{{video}}">
+    <image class="cover-img" src="{{video.coverUrl}}" mode="aspectFill" />
+    <view class="duration-badge">{{video.durationText}}</view>
+  </view>
+
+  <!-- 视频信息 -->
+  <view class="video-info card" wx:if="{{video}}">
+    <text class="video-title">{{video.title}}</text>
+    <view class="video-meta">
+      <text class="platform-badge badge badge-{{video.platform || 'primary'}}">{{video.platformName}}</text>
+      <text class="creator-name" wx:if="{{video.creatorName}}">{{video.creatorName}}</text>
+    </view>
+    <view class="stats-bar">
+      <view class="stat-item">
+        <text class="stat-icon">♥</text>
+        <text>{{video.likesText}}</text>
+      </view>
+      <view class="stat-item">
+        <text class="stat-icon">💬</text>
+        <text>{{video.commentsText}}</text>
+      </view>
+      <view class="stat-item">
+        <text class="stat-icon">↗</text>
+        <text>{{video.sharesText}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 拆解报告 -->
+  <block wx:if="{{hasReport && report}}">
+    <!-- 综合评分 -->
+    <view class="card score-card">
+      <view class="section-title">拆解评分</view>
+      <view class="score-row">
+        <view class="score-circle">
+          <text class="score-num">{{report.overallScore}}</text>
+          <text class="score-max">/10</text>
+        </view>
+        <view class="score-info">
+          <text class="score-label">综合评分</text>
+          <text class="unlock-count">{{report.unlockCount || 0}}人已解锁</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 雷达图 -->
+    <view class="card" wx:if="{{report.dimensions && report.dimensions.length > 0}}">
+      <view class="section-title">维度分析</view>
+      <radar-chart dimensions="{{report.dimensions}}" size="{{560}}" />
+
+      <!-- 维度评语（解锁后可见） -->
+      <view class="dim-comments" wx:if="{{report.isUnlocked}}">
+        <view class="dim-item" wx:for="{{report.dimensions}}" wx:key="dimension">
+          <view class="dim-header">
+            <text class="dim-label">{{item.label}}</text>
+            <text class="dim-score">{{item.score}}</text>
+          </view>
+          <text class="dim-comment" wx:if="{{item.comment}}">{{item.comment}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 脚本拆解（解锁后可见） -->
+    <view class="card" wx:if="{{report.isUnlocked && report.scriptStructure}}">
+      <view class="section-title">脚本结构拆解</view>
+      <script-timeline segments="{{report.scriptStructure}}" />
+    </view>
+
+    <!-- 内容摘要（解锁后可见） -->
+    <view class="card" wx:if="{{report.isUnlocked && report.summary}}">
+      <view class="section-title">内容摘要</view>
+      <text class="summary-text">{{report.summary}}</text>
+    </view>
+
+    <!-- 解锁按钮 -->
+    <view class="unlock-bar safe-bottom" wx:if="{{!report.isUnlocked}}">
+      <view class="unlock-hint">解锁查看完整维度评语和脚本拆解</view>
+      <view class="btn-primary unlock-btn" bind:tap="onUnlockTap">
+        解锁报告 · {{report.unlockPrice}} 雷达币
+      </view>
+    </view>
+  </block>
+
+  <!-- 无拆解报告 -->
+  <view class="card" wx:if="{{!hasReport && video}}">
+    <view class="empty-state">
+      <text class="empty-text">该视频暂无拆解报告</text>
+    </view>
+  </view>
+
+  <!-- 解锁弹窗 -->
+  <unlock-modal
+    visible="{{showUnlockModal}}"
+    price="{{report.unlockPrice}}"
+    balance="{{balance}}"
+    loading="{{unlockLoading}}"
+    bind:confirm="onUnlockConfirm"
+    bind:close="onModalClose"
+  />
+</view>

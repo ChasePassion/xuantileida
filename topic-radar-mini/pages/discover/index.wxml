@@ -1,0 +1,36 @@
+<view class="page-discover">
+  <!-- 数据概览 -->
+  <stats-card stats="{{stats}}" />
+
+  <!-- 行业分类筛选 -->
+  <scroll-view class="category-scroll" scroll-x enable-flex>
+    <view
+      wx:for="{{categories}}"
+      wx:key="slug"
+      class="cat-item {{currentCategory === item.slug ? 'active' : ''}}"
+      data-slug="{{item.slug}}"
+      bind:tap="onCategoryTap"
+    >
+      <text>{{item.name}}</text>
+    </view>
+  </scroll-view>
+
+  <!-- 选题列表 -->
+  <view class="topic-list" wx:if="{{!loading}}">
+    <topic-card
+      wx:for="{{topics}}"
+      wx:key="id"
+      topic="{{item}}"
+    />
+
+    <view class="empty-state" wx:if="{{topics.length === 0}}">
+      <text class="empty-text">暂无选题数据</text>
+      <text class="empty-sub">下拉刷新试试</text>
+    </view>
+  </view>
+
+  <!-- 加载中 -->
+  <view class="loading-wrap" wx:if="{{loading}}">
+    <text class="text-hint">加载中...</text>
+  </view>
+</view>

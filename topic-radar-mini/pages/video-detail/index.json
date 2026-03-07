@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "视频详情",
+  "usingComponents": {
+    "radar-chart": "/components/radar-chart/index",
+    "script-timeline": "/components/script-timeline/index",
+    "unlock-modal": "/components/unlock-modal/index"
+  }
+}

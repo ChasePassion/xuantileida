@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "拆解广场",
+  "enablePullDownRefresh": true,
+  "usingComponents": {
+    "platform-tabs": "/components/platform-tabs/index"
+  }
+}

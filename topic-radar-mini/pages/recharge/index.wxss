@@ -1,0 +1,112 @@
+.page-recharge {
+  min-height: 100vh;
+  background: var(--color-bg);
+  padding-bottom: 200rpx;
+}
+
+.balance-section {
+  background: linear-gradient(135deg, #5B5FE6, #7C3AED);
+  padding: 60rpx 40rpx;
+  text-align: center;
+  color: #fff;
+}
+
+.balance-label {
+  font-size: 26rpx;
+  opacity: 0.8;
+  display: block;
+  margin-bottom: 12rpx;
+}
+
+.balance-num {
+  font-size: 72rpx;
+  font-weight: 800;
+}
+
+.balance-unit {
+  font-size: 24rpx;
+  opacity: 0.7;
+  margin-left: 8rpx;
+}
+
+.section-title {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #1A1A2E;
+  padding: 32rpx 32rpx 16rpx;
+}
+
+.package-grid {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0 24rpx;
+  gap: 20rpx;
+}
+
+.package-item {
+  width: calc(50% - 10rpx);
+  background: #fff;
+  border-radius: 20rpx;
+  padding: 32rpx 24rpx;
+  text-align: center;
+  border: 3rpx solid transparent;
+  position: relative;
+  box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.04);
+}
+
+.package-item.selected {
+  border-color: #5B5FE6;
+  background: rgba(91,95,230,0.03);
+}
+
+.pkg-tag {
+  position: absolute;
+  top: -2rpx;
+  right: 16rpx;
+  background: #EF4444;
+  color: #fff;
+  font-size: 20rpx;
+  padding: 4rpx 12rpx;
+  border-radius: 0 0 8rpx 8rpx;
+}
+
+.pkg-amount {
+  display: block;
+  font-size: 30rpx;
+  font-weight: 700;
+  color: #1A1A2E;
+  margin-bottom: 8rpx;
+}
+
+.pkg-price {
+  font-size: 28rpx;
+  color: #5B5FE6;
+  font-weight: 600;
+}
+
+.action-section {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #fff;
+  padding: 24rpx 32rpx;
+  box-shadow: 0 -4rpx 16rpx rgba(0,0,0,0.06);
+}
+
+.recharge-btn {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.recharge-btn.disabled {
+  opacity: 0.6;
+}
+
+.recharge-note {
+  display: block;
+  text-align: center;
+  font-size: 22rpx;
+  color: #9CA3AF;
+  margin-top: 12rpx;
+}

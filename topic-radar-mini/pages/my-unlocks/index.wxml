@@ -1,0 +1,30 @@
+<view class="page-my-unlocks">
+  <view class="unlock-list" wx:if="{{!loading}}">
+    <view
+      class="unlock-item"
+      wx:for="{{unlocks}}"
+      wx:key="reportId"
+      data-report-id="{{item.reportId}}"
+      data-video-id="{{item.videoId}}"
+      bind:tap="onReportTap"
+    >
+      <view class="unlock-info">
+        <text class="unlock-title ellipsis">{{item.videoTitle || '拆解报告'}}</text>
+        <view class="unlock-meta">
+          <text class="score-badge">{{item.overallScore}}分</text>
+          <text class="unlock-time">{{item.unlockedAtText}}</text>
+        </view>
+      </view>
+      <text class="unlock-arrow">›</text>
+    </view>
+
+    <view class="empty-state" wx:if="{{unlocks.length === 0}}">
+      <text class="empty-text">暂无已解锁报告</text>
+      <text class="empty-sub">去发现页浏览拆解报告吧</text>
+    </view>
+  </view>
+
+  <view class="loading-wrap" wx:if="{{loading}}">
+    <text class="text-hint">加载中...</text>
+  </view>
+</view>

@@ -1,0 +1,23 @@
+<view class="timeline">
+  <view
+    class="timeline-item"
+    wx:for="{{segments}}"
+    wx:key="index"
+  >
+    <view class="tl-left">
+      <view class="tl-dot" style="background:{{item.type === 'hook' ? '#EF4444' : item.type === 'pain' ? '#F59E0B' : item.type === 'core' ? '#5B5FE6' : item.type === 'climax' ? '#8B5CF6' : '#10B981'}}"></view>
+      <view class="tl-line" wx:if="{{index < segments.length - 1}}"></view>
+    </view>
+    <view class="tl-content">
+      <view class="tl-header">
+        <text class="tl-label" style="color:{{item.type === 'hook' ? '#EF4444' : item.type === 'pain' ? '#F59E0B' : item.type === 'core' ? '#5B5FE6' : item.type === 'climax' ? '#8B5CF6' : '#10B981'}}">{{item.label}}</text>
+        <text class="tl-time" wx:if="{{item.time}}">{{item.time}}</text>
+      </view>
+      <text class="tl-text" wx:if="{{item.text}}">{{item.text}}</text>
+      <view class="tl-technique" wx:if="{{item.technique}}">
+        <text class="technique-label">技巧:</text>
+        <text class="technique-text">{{item.technique}}</text>
+      </view>
+    </view>
+  </view>
+</view>

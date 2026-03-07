@@ -10,9 +10,7 @@ Component({
 
   methods: {
     onTap() {
-      wx.navigateTo({
-        url: `/pages/topic-detail/index?id=${this.data.topic.id}`,
-      });
+      // 锁定状态由父页面onTopicTap处理
     },
 
     formatNum(num) {

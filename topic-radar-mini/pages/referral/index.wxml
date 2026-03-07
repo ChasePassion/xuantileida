@@ -1,0 +1,90 @@
+<view class="page-referral">
+  <!-- 头部 -->
+  <view class="header">
+    <text class="header-title">邀请好友 赚雷达币</text>
+    <text class="header-desc">好友注册你得10币，好友得5币</text>
+  </view>
+
+  <!-- 奖励统计 -->
+  <view class="stats-card card">
+    <view class="stat-row">
+      <view class="stat-col">
+        <text class="stat-num">{{stats.totalReferred}}</text>
+        <text class="stat-label">邀请人数</text>
+      </view>
+      <view class="stat-col">
+        <text class="stat-num">{{stats.validReferred}}</text>
+        <text class="stat-label">有效邀请</text>
+      </view>
+      <view class="stat-col">
+        <text class="stat-num">{{stats.totalCoinsEarned}}</text>
+        <text class="stat-label">获得雷达币</text>
+      </view>
+      <view class="stat-col" wx:if="{{stats.totalVipDaysEarned > 0}}">
+        <text class="stat-num">{{stats.totalVipDaysEarned}}</text>
+        <text class="stat-label">获得VIP天数</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 奖励规则 -->
+  <view class="rules-card card">
+    <text class="section-title">奖励规则</text>
+    <view class="rule-item">
+      <view class="rule-badge">注册</view>
+      <view class="rule-content">
+        <text class="rule-text">好友注册: 你+10币，好友+5币</text>
+      </view>
+    </view>
+    <view class="rule-item">
+      <view class="rule-badge">充值</view>
+      <view class="rule-content">
+        <text class="rule-text">好友首次充值: 你+20币</text>
+      </view>
+    </view>
+    <view class="rule-item">
+      <view class="rule-badge">VIP</view>
+      <view class="rule-content">
+        <text class="rule-text">好友开通VIP: 你+50币 + 7天VIP</text>
+      </view>
+    </view>
+    <view class="rule-note">
+      <text>每月最多50人有效邀请，好友需完成至少1次选题浏览</text>
+    </view>
+  </view>
+
+  <!-- 分享操作 -->
+  <view class="share-actions">
+    <button class="share-btn btn-primary" open-type="share">
+      分享给好友
+    </button>
+    <view class="poster-btn" bind:tap="onPosterTap">
+      生成邀请海报
+    </view>
+  </view>
+
+  <!-- 邀请记录 -->
+  <view class="record-card card" wx:if="{{referrals.length > 0}}">
+    <text class="section-title">邀请记录</text>
+    <view class="record-item" wx:for="{{referrals}}" wx:key="id">
+      <view class="record-info">
+        <text class="record-name">{{item.referredName || '用户'}}</text>
+        <text class="record-time">{{item.createdAt}}</text>
+      </view>
+      <view class="record-status {{item.isValid ? 'valid' : 'pending'}}">
+        <text>{{item.isValid ? '有效' : '待验证'}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 海报弹窗 -->
+  <view class="poster-modal" wx:if="{{posterVisible}}" bind:tap="onClosePoster">
+    <view class="poster-content" catchtap="">
+      <canvas canvas-id="posterCanvas" class="poster-canvas" style="width:540rpx;height:960rpx;" />
+      <view class="poster-actions">
+        <view class="btn-primary poster-save-btn" bind:tap="onSavePoster">保存到相册</view>
+        <view class="poster-close" bind:tap="onClosePoster">关闭</view>
+      </view>
+    </view>
+  </view>
+</view>

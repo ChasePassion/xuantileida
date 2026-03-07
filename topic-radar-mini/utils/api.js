@@ -87,8 +87,22 @@ const users = {
 const billing = {
   getPricing: () => request({ url: '/billing/pricing' }),
   recharge: (data) => request({ url: '/billing/recharge', method: 'POST', data }),
-  buyMembership: (data) => request({ url: '/billing/membership', method: 'POST', data }),
+  subscribe: (data) => request({ url: '/billing/subscribe', method: 'POST', data }),
   getTransactions: (params) => request({ url: '/billing/transactions', data: params }),
+};
+
+// ===== 推荐激励 =====
+const referral = {
+  bind: (referrerCode) => request({ url: '/referral/bind', method: 'POST', data: { referrerCode } }),
+  getStats: () => request({ url: '/referral/stats' }),
+  getList: (params) => request({ url: '/referral/list', data: params }),
+  getPosterData: () => request({ url: '/referral/poster-data' }),
+};
+
+// ===== 兑换码 =====
+const redemption = {
+  redeem: (code) => request({ url: '/redemption/redeem', method: 'POST', data: { code } }),
+  getRecords: () => request({ url: '/redemption/records' }),
 };
 
 module.exports = {
@@ -99,4 +113,6 @@ module.exports = {
   analysis,
   users,
   billing,
+  referral,
+  redemption,
 };

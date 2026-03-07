@@ -7,18 +7,17 @@ import { IsNotEmpty, IsNumber, IsIn, IsString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 class CreateRechargeDto {
-  @ApiProperty({ description: '充值金额', enum: [50, 100, 200, 500, 1000] })
+  @ApiProperty({ description: '充值金额（元）', enum: [9.9, 29.9, 59.9, 99.9] })
   @IsNotEmpty()
   @IsNumber()
-  @IsIn([50, 100, 200, 500, 1000])
   amount: number;
 }
 
 class PurchaseMembershipDto {
-  @ApiProperty({ description: '会员类型', enum: ['monthly', 'quarterly', 'yearly'] })
+  @ApiProperty({ description: '会员类型', enum: ['monthly', 'yearly'] })
   @IsNotEmpty()
   @IsString()
-  @IsIn(['monthly', 'quarterly', 'yearly'])
+  @IsIn(['monthly', 'yearly'])
   plan: string;
 }
 
@@ -29,14 +28,14 @@ export class BillingController {
 
   @Public()
   @Get('pricing')
-  @ApiOperation({ summary: '获取定价规则' })
+  @ApiOperation({ summary: '获取定价规则（雷达币套餐 + VIP价格）' })
   async getPricing() {
     return this.billingService.getPricing();
   }
 
   @ApiBearerAuth()
   @Post('recharge')
-  @ApiOperation({ summary: '创建充值订单' })
+  @ApiOperation({ summary: '创建雷达币充值订单' })
   async createRecharge(
     @CurrentUser('sub') userId: string,
     @Body() dto: CreateRechargeDto,
@@ -45,20 +44,19 @@ export class BillingController {
   }
 
   @ApiBearerAuth()
-  @Post('membership')
-  @ApiOperation({ summary: '购买会员' })
-  async purchaseMembership(
+  @Post('subscribe')
+  @ApiOperation({ summary: '购买VIP会员（月卡59.9/年卡499）' })
+  async subscribe(
     @CurrentUser('sub') userId: string,
     @Body() dto: PurchaseMembershipDto,
   ) {
-    return this.billingService.purchaseMembership(userId, dto.plan);
+    return this.billingService.createVipOrder(userId, dto.plan);
   }
 
   @Public()
   @Post('wechat-callback')
   @ApiOperation({ summary: '微信支付回调' })
   async wechatCallback(@Body() body: any) {
-    // TODO: 验证微信签名
     return this.billingService.handleWechatCallback(
       body.transaction_id,
       body.out_trade_no,

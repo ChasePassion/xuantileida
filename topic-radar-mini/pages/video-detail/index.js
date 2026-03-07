@@ -22,14 +22,16 @@ Page({
   async loadVideo() {
     try {
       const video = await api.videos.getDetail(this.data.videoId);
+      const masked = video.dataMasked;
       this.setData({
         video: {
           ...video,
-          likesText: formatNumber(video.likeCount || video.likes || 0),
-          commentsText: formatNumber(video.commentCount || video.comments || 0),
-          sharesText: formatNumber(video.shareCount || video.shares || 0),
+          likesText: masked ? '***' : formatNumber(video.likeCount || video.likes || 0),
+          commentsText: masked ? '***' : formatNumber(video.commentCount || video.comments || 0),
+          sharesText: masked ? '***' : formatNumber(video.shareCount || video.shares || 0),
           durationText: formatDuration(video.duration),
           platformName: platformLabel(video.platform),
+          dataMasked: masked,
         },
       });
     } catch (e) {

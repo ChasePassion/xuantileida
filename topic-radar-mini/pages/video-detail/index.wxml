@@ -13,18 +13,21 @@
       <text class="creator-name" wx:if="{{video.creatorName}}">{{video.creatorName}}</text>
     </view>
     <view class="stats-bar">
-      <view class="stat-item">
+      <view class="stat-item {{video.dataMasked ? 'masked' : ''}}">
         <text class="stat-icon">♥</text>
         <text>{{video.likesText}}</text>
       </view>
-      <view class="stat-item">
+      <view class="stat-item {{video.dataMasked ? 'masked' : ''}}">
         <text class="stat-icon">💬</text>
         <text>{{video.commentsText}}</text>
       </view>
-      <view class="stat-item">
+      <view class="stat-item {{video.dataMasked ? 'masked' : ''}}">
         <text class="stat-icon">↗</text>
         <text>{{video.sharesText}}</text>
       </view>
+    </view>
+    <view class="masked-banner" wx:if="{{video.dataMasked}}">
+      <text class="masked-banner-text">免费版数据已隐藏，升级VIP查看真实数据</text>
     </view>
   </view>
 

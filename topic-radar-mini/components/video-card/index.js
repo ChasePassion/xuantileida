@@ -19,12 +19,14 @@ Component({
   observers: {
     'video': function(v) {
       if (!v || !v.id) return;
+      const masked = v.dataMasked;
       this.setData({
         platformName: platformLabel(v.platform),
         platformColorVal: platformColor(v.platform),
-        likesText: formatNumber(v.likes || v.likeCount || 0),
-        commentsText: formatNumber(v.comments || v.commentCount || 0),
+        likesText: masked ? '***' : formatNumber(v.likes || v.likeCount || 0),
+        commentsText: masked ? '***' : formatNumber(v.comments || v.commentCount || 0),
         durationText: formatDuration(v.duration),
+        dataMasked: !!masked,
       });
     },
   },

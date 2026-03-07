@@ -1,5 +1,6 @@
 const api = require('../../utils/api');
 const { formatNumber } = require('../../utils/util');
+const { getUserInfo } = require('../../utils/auth');
 
 Page({
   data: {
@@ -11,6 +12,7 @@ Page({
     loading: true,
     page: 1,
     total: 0,
+    freeLimitReached: false,
   },
 
   onLoad(options) {
@@ -25,7 +27,24 @@ Page({
       wx.setNavigationBarTitle({ title: topic.keyword || '选题详情' });
       this.setData({ topic });
     } catch (e) {
-      console.warn('加载选题详情失败:', e);
+      const msg = e.message || '';
+      if (msg.indexOf('FREE_LIMIT') >= 0 || msg.indexOf('免费版') >= 0) {
+        this.setData({ freeLimitReached: true });
+        wx.showModal({
+          title: '今日查看次数已用完',
+          content: '免费版每天仅可查看1个选题详情，升级VIP解锁无限查看',
+          confirmText: '升级VIP',
+          success(res) {
+            if (res.confirm) {
+              wx.navigateTo({ url: '/pages/recharge/index?tab=vip' });
+            } else {
+              wx.navigateBack();
+            }
+          },
+        });
+      } else {
+        console.warn('加载选题详情失败:', e);
+      }
     }
   },
 
@@ -62,11 +81,16 @@ Page({
     this.filterVideos();
   },
 
+  goVip() {
+    wx.navigateTo({ url: '/pages/recharge/index?tab=vip' });
+  },
+
   onShareAppMessage() {
+    const userInfo = getUserInfo();
     const topic = this.data.topic;
     return {
       title: topic ? `选题推荐: ${topic.keyword}` : '选题雷达',
-      path: `/pages/topic-detail/index?id=${this.data.topicId}`,
+      path: `/pages/topic-detail/index?id=${this.data.topicId}&ref=${userInfo.id || ''}`,
     };
   },
 });

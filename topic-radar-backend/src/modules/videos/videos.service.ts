@@ -28,6 +28,7 @@ export class VideosService {
   async getVideosByTopic(
     topicId: string,
     userId: string,
+    isVip: boolean,
     platform?: string,
     page = 1,
     limit = 10,
@@ -72,10 +73,12 @@ export class VideosService {
           title: v.title,
           coverUrl: v.coverUrl,
           duration: v.duration,
-          likes: v.likeCount,
-          comments: v.commentCount,
-          shares: v.shareCount,
-          collects: v.collectCount,
+          // 免费版数据打码
+          likes: isVip ? v.likeCount : null,
+          comments: isVip ? v.commentCount : null,
+          shares: isVip ? v.shareCount : null,
+          collects: isVip ? v.collectCount : null,
+          dataMasked: !isVip,
           creator: { name: v.creatorName, id: v.creatorId, avatar: null },
           platform: v.platform,
           platformLabel: PLATFORM_LABELS[v.platform] || v.platform,
@@ -87,10 +90,10 @@ export class VideosService {
       }),
     );
 
-    return { videos, total, page, limit };
+    return { videos, total, page, limit, isVip };
   }
 
-  async getVideoDetail(videoId: string) {
+  async getVideoDetail(videoId: string, isVip = false) {
     const video = await this.videoRepo.findOne({
       where: { id: videoId, isDeleted: false },
     });
@@ -102,10 +105,11 @@ export class VideosService {
       coverUrl: video.coverUrl,
       videoUrl: video.videoUrl,
       duration: video.duration,
-      likes: video.likeCount,
-      comments: video.commentCount,
-      shares: video.shareCount,
-      collects: video.collectCount,
+      likes: isVip ? video.likeCount : null,
+      comments: isVip ? video.commentCount : null,
+      shares: isVip ? video.shareCount : null,
+      collects: isVip ? video.collectCount : null,
+      dataMasked: !isVip,
       creator: {
         name: video.creatorName,
         id: video.creatorId,

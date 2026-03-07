@@ -1,6 +1,6 @@
 const api = require('../../utils/api');
 const { formatNumber } = require('../../utils/util');
-const { ensureLogin } = require('../../utils/auth');
+const { ensureLogin, getUserInfo } = require('../../utils/auth');
 
 Page({
   data: {
@@ -10,16 +10,31 @@ Page({
     topics: [],
     loading: true,
     refreshing: false,
+    isVip: false,
+    freeLimit: 3,
   },
 
-  onLoad() {
+  onLoad(options) {
+    // 处理推荐码（从分享海报扫码进入）
+    if (options.ref) {
+      wx.setStorageSync('referrerCode', options.ref);
+    }
     this.init();
   },
 
-  onShow() {},
+  onShow() {
+    const userInfo = getUserInfo();
+    this.setData({ isVip: userInfo.membership === 'premium' });
+  },
 
   async init() {
     await ensureLogin();
+    // 绑定推荐关系
+    const referrerCode = wx.getStorageSync('referrerCode');
+    if (referrerCode) {
+      api.referral.bind(referrerCode).catch(() => {});
+      wx.removeStorageSync('referrerCode');
+    }
     this.loadCategories();
     this.loadStats();
     this.loadTopics();
@@ -29,7 +44,11 @@ Page({
     try {
       const res = await api.topics.getCategories();
       const list = res.categories || res || [];
-      const categories = [{ slug: '', name: '全部' }, ...list];
+      const totalCount = res.totalCount || 0;
+      const categories = [
+        { slug: '', name: '全部', topicCount: totalCount },
+        ...list,
+      ];
       this.setData({ categories });
     } catch (e) {
       console.warn('加载分类失败:', e);
@@ -57,7 +76,12 @@ Page({
         ...t,
         maxLikesFormatted: formatNumber(t.maxLikes),
       }));
-      this.setData({ topics, loading: false });
+      this.setData({
+        topics,
+        loading: false,
+        isVip: !!res.isVip,
+        freeLimit: res.freeLimit || 3,
+      });
     } catch (e) {
       console.warn('加载选题失败:', e);
       this.setData({ loading: false });
@@ -72,6 +96,28 @@ Page({
     }
   },
 
+  onTopicTap(e) {
+    const topic = e.currentTarget.dataset.topic;
+    if (topic.locked) {
+      wx.showModal({
+        title: '升级VIP',
+        content: '免费版只能查看前3个选题，升级VIP解锁全部30个实时选题',
+        confirmText: '去升级',
+        success(res) {
+          if (res.confirm) {
+            wx.navigateTo({ url: '/pages/recharge/index?tab=vip' });
+          }
+        },
+      });
+      return;
+    }
+    wx.navigateTo({ url: `/pages/topic-detail/index?id=${topic.id}` });
+  },
+
+  goVip() {
+    wx.navigateTo({ url: '/pages/recharge/index?tab=vip' });
+  },
+
   onPullDownRefresh() {
     this.setData({ refreshing: true });
     Promise.all([this.loadStats(), this.loadTopics()]).finally(() => {
@@ -81,9 +127,10 @@ Page({
   },
 
   onShareAppMessage() {
+    const userInfo = getUserInfo();
     return {
       title: '选题雷达 - 发现今日爆款选题',
-      path: '/pages/discover/index',
+      path: `/pages/discover/index?ref=${userInfo.id || ''}`,
     };
   },
 });

@@ -2,6 +2,12 @@
   <!-- 数据概览 -->
   <stats-card stats="{{stats}}" />
 
+  <!-- 免费版提示条 -->
+  <view class="free-banner" wx:if="{{!isVip}}">
+    <text class="free-text">免费版: 仅显示3个选题 | 数据延迟1天</text>
+    <view class="free-btn" bind:tap="goVip">升级VIP</view>
+  </view>
+
   <!-- 行业分类筛选 -->
   <scroll-view class="category-scroll" scroll-x enable-flex>
     <view
@@ -12,16 +18,20 @@
       bind:tap="onCategoryTap"
     >
       <text>{{item.name}}</text>
+      <text class="cat-count" wx:if="{{item.topicCount > 0}}">{{item.topicCount}}</text>
     </view>
   </scroll-view>
 
   <!-- 选题列表 -->
   <view class="topic-list" wx:if="{{!loading}}">
-    <topic-card
+    <view
       wx:for="{{topics}}"
-      wx:key="id"
-      topic="{{item}}"
-    />
+      wx:key="rank"
+      data-topic="{{item}}"
+      bind:tap="onTopicTap"
+    >
+      <topic-card topic="{{item}}" />
+    </view>
 
     <view class="empty-state" wx:if="{{topics.length === 0}}">
       <text class="empty-text">暂无选题数据</text>

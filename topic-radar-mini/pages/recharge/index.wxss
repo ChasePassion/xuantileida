@@ -4,9 +4,159 @@
   padding-bottom: 200rpx;
 }
 
+/* 标签栏 */
+.tab-bar {
+  display: flex;
+  background: #fff;
+  border-bottom: 1rpx solid #F3F4F6;
+}
+
+.tab-item {
+  flex: 1;
+  text-align: center;
+  padding: 24rpx 0;
+  font-size: 28rpx;
+  color: #6B7280;
+  position: relative;
+}
+
+.tab-item.active {
+  color: #5B5FE6;
+  font-weight: 700;
+}
+
+.tab-item.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80rpx;
+  height: 6rpx;
+  background: #5B5FE6;
+  border-radius: 3rpx;
+}
+
+/* VIP状态 */
+.vip-status {
+  background: linear-gradient(135deg, #F59E0B, #D97706);
+  padding: 24rpx 32rpx;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.vip-status-text {
+  font-size: 28rpx;
+  font-weight: 700;
+  color: #fff;
+}
+
+.vip-status-expires {
+  font-size: 22rpx;
+  color: rgba(255,255,255,0.8);
+}
+
+/* VIP套餐卡 */
+.plan-list {
+  padding: 24rpx;
+  display: flex;
+  gap: 20rpx;
+}
+
+.plan-card {
+  flex: 1;
+  background: #fff;
+  border-radius: 24rpx;
+  padding: 32rpx 24rpx;
+  border: 3rpx solid transparent;
+  position: relative;
+  box-shadow: 0 2rpx 12rpx rgba(0,0,0,0.06);
+}
+
+.plan-card.selected {
+  border-color: #5B5FE6;
+  background: rgba(91,95,230,0.02);
+}
+
+.plan-tag {
+  position: absolute;
+  top: -2rpx;
+  right: 16rpx;
+  background: #EF4444;
+  color: #fff;
+  font-size: 20rpx;
+  padding: 4rpx 16rpx;
+  border-radius: 0 0 10rpx 10rpx;
+  font-weight: 600;
+}
+
+.plan-header {
+  margin-bottom: 16rpx;
+}
+
+.plan-label {
+  font-size: 32rpx;
+  font-weight: 700;
+  color: #1A1A2E;
+  display: block;
+}
+
+.plan-desc {
+  font-size: 22rpx;
+  color: #9CA3AF;
+}
+
+.plan-price-row {
+  display: flex;
+  align-items: baseline;
+  margin-bottom: 20rpx;
+}
+
+.plan-price-sym {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #EF4444;
+}
+
+.plan-price {
+  font-size: 52rpx;
+  font-weight: 800;
+  color: #EF4444;
+  line-height: 1;
+}
+
+.plan-per-day {
+  font-size: 20rpx;
+  color: #9CA3AF;
+  margin-left: 8rpx;
+}
+
+.plan-features {
+  display: flex;
+  flex-direction: column;
+  gap: 8rpx;
+}
+
+.plan-feature {
+  font-size: 22rpx;
+  color: #6B7280;
+  padding-left: 24rpx;
+  position: relative;
+}
+
+.plan-feature::before {
+  content: '\\2713';
+  position: absolute;
+  left: 0;
+  color: #10B981;
+  font-weight: 700;
+}
+
+/* 雷达币余额区 */
 .balance-section {
   background: linear-gradient(135deg, #5B5FE6, #7C3AED);
-  padding: 60rpx 40rpx;
+  padding: 48rpx 40rpx;
   text-align: center;
   color: #fff;
 }
@@ -36,6 +186,7 @@
   padding: 32rpx 32rpx 16rpx;
 }
 
+/* 雷达币充值套餐 */
 .package-grid {
   display: flex;
   flex-wrap: wrap;
@@ -70,11 +221,18 @@
   border-radius: 0 0 8rpx 8rpx;
 }
 
-.pkg-amount {
+.pkg-coins {
   display: block;
   font-size: 30rpx;
   font-weight: 700;
   color: #1A1A2E;
+  margin-bottom: 4rpx;
+}
+
+.pkg-bonus {
+  display: block;
+  font-size: 20rpx;
+  color: #10B981;
   margin-bottom: 8rpx;
 }
 
@@ -84,6 +242,7 @@
   font-weight: 600;
 }
 
+/* 操作区 */
 .action-section {
   position: fixed;
   bottom: 0;
@@ -92,6 +251,7 @@
   background: #fff;
   padding: 24rpx 32rpx;
   box-shadow: 0 -4rpx 16rpx rgba(0,0,0,0.06);
+  z-index: 50;
 }
 
 .recharge-btn {

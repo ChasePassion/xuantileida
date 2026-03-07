@@ -25,6 +25,9 @@ import { TasksModule } from './modules/tasks/tasks.module';
 import { CacheModule } from './modules/cache/cache.module';
 import { StorageModule } from './modules/storage/storage.module';
 import { ExternalModule } from './modules/external/external.module';
+import { ReferralModule } from './modules/referral/referral.module';
+import { RedemptionModule } from './modules/redemption/redemption.module';
+import { AdminModule } from './modules/admin/admin.module';
 
 // Entity imports
 import { User } from './modules/users/entities/user.entity';
@@ -44,6 +47,11 @@ import { PricingRule } from './modules/billing/entities/pricing-rule.entity';
 import { RechargeOrder } from './modules/billing/entities/recharge-order.entity';
 import { ConsumeRecord } from './modules/billing/entities/consume-record.entity';
 import { TaskLog } from './modules/tasks/entities/task-log.entity';
+import { Referral } from './modules/referral/entities/referral.entity';
+import { ReferralReward } from './modules/referral/entities/referral-reward.entity';
+import { DailyViewLog } from './modules/referral/entities/daily-view-log.entity';
+import { RedemptionCode } from './modules/redemption/entities/redemption-code.entity';
+import { RedemptionRecord } from './modules/redemption/entities/redemption-record.entity';
 
 @Module({
   imports: [
@@ -71,6 +79,8 @@ import { TaskLog } from './modules/tasks/entities/task-log.entity';
           AnalysisReport, DimensionScore, ScriptSegment, ReportUnlock,
           PricingRule, RechargeOrder, ConsumeRecord,
           TaskLog,
+          Referral, ReferralReward, DailyViewLog,
+          RedemptionCode, RedemptionRecord,
         ],
         synchronize: config.get('database.synchronize'),
         logging: config.get('database.logging'),
@@ -103,6 +113,9 @@ import { TaskLog } from './modules/tasks/entities/task-log.entity';
     StorageModule,
     ExternalModule,
     TasksModule,
+    ReferralModule,
+    RedemptionModule,
+    AdminModule,
   ],
   providers: [
     // 全局 AuthGuard

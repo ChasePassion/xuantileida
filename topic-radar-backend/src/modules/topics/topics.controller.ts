@@ -2,6 +2,7 @@ import { Controller, Get, Param, Query } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiBearerAuth, ApiQuery } from '@nestjs/swagger';
 import { TopicsService } from './topics.service';
 import { Public } from '../../common/decorators/public.decorator';
+import { CurrentUser } from '../../common/decorators/current-user.decorator';
 
 @ApiTags('选题')
 @ApiBearerAuth()
@@ -17,14 +18,18 @@ export class TopicsController {
   }
 
   @Get('daily')
-  @ApiOperation({ summary: '获取今日AI推荐选题' })
+  @ApiOperation({ summary: '获取今日AI推荐选题（免费版限3个，VIP全部）' })
   @ApiQuery({ name: 'category', required: false })
   @ApiQuery({ name: 'limit', required: false, type: Number })
   async getDailyTopics(
+    @CurrentUser('sub') userId: string,
+    @CurrentUser('membership') membership: string,
+    @CurrentUser('membershipExpiresAt') membershipExpiresAt: string,
     @Query('category') category?: string,
     @Query('limit') limit?: number,
   ) {
-    return this.topicsService.getDailyTopics({ category, limit });
+    const isVip = this.topicsService.checkVipStatus(membership, membershipExpiresAt);
+    return this.topicsService.getDailyTopics({ category, limit, isVip });
   }
 
   @Get('daily/stats')
@@ -34,8 +39,14 @@ export class TopicsController {
   }
 
   @Get(':id')
-  @ApiOperation({ summary: '获取选题详情' })
-  async getTopicDetail(@Param('id') id: string) {
-    return this.topicsService.getTopicDetail(id);
+  @ApiOperation({ summary: '获取选题详情（免费版每天限1个）' })
+  async getTopicDetail(
+    @Param('id') id: string,
+    @CurrentUser('sub') userId: string,
+    @CurrentUser('membership') membership: string,
+    @CurrentUser('membershipExpiresAt') membershipExpiresAt: string,
+  ) {
+    const isVip = this.topicsService.checkVipStatus(membership, membershipExpiresAt);
+    return this.topicsService.getTopicDetail(id, userId, isVip);
   }
 }

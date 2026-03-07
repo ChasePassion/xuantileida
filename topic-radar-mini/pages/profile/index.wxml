@@ -10,15 +10,27 @@
     </view>
     <view class="user-info">
       <text class="user-name">{{userInfo.name || '未登录'}}</text>
-      <text class="user-plan badge badge-primary">{{plan}}</text>
+      <view class="plan-row">
+        <text class="user-plan badge {{isVip ? 'badge-vip' : 'badge-free'}}">{{plan}}</text>
+        <text class="vip-expires" wx:if="{{isVip && vipExpiresAt}}">到期: {{vipExpiresAt}}</text>
+      </view>
     </view>
+  </view>
+
+  <!-- VIP升级提示（非VIP用户） -->
+  <view class="vip-promo card" wx:if="{{!isVip}}" bind:tap="onMenuTap" data-url="/pages/recharge/index?tab=vip">
+    <view class="vip-promo-left">
+      <text class="vip-promo-title">升级VIP会员</text>
+      <text class="vip-promo-desc">解锁全部30个实时选题 + 完整视频数据</text>
+    </view>
+    <text class="vip-promo-arrow">›</text>
   </view>
 
   <!-- 余额卡片 -->
   <view class="balance-card card">
     <view class="balance-header">
       <text class="balance-title">雷达币余额</text>
-      <view class="recharge-btn" bind:tap="onMenuTap" data-url="/pages/recharge/index">
+      <view class="recharge-btn" bind:tap="onMenuTap" data-url="/pages/recharge/index?tab=coins">
         <text>充值</text>
       </view>
     </view>

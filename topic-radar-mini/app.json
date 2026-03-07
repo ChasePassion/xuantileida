@@ -7,7 +7,9 @@
     "pages/video-detail/index",
     "pages/recharge/index",
     "pages/my-unlocks/index",
-    "pages/settings/index"
+    "pages/settings/index",
+    "pages/referral/index",
+    "pages/redemption/index"
   ],
   "window": {
     "navigationBarBackgroundColor": "#ffffff",

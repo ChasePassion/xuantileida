@@ -86,3 +86,15 @@
   padding: 4rpx 12rpx;
   border-radius: 6rpx;
 }
+
+/* 数据遮蔽 */
+.stat.masked {
+  color: #D1D5DB;
+  letter-spacing: 2rpx;
+}
+
+.masked-hint {
+  margin-top: 8rpx;
+  font-size: 20rpx;
+  color: #5B5FE6;
+}

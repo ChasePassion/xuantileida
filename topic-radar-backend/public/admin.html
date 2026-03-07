@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>选题雷达 - 管理后台</title>
+<script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+:root { --primary: #5B5FE6; --bg: #F5F6FA; --white: #fff; --text: #1A1A2E; --text2: #6B7280; --text3: #9CA3AF; --border: #E5E7EB; --green: #10B981; --red: #EF4444; --gold: #F59E0B; }
+body { font-family: -apple-system, 'PingFang SC', 'Segoe UI', sans-serif; background: var(--bg); min-height: 100vh; }
+
+/* Login */
+.login-page { display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+.login-card { background: var(--white); border-radius: 16px; padding: 40px; width: 400px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+.login-card h1 { font-size: 24px; color: var(--text); margin-bottom: 8px; }
+.login-card p { font-size: 14px; color: var(--text3); margin-bottom: 24px; }
+.form-group { margin-bottom: 16px; }
+.form-group label { display: block; font-size: 13px; font-weight: 600; color: var(--text2); margin-bottom: 6px; }
+.form-input { width: 100%; padding: 10px 14px; border: 1px solid var(--border); border-radius: 8px; font-size: 14px; outline: none; }
+.form-input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(91,95,230,0.1); }
+.btn { display: inline-block; padding: 10px 20px; border-radius: 8px; font-size: 14px; font-weight: 600; border: none; cursor: pointer; }
+.btn-primary { background: var(--primary); color: #fff; width: 100%; }
+.btn-primary:hover { opacity: 0.9; }
+.btn-sm { padding: 6px 14px; font-size: 12px; border-radius: 6px; }
+.btn-outline { background: transparent; border: 1px solid var(--primary); color: var(--primary); }
+.btn-danger { background: var(--red); color: #fff; }
+.btn-success { background: var(--green); color: #fff; }
+.error-text { color: var(--red); font-size: 13px; margin-top: 8px; }
+
+/* Layout */
+.layout { display: flex; min-height: 100vh; }
+.sidebar { width: 220px; background: linear-gradient(180deg, #1A1A2E, #2D2B55); padding: 20px 0; flex-shrink: 0; }
+.sidebar-brand { color: #fff; font-size: 18px; font-weight: 700; padding: 0 20px 20px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+.sidebar-menu { margin-top: 16px; }
+.sidebar-item { display: flex; align-items: center; gap: 10px; padding: 12px 20px; color: rgba(255,255,255,0.6); font-size: 14px; cursor: pointer; transition: all .15s; }
+.sidebar-item:hover { background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.8); }
+.sidebar-item.active { background: rgba(91,95,230,0.3); color: #fff; font-weight: 600; border-right: 3px solid var(--primary); }
+.sidebar-icon { font-size: 18px; width: 24px; text-align: center; }
+
+.main { flex: 1; padding: 24px; overflow-x: auto; }
+.page-title { font-size: 22px; font-weight: 700; color: var(--text); margin-bottom: 20px; }
+
+/* Dashboard cards */
+.stat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; margin-bottom: 24px; }
+.stat-card { background: var(--white); border-radius: 12px; padding: 20px; box-shadow: 0 1px 4px rgba(0,0,0,0.04); }
+.stat-card .label { font-size: 13px; color: var(--text3); }
+.stat-card .value { font-size: 32px; font-weight: 800; color: var(--text); margin-top: 4px; }
+.stat-card .sub { font-size: 12px; color: var(--text3); margin-top: 4px; }
+.stat-card .highlight { color: var(--primary); font-weight: 600; }
+
+/* Table */
+.card { background: var(--white); border-radius: 12px; padding: 20px; box-shadow: 0 1px 4px rgba(0,0,0,0.04); margin-bottom: 16px; }
+.card-title { font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 16px; display: flex; align-items: center; justify-content: space-between; }
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+th { text-align: left; padding: 10px 12px; background: #F9FAFB; color: var(--text3); font-weight: 600; border-bottom: 1px solid var(--border); }
+td { padding: 10px 12px; border-bottom: 1px solid #F3F4F6; color: var(--text); }
+tr:hover td { background: #FAFBFC; }
+.badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+.badge-green { background: rgba(16,185,129,0.1); color: var(--green); }
+.badge-red { background: rgba(239,68,68,0.1); color: var(--red); }
+.badge-gold { background: rgba(245,158,11,0.1); color: var(--gold); }
+.badge-blue { background: rgba(91,95,230,0.1); color: var(--primary); }
+.badge-gray { background: #F3F4F6; color: var(--text3); }
+
+.pagination { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 16px; }
+.pagination .btn { padding: 6px 12px; }
+
+/* Search bar */
+.toolbar { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+.search-input { padding: 8px 14px; border: 1px solid var(--border); border-radius: 8px; font-size: 13px; width: 240px; outline: none; }
+.search-input:focus { border-color: var(--primary); }
+
+/* Generate form */
+.form-row { display: flex; gap: 12px; align-items: flex-end; flex-wrap: wrap; }
+.form-row .form-group { margin-bottom: 0; }
+.form-row .form-input { width: 120px; }
+.code-list { font-family: monospace; font-size: 13px; background: #F9FAFB; border-radius: 8px; padding: 12px; margin-top: 12px; max-height: 200px; overflow-y: auto; line-height: 1.8; }
+</style>
+</head>
+<body>
+<div id="app">
+  <!-- Login Page -->
+  <div class="login-page" v-if="!token">
+    <div class="login-card">
+      <h1>选题雷达</h1>
+      <p>管理后台登录</p>
+      <div class="form-group">
+        <label>开发环境登录码</label>
+        <input class="form-input" v-model="loginCode" placeholder="输入 dev_admin" @keyup.enter="login" />
+      </div>
+      <button class="btn btn-primary" @click="login">登录</button>
+      <div class="error-text" v-if="loginError">{{ loginError }}</div>
+    </div>
+  </div>
+
+  <!-- Main Layout -->
+  <div class="layout" v-else>
+    <div class="sidebar">
+      <div class="sidebar-brand">选题雷达 Admin</div>
+      <div class="sidebar-menu">
+        <div class="sidebar-item" :class="{active: tab==='dashboard'}" @click="tab='dashboard'">
+          <span class="sidebar-icon">&#128200;</span><span>数据仪表盘</span>
+        </div>
+        <div class="sidebar-item" :class="{active: tab==='users'}" @click="tab='users';loadUsers()">
+          <span class="sidebar-icon">&#128101;</span><span>用户管理</span>
+        </div>
+        <div class="sidebar-item" :class="{active: tab==='orders'}" @click="tab='orders';loadOrders()">
+          <span class="sidebar-icon">&#128179;</span><span>订单管理</span>
+        </div>
+        <div class="sidebar-item" :class="{active: tab==='codes'}" @click="tab='codes';loadCodes()">
+          <span class="sidebar-icon">&#127903;</span><span>兑换码管理</span>
+        </div>
+        <div class="sidebar-item" :class="{active: tab==='referrals'}" @click="tab='referrals';loadReferrals()">
+          <span class="sidebar-icon">&#127873;</span><span>推荐激励</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="main">
+      <!-- Dashboard -->
+      <template v-if="tab==='dashboard'">
+        <div class="page-title">数据仪表盘</div>
+        <div class="stat-grid">
+          <div class="stat-card">
+            <div class="label">总用户数</div>
+            <div class="value">{{ dash.users?.total || 0 }}</div>
+            <div class="sub">今日新增 <span class="highlight">+{{ dash.users?.today || 0 }}</span></div>
+          </div>
+          <div class="stat-card">
+            <div class="label">VIP会员</div>
+            <div class="value">{{ dash.users?.vip || 0 }}</div>
+            <div class="sub">转化率 <span class="highlight">{{ dash.users?.total ? ((dash.users.vip/dash.users.total)*100).toFixed(1) : 0 }}%</span></div>
+          </div>
+          <div class="stat-card">
+            <div class="label">总营收</div>
+            <div class="value" style="color:var(--green)">&#165;{{ (dash.revenue?.total || 0).toFixed(1) }}</div>
+            <div class="sub">今日 <span class="highlight">+&#165;{{ (dash.revenue?.today || 0).toFixed(1) }}</span></div>
+          </div>
+          <div class="stat-card">
+            <div class="label">订单总数</div>
+            <div class="value">{{ dash.orders?.total || 0 }}</div>
+            <div class="sub">已支付 <span class="highlight">{{ dash.orders?.paid || 0 }}</span></div>
+          </div>
+          <div class="stat-card">
+            <div class="label">推荐注册</div>
+            <div class="value">{{ dash.referrals?.total || 0 }}</div>
+            <div class="sub">有效 <span class="highlight">{{ dash.referrals?.valid || 0 }}</span></div>
+          </div>
+          <div class="stat-card" v-if="dash.latestBatch">
+            <div class="label">最新数据批次</div>
+            <div class="value" style="font-size:20px;">{{ dash.latestBatch.date }}</div>
+            <div class="sub">{{ dash.latestBatch.keywords }}个选题 / {{ dash.latestBatch.videos }}个视频</div>
+          </div>
+        </div>
+      </template>
+
+      <!-- Users -->
+      <template v-if="tab==='users'">
+        <div class="page-title">用户管理</div>
+        <div class="toolbar">
+          <input class="search-input" v-model="userSearch" placeholder="搜索昵称/手机号/OpenID" @keyup.enter="loadUsers()" />
+          <button class="btn btn-sm btn-outline" @click="loadUsers()">搜索</button>
+        </div>
+        <div class="card">
+          <table>
+            <thead>
+              <tr><th>昵称</th><th>手机</th><th>会员</th><th>角色</th><th>余额</th><th>注册时间</th><th>操作</th></tr>
+            </thead>
+            <tbody>
+              <tr v-for="u in users" :key="u.id">
+                <td>{{ u.nickname || '-' }}</td>
+                <td>{{ u.phone || '-' }}</td>
+                <td>
+                  <span class="badge" :class="u.membership==='premium'?'badge-gold':'badge-gray'">
+                    {{ u.membership==='premium' ? 'VIP' : '免费' }}
+                  </span>
+                </td>
+                <td>
+                  <span class="badge" :class="u.role==='admin'?'badge-red':'badge-blue'">{{ u.role }}</span>
+                </td>
+                <td>{{ u.balance }}</td>
+                <td>{{ formatDate(u.createdAt) }}</td>
+                <td>
+                  <button class="btn btn-sm btn-outline" v-if="u.role!=='admin'" @click="setRole(u.id,'admin')">设为管理员</button>
+                  <button class="btn btn-sm btn-success" v-if="u.membership!=='premium'" @click="grantVip(u.id, 30)">赠送月卡</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="pagination">
+            <button class="btn btn-sm btn-outline" :disabled="userPage<=1" @click="userPage--;loadUsers()">上一页</button>
+            <span style="font-size:13px;color:var(--text3)">第{{ userPage }}页 / 共{{ Math.ceil(userTotal/20) }}页 ({{ userTotal }}条)</span>
+            <button class="btn btn-sm btn-outline" :disabled="userPage>=Math.ceil(userTotal/20)" @click="userPage++;loadUsers()">下一页</button>
+          </div>
+        </div>
+      </template>
+
+      <!-- Orders -->
+      <template v-if="tab==='orders'">
+        <div class="page-title">订单管理</div>
+        <div class="toolbar">
+          <select class="search-input" style="width:160px" v-model="orderStatus" @change="loadOrders()">
+            <option value="">全部状态</option>
+            <option value="paid">已支付</option>
+            <option value="pending">待支付</option>
+          </select>
+        </div>
+        <div class="card">
+          <table>
+            <thead>
+              <tr><th>订单ID</th><th>用户</th><th>金额</th><th>状态</th><th>支付单号</th><th>创建时间</th></tr>
+            </thead>
+            <tbody>
+              <tr v-for="o in orders" :key="o.id">
+                <td style="font-family:monospace;font-size:12px;">{{ o.id.slice(0,8) }}...</td>
+                <td>{{ o.userName }}</td>
+                <td style="font-weight:600;">&#165;{{ o.amount }}</td>
+                <td>
+                  <span class="badge" :class="o.status==='paid'?'badge-green':'badge-gray'">{{ o.status==='paid'?'已支付':'待支付' }}</span>
+                </td>
+                <td style="font-size:12px;">{{ o.paymentNo || '-' }}</td>
+                <td>{{ formatDate(o.createdAt) }}</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="pagination">
+            <button class="btn btn-sm btn-outline" :disabled="orderPage<=1" @click="orderPage--;loadOrders()">上一页</button>
+            <span style="font-size:13px;color:var(--text3)">第{{ orderPage }}页 ({{ orderTotal }}条)</span>
+            <button class="btn btn-sm btn-outline" :disabled="orderPage>=Math.ceil(orderTotal/20)" @click="orderPage++;loadOrders()">下一页</button>
+          </div>
+        </div>
+      </template>
+
+      <!-- Codes -->
+      <template v-if="tab==='codes'">
+        <div class="page-title">兑换码管理</div>
+
+        <div class="card">
+          <div class="card-title">批量生成兑换码</div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>类型</label>
+              <select class="form-input" v-model="genForm.codeType">
+                <option value="vip_days">VIP天数</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>天数</label>
+              <input class="form-input" type="number" v-model.number="genForm.value" min="1" />
+            </div>
+            <div class="form-group">
+              <label>数量</label>
+              <input class="form-input" type="number" v-model.number="genForm.count" min="1" max="500" />
+            </div>
+            <div class="form-group">
+              <label>每码可用次数</label>
+              <input class="form-input" type="number" v-model.number="genForm.maxUses" min="1" />
+            </div>
+            <div class="form-group">
+              <label>有效天数</label>
+              <input class="form-input" type="number" v-model.number="genForm.expiresInDays" placeholder="不填=永久" />
+            </div>
+            <div class="form-group">
+              <label>批次名</label>
+              <input class="form-input" style="width:160px" v-model="genForm.batchName" placeholder="可选" />
+            </div>
+            <button class="btn btn-sm btn-primary" @click="generateCodes()">生成</button>
+          </div>
+          <div class="code-list" v-if="generatedCodes.length">
+            <div>已生成 {{ generatedCodes.length }} 个兑换码:</div>
+            <div v-for="c in generatedCodes" :key="c">{{ c }}</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">已有兑换码</div>
+          <table>
+            <thead>
+              <tr><th>兑换码</th><th>类型</th><th>值</th><th>已用/总量</th><th>批次</th><th>过期时间</th><th>创建时间</th></tr>
+            </thead>
+            <tbody>
+              <tr v-for="c in codes" :key="c.id">
+                <td style="font-family:monospace;font-weight:600;letter-spacing:1px;">{{ c.code }}</td>
+                <td>{{ c.codeType }}</td>
+                <td>{{ c.value }}天</td>
+                <td>{{ c.usedCount }}/{{ c.maxUses }}</td>
+                <td>{{ c.batchName || '-' }}</td>
+                <td>{{ c.expiresAt ? formatDate(c.expiresAt) : '永久' }}</td>
+                <td>{{ formatDate(c.createdAt) }}</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="pagination">
+            <button class="btn btn-sm btn-outline" :disabled="codePage<=1" @click="codePage--;loadCodes()">上一页</button>
+            <span style="font-size:13px;color:var(--text3)">第{{ codePage }}页 ({{ codeTotal }}条)</span>
+            <button class="btn btn-sm btn-outline" :disabled="codePage>=Math.ceil(codeTotal/20)" @click="codePage++;loadCodes()">下一页</button>
+          </div>
+        </div>
+      </template>
+
+      <!-- Referrals -->
+      <template v-if="tab==='referrals'">
+        <div class="page-title">推荐激励统计</div>
+        <div class="stat-grid">
+          <div class="stat-card">
+            <div class="label">总推荐数</div>
+            <div class="value">{{ refStats.total || 0 }}</div>
+          </div>
+          <div class="stat-card">
+            <div class="label">有效推荐</div>
+            <div class="value">{{ refStats.valid || 0 }}</div>
+          </div>
+          <div class="stat-card">
+            <div class="label">VIP转化</div>
+            <div class="value">{{ refStats.vipConversions || 0 }}</div>
+          </div>
+          <div class="stat-card">
+            <div class="label">累计发放奖励(币)</div>
+            <div class="value">{{ refStats.totalRewardsGranted || 0 }}</div>
+          </div>
+        </div>
+        <div class="card" v-if="refStats.topReferrers && refStats.topReferrers.length">
+          <div class="card-title">推荐排行 TOP10</div>
+          <table>
+            <thead><tr><th>排名</th><th>用户</th><th>邀请数</th></tr></thead>
+            <tbody>
+              <tr v-for="(r,i) in refStats.topReferrers" :key="r.referrerId">
+                <td>{{ i+1 }}</td>
+                <td>{{ r.nickname || r.referrerId.slice(0,8) }}</td>
+                <td>{{ r.count }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </template>
+    </div>
+  </div>
+</div>
+
+<script>
+const API_BASE = location.origin + '/api';
+
+const { createApp, ref, reactive, onMounted } = Vue;
+
+createApp({
+  setup() {
+    const token = ref(localStorage.getItem('admin_token') || '');
+    const loginCode = ref('');
+    const loginError = ref('');
+    const tab = ref('dashboard');
+
+    // Dashboard
+    const dash = ref({});
+
+    // Users
+    const users = ref([]);
+    const userTotal = ref(0);
+    const userPage = ref(1);
+    const userSearch = ref('');
+
+    // Orders
+    const orders = ref([]);
+    const orderTotal = ref(0);
+    const orderPage = ref(1);
+    const orderStatus = ref('');
+
+    // Codes
+    const codes = ref([]);
+    const codeTotal = ref(0);
+    const codePage = ref(1);
+    const genForm = reactive({ codeType: 'vip_days', value: 7, count: 10, maxUses: 1, expiresInDays: 90, batchName: '' });
+    const generatedCodes = ref([]);
+
+    // Referrals
+    const refStats = ref({});
+
+    async function api(path, options = {}) {
+      const res = await fetch(API_BASE + path, {
+        ...options,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + token.value,
+          ...(options.headers || {}),
+        },
+      });
+      if (res.status === 401) { token.value = ''; localStorage.removeItem('admin_token'); throw new Error('未授权'); }
+      if (res.status === 403) { throw new Error('需要管理员权限'); }
+      const json = await res.json();
+      return json.data ?? json;
+    }
+
+    async function login() {
+      loginError.value = '';
+      try {
+        const res = await fetch(API_BASE + '/auth/wechat-login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ code: loginCode.value }),
+        });
+        const json = await res.json();
+        const data = json.data ?? json;
+        if (!data.token) { loginError.value = '登录失败'; return; }
+        if (data.user?.role !== 'admin') { loginError.value = '该账号不是管理员'; return; }
+        token.value = data.token;
+        localStorage.setItem('admin_token', data.token);
+        loadDashboard();
+      } catch (e) { loginError.value = e.message; }
+    }
+
+    async function loadDashboard() {
+      try { dash.value = await api('/admin/dashboard'); } catch(e) { console.warn(e); }
+    }
+
+    async function loadUsers() {
+      try {
+        const params = new URLSearchParams({ page: userPage.value, limit: 20 });
+        if (userSearch.value) params.set('search', userSearch.value);
+        const res = await api('/admin/users?' + params);
+        users.value = res.users;
+        userTotal.value = res.total;
+      } catch(e) { console.warn(e); }
+    }
+
+    async function setRole(userId, role) {
+      if (!confirm('确认将该用户设为管理员？')) return;
+      await api('/admin/users/' + userId + '/role', { method: 'PATCH', body: JSON.stringify({ role }) });
+      loadUsers();
+    }
+
+    async function grantVip(userId, days) {
+      if (!confirm('确认赠送' + days + '天VIP？')) return;
+      await api('/admin/users/' + userId + '/membership', { method: 'PATCH', body: JSON.stringify({ membership: 'premium', days }) });
+      loadUsers();
+    }
+
+    async function loadOrders() {
+      try {
+        const params = new URLSearchParams({ page: orderPage.value, limit: 20 });
+        if (orderStatus.value) params.set('status', orderStatus.value);
+        const res = await api('/admin/orders?' + params);
+        orders.value = res.orders;
+        orderTotal.value = res.total;
+      } catch(e) { console.warn(e); }
+    }
+
+    async function loadCodes() {
+      try {
+        const res = await api('/admin/codes?page=' + codePage.value + '&limit=20');
+        codes.value = res.codes;
+        codeTotal.value = res.total;
+      } catch(e) { console.warn(e); }
+    }
+
+    async function generateCodes() {
+      try {
+        const body = { ...genForm };
+        if (!body.batchName) delete body.batchName;
+        if (!body.expiresInDays) delete body.expiresInDays;
+        const res = await api('/admin/codes/generate', { method: 'POST', body: JSON.stringify(body) });
+        generatedCodes.value = res.codes || [];
+        loadCodes();
+      } catch(e) { alert(e.message); }
+    }
+
+    async function loadReferrals() {
+      try { refStats.value = await api('/admin/referrals'); } catch(e) { console.warn(e); }
+    }
+
+    function formatDate(d) {
+      if (!d) return '-';
+      return new Date(d).toLocaleString('zh-CN', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' });
+    }
+
+    onMounted(() => {
+      if (token.value) loadDashboard();
+    });
+
+    return {
+      token, loginCode, loginError, tab,
+      dash, login, loadDashboard,
+      users, userTotal, userPage, userSearch, loadUsers, setRole, grantVip,
+      orders, orderTotal, orderPage, orderStatus, loadOrders,
+      codes, codeTotal, codePage, genForm, generatedCodes, loadCodes, generateCodes,
+      refStats, loadReferrals,
+      formatDate,
+    };
+  },
+}).mount('#app');
+</script>
+</body>
+</html>

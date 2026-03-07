@@ -39,10 +39,68 @@
   color: #fff;
 }
 
+.plan-row {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+}
+
 .user-plan {
   align-self: flex-start;
+  font-size: 22rpx;
+  padding: 4rpx 16rpx;
+  border-radius: 8rpx;
+}
+
+.badge-vip {
+  background: linear-gradient(135deg, #F59E0B, #D97706) !important;
+  color: #fff !important;
+}
+
+.badge-free {
   background: rgba(255,255,255,0.2) !important;
   color: #fff !important;
+}
+
+.vip-expires {
+  font-size: 20rpx;
+  color: rgba(255,255,255,0.7);
+}
+
+/* VIP推广卡 */
+.vip-promo {
+  margin-top: -16rpx;
+  position: relative;
+  z-index: 2;
+  background: linear-gradient(135deg, #FFF7ED, #FEF3C7) !important;
+  border: 1rpx solid #FDE68A;
+  display: flex;
+  align-items: center;
+  padding: 24rpx 32rpx !important;
+}
+
+.vip-promo-left {
+  flex: 1;
+}
+
+.vip-promo-title {
+  font-size: 28rpx;
+  font-weight: 700;
+  color: #92400E;
+  display: block;
+}
+
+.vip-promo-desc {
+  font-size: 22rpx;
+  color: #B45309;
+  margin-top: 4rpx;
+  display: block;
+}
+
+.vip-promo-arrow {
+  font-size: 40rpx;
+  color: #D97706;
+  flex-shrink: 0;
 }
 
 /* 余额 */

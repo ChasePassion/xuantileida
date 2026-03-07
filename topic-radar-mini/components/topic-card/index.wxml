@@ -1,23 +1,29 @@
-<view class="topic-card" bind:tap="onTap">
+<view class="topic-card {{topic.locked ? 'locked' : ''}}">
+  <!-- 锁定遮罩 -->
+  <view class="lock-overlay" wx:if="{{topic.locked}}">
+    <text class="lock-icon">&#128274;</text>
+    <text class="lock-text">升级VIP查看</text>
+  </view>
+
   <view class="card-header">
     <view class="rank-badge rank-{{topic.rank <= 3 ? 'hot' : 'normal'}}">
       <text>{{topic.rank}}</text>
     </view>
     <view class="card-title-wrap">
-      <text class="card-title">{{topic.keyword}}</text>
+      <text class="card-title {{topic.locked ? 'blurred' : ''}}">{{topic.keyword}}</text>
       <text class="card-category" wx:if="{{topic.categoryName}}">{{topic.categoryName}}</text>
     </view>
     <view class="heat-score">
-      <text class="heat-num">{{topic.heatScore}}</text>
+      <text class="heat-num">{{topic.locked ? '--' : topic.heatScore}}</text>
       <text class="heat-label">热度</text>
     </view>
   </view>
 
-  <view class="card-body" wx:if="{{topic.reason}}">
+  <view class="card-body" wx:if="{{topic.reason && !topic.locked}}">
     <text class="card-reason ellipsis-2">{{topic.reason}}</text>
   </view>
 
-  <view class="card-footer">
+  <view class="card-footer" wx:if="{{!topic.locked}}">
     <view class="footer-item">
       <text class="footer-icon">▶</text>
       <text class="footer-text">{{topic.videoCount || 0}}个视频</text>

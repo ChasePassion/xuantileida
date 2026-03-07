@@ -1,0 +1,38 @@
+<view class="page-redemption">
+  <!-- 输入区 -->
+  <view class="input-card card">
+    <text class="section-title">输入兑换码</text>
+    <view class="input-row">
+      <input
+        class="code-input"
+        placeholder="请输入兑换码"
+        value="{{code}}"
+        maxlength="20"
+        bindinput="onCodeInput"
+      />
+    </view>
+    <view class="btn-primary redeem-btn {{loading ? 'disabled' : ''}}" bind:tap="onRedeem">
+      {{loading ? '兑换中...' : '立即兑换'}}
+    </view>
+    <text class="input-hint">兑换码由运营发放，可兑换VIP会员天数</text>
+  </view>
+
+  <!-- 兑换记录 -->
+  <view class="record-card card" wx:if="{{records.length > 0}}">
+    <text class="section-title">兑换记录</text>
+    <view class="record-item" wx:for="{{records}}" wx:key="id">
+      <view class="record-left">
+        <text class="record-code">{{item.code}}</text>
+        <text class="record-time">{{item.createdAt}}</text>
+      </view>
+      <view class="record-right">
+        <text class="record-value">+{{item.value}}天VIP</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 空状态 -->
+  <view class="empty-state" wx:if="{{!recordsLoading && records.length === 0}}">
+    <text class="empty-text">暂无兑换记录</text>
+  </view>
+</view>

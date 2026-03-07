@@ -6,13 +6,23 @@ import { RechargeOrder } from './entities/recharge-order.entity';
 import { ConsumeRecord } from './entities/consume-record.entity';
 import { UserBalance } from '../users/entities/user-balance.entity';
 import { User } from '../users/entities/user.entity';
-import { InsufficientBalanceException } from '../../common/exceptions/business.exceptions';
 
-const MEMBERSHIP_PLANS: Record<string, { days: number; featureType: string }> = {
-  monthly: { days: 30, featureType: 'membership_monthly' },
-  quarterly: { days: 90, featureType: 'membership_quarterly' },
-  yearly: { days: 365, featureType: 'membership_yearly' },
+// VIP订阅价格
+const VIP_PLANS = {
+  monthly: { price: 59.9, days: 30, reportsPerMonth: 5, label: '月卡' },
+  yearly: { price: 499, days: 365, reportsPerMonth: 15, label: '年卡' },
 };
+
+// 雷达币充值套餐
+const COIN_PACKAGES = [
+  { amount: 9.9, coins: 10, bonus: 0, label: '入门' },
+  { amount: 29.9, coins: 35, bonus: 5, label: '热门' },
+  { amount: 59.9, coins: 80, bonus: 20, label: '超值' },
+  { amount: 99.9, coins: 150, bonus: 50, label: '豪华' },
+];
+
+// AI报告解锁价格
+const REPORT_UNLOCK_COST = 5;
 
 @Injectable()
 export class BillingService {
@@ -29,20 +39,31 @@ export class BillingService {
   ) {}
 
   async getPricing() {
-    const rules = await this.pricingRepo.find({
-      where: { isActive: true },
-      order: { price: 'ASC' },
-    });
     return {
-      features: rules.map((r) => ({
-        featureType: r.featureType,
-        price: Number(r.price),
-        description: r.description,
+      vipPlans: Object.entries(VIP_PLANS).map(([key, plan]) => ({
+        plan: key,
+        price: plan.price,
+        days: plan.days,
+        reportsPerMonth: plan.reportsPerMonth,
+        label: plan.label,
       })),
+      coinPackages: COIN_PACKAGES.map((pkg) => ({
+        amount: pkg.amount,
+        coins: pkg.coins,
+        bonus: pkg.bonus,
+        total: pkg.coins + pkg.bonus,
+        label: pkg.label,
+      })),
+      reportUnlockCost: REPORT_UNLOCK_COST,
     };
   }
 
   async createRechargeOrder(userId: string, amount: number) {
+    const pkg = COIN_PACKAGES.find((p) => p.amount === amount);
+    if (!pkg) {
+      throw new BadRequestException('无效的充值金额');
+    }
+
     const order = this.orderRepo.create({
       userId,
       amount,
@@ -50,10 +71,42 @@ export class BillingService {
     });
     await this.orderRepo.save(order);
 
-    // TODO: 调用微信支付统一下单接口获取 payParams
+    // TODO: 调用微信支付统一下单接口
     return {
       orderId: order.id,
       amount: Number(order.amount),
+      coins: pkg.coins + pkg.bonus,
+      status: order.status,
+      payParams: {
+        timeStamp: String(Math.floor(Date.now() / 1000)),
+        nonceStr: 'placeholder',
+        package: `prepay_id=placeholder_${order.id}`,
+        signType: 'MD5',
+        paySign: 'placeholder',
+      },
+    };
+  }
+
+  async createVipOrder(userId: string, plan: string) {
+    const planConfig = VIP_PLANS[plan];
+    if (!planConfig) {
+      throw new BadRequestException('无效的会员类型');
+    }
+
+    const order = this.orderRepo.create({
+      userId,
+      amount: planConfig.price,
+      status: 'pending',
+    });
+    await this.orderRepo.save(order);
+
+    // TODO: 调用微信支付统一下单接口
+    return {
+      orderId: order.id,
+      plan,
+      price: planConfig.price,
+      days: planConfig.days,
+      label: planConfig.label,
       status: order.status,
       payParams: {
         timeStamp: String(Math.floor(Date.now() / 1000)),
@@ -72,87 +125,26 @@ export class BillingService {
       });
       if (!order) return { code: 'FAIL', message: '订单不存在或已处理' };
 
-      // 更新订单
       order.status = 'paid';
       order.paymentNo = paymentNo;
       order.paidAt = new Date();
       await manager.save(order);
 
-      // 增加余额
-      const balance = await manager.findOne(UserBalance, {
-        where: { userId: order.userId },
-      });
-      if (balance) {
-        balance.balance = Number(balance.balance) + Number(order.amount);
-        balance.totalRecharged =
-          Number(balance.totalRecharged) + Number(order.amount);
-        await manager.save(balance);
+      // 增加雷达币余额
+      const pkg = COIN_PACKAGES.find((p) => p.amount === Number(order.amount));
+      if (pkg) {
+        const coins = pkg.coins + pkg.bonus;
+        const balance = await manager.findOne(UserBalance, {
+          where: { userId: order.userId },
+        });
+        if (balance) {
+          balance.balance = Number(balance.balance) + coins;
+          balance.totalRecharged = Number(balance.totalRecharged) + Number(order.amount);
+          await manager.save(balance);
+        }
       }
 
       return { code: 'SUCCESS', message: 'OK' };
-    });
-  }
-
-  async purchaseMembership(userId: string, plan: string) {
-    const planConfig = MEMBERSHIP_PLANS[plan];
-    if (!planConfig) {
-      throw new BadRequestException('无效的会员类型');
-    }
-
-    const pricing = await this.pricingRepo.findOne({
-      where: { featureType: planConfig.featureType, isActive: true },
-    });
-    const price = Number(pricing?.price || 0);
-    if (price <= 0) {
-      throw new BadRequestException('该会员类型暂不可购买');
-    }
-
-    return await this.dataSource.transaction(async (manager) => {
-      // 检查余额
-      const balance = await manager.findOne(UserBalance, { where: { userId } });
-      if (!balance || Number(balance.balance) < price) {
-        throw new InsufficientBalanceException(
-          Number(balance?.balance || 0),
-          price,
-        );
-      }
-
-      // 扣减余额
-      balance.balance = Number(balance.balance) - price;
-      balance.totalConsumed = Number(balance.totalConsumed) + price;
-      await manager.save(balance);
-
-      // 更新用户会员状态
-      const user = await manager.findOne(User, { where: { id: userId } });
-      if (!user) throw new NotFoundException('用户不存在');
-
-      const now = new Date();
-      const currentExpiry = user.membershipExpiresAt && new Date(user.membershipExpiresAt) > now
-        ? new Date(user.membershipExpiresAt)
-        : now;
-      const newExpiry = new Date(currentExpiry.getTime() + planConfig.days * 86400000);
-
-      user.membership = 'premium';
-      user.membershipExpiresAt = newExpiry;
-      await manager.save(user);
-
-      // 消费记录
-      const consume = manager.create(ConsumeRecord, {
-        userId,
-        featureType: planConfig.featureType,
-        amount: price,
-        refId: userId,
-        refType: 'membership',
-        note: `购买${plan === 'monthly' ? '月度' : plan === 'quarterly' ? '季度' : '年度'}会员`,
-      });
-      await manager.save(consume);
-
-      return {
-        membership: 'premium',
-        expiresAt: newExpiry,
-        consumed: price,
-        remainingBalance: Number(balance.balance),
-      };
     });
   }
 
@@ -184,7 +176,6 @@ export class BillingService {
       };
     }
 
-    // 默认返回消费记录
     const [records, total] = await this.consumeRepo.findAndCount({
       where: { userId },
       order: { createdAt: 'DESC' },

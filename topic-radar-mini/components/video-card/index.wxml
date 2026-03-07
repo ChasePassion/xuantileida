@@ -17,17 +17,20 @@
       <text class="creator-name">{{video.creator.name || video.creatorName || ''}}</text>
     </view>
     <view class="stats-row">
-      <view class="stat">
+      <view class="stat {{dataMasked ? 'masked' : ''}}">
         <text class="stat-icon">♥</text>
         <text>{{likesText}}</text>
       </view>
-      <view class="stat">
+      <view class="stat {{dataMasked ? 'masked' : ''}}">
         <text class="stat-icon">💬</text>
         <text>{{commentsText}}</text>
       </view>
       <view class="report-tag" wx:if="{{video.hasReport}}">
         <text>有拆解</text>
       </view>
+    </view>
+    <view class="masked-hint" wx:if="{{dataMasked}}">
+      <text>升级VIP查看完整数据</text>
     </view>
   </view>
 </view>

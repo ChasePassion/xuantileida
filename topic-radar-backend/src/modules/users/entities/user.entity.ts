@@ -29,6 +29,9 @@ export class User {
   @Column({ nullable: true, length: 20 })
   phone: string;
 
+  @Column({ length: 20, default: 'user' })
+  role: string; // 'user' | 'admin'
+
   @Column({ length: 20, default: 'free' })
   membership: string;
 

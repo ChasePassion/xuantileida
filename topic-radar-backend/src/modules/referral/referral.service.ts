@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, DataSource } from 'typeorm';
 import { Referral } from './entities/referral.entity';
 import { ReferralReward } from './entities/referral-reward.entity';
+import { ReferralTier } from './entities/referral-tier.entity';
 import { DailyViewLog } from './entities/daily-view-log.entity';
 import { UserBalance } from '../users/entities/user-balance.entity';
 import { User } from '../users/entities/user.entity';
@@ -27,6 +28,8 @@ export class ReferralService {
     private readonly referralRepo: Repository<Referral>,
     @InjectRepository(ReferralReward)
     private readonly rewardRepo: Repository<ReferralReward>,
+    @InjectRepository(ReferralTier)
+    private readonly tierRepo: Repository<ReferralTier>,
     @InjectRepository(DailyViewLog)
     private readonly viewLogRepo: Repository<DailyViewLog>,
     @InjectRepository(UserBalance)
@@ -236,5 +239,50 @@ export class ReferralService {
       });
       await manager.save(reward);
     });
+  }
+
+  /**
+   * 获取阶梯配置
+   */
+  async getTiers() {
+    return this.tierRepo.find({ order: { sortOrder: 'ASC' } });
+  }
+
+  /**
+   * 获取用户当前等级
+   */
+  async getMyTier(userId: string) {
+    const validCount = await this.referralRepo.count({
+      where: { referrerId: userId, isValid: true },
+    });
+    const tiers = await this.tierRepo.find({ order: { minReferrals: 'DESC' } });
+    const currentTier = tiers.find(t => validCount >= t.minReferrals) || tiers[tiers.length - 1];
+    const nextTier = tiers.find(t => t.minReferrals > validCount && t.minReferrals > (currentTier?.minReferrals || 0));
+    return {
+      currentTier,
+      validReferrals: validCount,
+      nextTier: nextTier || null,
+      referralsToNext: nextTier ? nextTier.minReferrals - validCount : 0,
+    };
+  }
+
+  /**
+   * 推荐排行榜 Top 20
+   */
+  async getLeaderboard(limit = 20) {
+    const results = await this.referralRepo
+      .createQueryBuilder('r')
+      .select('r.referrer_id', 'referrerId')
+      .addSelect('COUNT(*)', 'count')
+      .where('r.is_valid = true')
+      .groupBy('r.referrer_id')
+      .orderBy('count', 'DESC')
+      .limit(limit)
+      .getRawMany();
+    return results.map((r, i) => ({
+      rank: i + 1,
+      referrerId: r.referrerId,
+      validReferrals: Number(r.count),
+    }));
   }
 }

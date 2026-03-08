@@ -31,6 +31,12 @@ export class ScriptSegment {
   @Column({ type: 'text', nullable: true })
   technique: string;
 
+  @Column({ name: 'technique_detail', type: 'text', nullable: true })
+  techniqueDetail: string;
+
+  @Column({ name: 'psychology_principle', type: 'text', nullable: true })
+  psychologyPrinciple: string;
+
   @Column({ name: 'sort_order', default: 0 })
   sortOrder: number;
 

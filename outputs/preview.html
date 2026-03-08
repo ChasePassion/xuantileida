@@ -1,0 +1,1660 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>选题雷达 - 小程序UI预览 v4.0</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+/* ===== THEME VARIABLES ===== */
+:root {
+  /* Douyin Theme (Default) */
+  --bg-body: #0D0D0D;
+  --primary: #FE2C55;
+  --primary-light: #FE2C5520;
+  --primary-gradient: linear-gradient(135deg, #FE2C55, #FF6B6B);
+  --accent: #25F4EE;
+  --accent2: #FE2C55;
+  --bg: #111111;
+  --bg-card: #1A1A1A;
+  --bg-card-alt: #222222;
+  --white: #1A1A1A;
+  --text: #FFFFFF;
+  --text2: #B0B0B0;
+  --text3: #666666;
+  --border: #2A2A2A;
+  --shadow: rgba(0,0,0,0.6);
+  --phone-border: #333;
+  --phone-shadow: 0 20px 60px rgba(0,0,0,0.8);
+  --status-bar-bg: #111111;
+  --status-bar-text: #fff;
+  --tab-bar-bg: #111111;
+  --tab-bar-border: #222;
+  --header-gradient: linear-gradient(135deg, #FE2C55, #FF6B6B);
+  --vip-gradient: linear-gradient(135deg, #F59E0B, #D97706);
+  --score-gradient: linear-gradient(135deg, #FE2C55, #FF6B6B);
+  --heat-color: #FE2C55;
+  --green: #25F4EE;
+  --gold: #F59E0B;
+  --red: #FE2C55;
+  --rank-hot: linear-gradient(135deg, #FE2C55, #FF6B6B);
+  --cat-active-bg: #FE2C55;
+  --cat-inactive-bg: #222;
+  --cat-count-bg: rgba(255,255,255,0.15);
+  --cat-count-active-bg: rgba(255,255,255,0.3);
+  --free-banner-bg: linear-gradient(90deg, #2A1A00, #332200);
+  --free-banner-border: #553300;
+  --free-banner-text: #F59E0B;
+  --btn-primary-bg: linear-gradient(135deg, #FE2C55, #FF6B6B);
+  --btn-outline-border: #FE2C55;
+  --btn-outline-text: #FE2C55;
+  --input-bg: #222;
+  --input-border: #333;
+  --modal-overlay: rgba(0,0,0,0.7);
+  --tag-bg: rgba(254,44,85,0.15);
+  --tag-text: #FE2C55;
+  --locked-overlay: rgba(17,17,17,0.7);
+  --theme-label: "抖音风";
+}
+
+[data-theme="tech"] {
+  --bg-body: #0A0E1A;
+  --primary: #00D4FF;
+  --primary-light: #00D4FF20;
+  --primary-gradient: linear-gradient(135deg, #00D4FF, #7B61FF);
+  --accent: #00FF88;
+  --accent2: #7B61FF;
+  --bg: #0F1629;
+  --bg-card: #151D33;
+  --bg-card-alt: #1A2340;
+  --white: #151D33;
+  --text: #E8ECF4;
+  --text2: #8892A8;
+  --text3: #4A5568;
+  --border: #1E2A45;
+  --shadow: rgba(0,0,0,0.5);
+  --phone-border: #1E2A45;
+  --phone-shadow: 0 20px 60px rgba(0,100,255,0.15), 0 0 30px rgba(0,212,255,0.08);
+  --status-bar-bg: #0F1629;
+  --status-bar-text: #E8ECF4;
+  --tab-bar-bg: #0F1629;
+  --tab-bar-border: #1E2A45;
+  --header-gradient: linear-gradient(135deg, #00D4FF, #7B61FF);
+  --vip-gradient: linear-gradient(135deg, #FFD700, #FF8C00);
+  --score-gradient: linear-gradient(135deg, #00D4FF, #7B61FF);
+  --heat-color: #FF4D6A;
+  --green: #00FF88;
+  --gold: #FFD700;
+  --red: #FF4D6A;
+  --rank-hot: linear-gradient(135deg, #FF4D6A, #FF8C94);
+  --cat-active-bg: #00D4FF;
+  --cat-inactive-bg: #1A2340;
+  --cat-count-bg: rgba(255,255,255,0.1);
+  --cat-count-active-bg: rgba(0,0,0,0.25);
+  --free-banner-bg: linear-gradient(90deg, #1A1500, #252000);
+  --free-banner-border: #443800;
+  --free-banner-text: #FFD700;
+  --btn-primary-bg: linear-gradient(135deg, #00D4FF, #7B61FF);
+  --btn-outline-border: #00D4FF;
+  --btn-outline-text: #00D4FF;
+  --input-bg: #1A2340;
+  --input-border: #1E2A45;
+  --modal-overlay: rgba(10,14,26,0.8);
+  --tag-bg: rgba(0,212,255,0.12);
+  --tag-text: #00D4FF;
+  --locked-overlay: rgba(15,22,41,0.8);
+  --theme-label: "科技风";
+}
+
+[data-theme="minimal"] {
+  --bg-body: #1a1a2e;
+  --primary: #5B5FE6;
+  --primary-light: #E8E9FC;
+  --primary-gradient: linear-gradient(135deg, #5B5FE6, #7C3AED);
+  --accent: #7C3AED;
+  --accent2: #5B5FE6;
+  --bg: #F5F6FA;
+  --bg-card: #FFFFFF;
+  --bg-card-alt: #F9FAFB;
+  --white: #FFFFFF;
+  --text: #1A1A2E;
+  --text2: #6B7280;
+  --text3: #9CA3AF;
+  --border: #E5E7EB;
+  --shadow: rgba(0,0,0,0.04);
+  --phone-border: #333;
+  --phone-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  --status-bar-bg: #FFFFFF;
+  --status-bar-text: #1A1A2E;
+  --tab-bar-bg: #FFFFFF;
+  --tab-bar-border: #E5E7EB;
+  --header-gradient: linear-gradient(135deg, #5B5FE6, #7C3AED);
+  --vip-gradient: linear-gradient(135deg, #F59E0B, #D97706);
+  --score-gradient: linear-gradient(135deg, #5B5FE6, #7C3AED);
+  --heat-color: #EF4444;
+  --green: #10B981;
+  --gold: #F59E0B;
+  --red: #EF4444;
+  --rank-hot: linear-gradient(135deg, #FF6B6B, #EE5A24);
+  --cat-active-bg: #5B5FE6;
+  --cat-inactive-bg: #F3F4F6;
+  --cat-count-bg: rgba(0,0,0,0.08);
+  --cat-count-active-bg: rgba(255,255,255,0.3);
+  --free-banner-bg: linear-gradient(90deg, #FFF7ED, #FEF3C7);
+  --free-banner-border: #FDE68A;
+  --free-banner-text: #92400E;
+  --btn-primary-bg: linear-gradient(135deg, #5B5FE6, #7C3AED);
+  --btn-outline-border: #5B5FE6;
+  --btn-outline-text: #5B5FE6;
+  --input-bg: #F9FAFB;
+  --input-border: #E5E7EB;
+  --modal-overlay: rgba(0,0,0,0.5);
+  --tag-bg: rgba(91,95,230,0.08);
+  --tag-text: #5B5FE6;
+  --locked-overlay: rgba(255,255,255,0.6);
+  --theme-label: "极简风";
+}
+
+/* ===== GLOBAL ===== */
+body { background: var(--bg-body); font-family: -apple-system, 'PingFang SC', 'SF Pro Display', sans-serif; padding: 20px 20px 40px; transition: background 0.4s; }
+
+/* Theme Switcher */
+.theme-bar { display: flex; justify-content: center; gap: 12px; margin-bottom: 24px; }
+.theme-btn { padding: 8px 24px; border-radius: 24px; font-size: 14px; font-weight: 600; cursor: pointer; border: 2px solid transparent; transition: all 0.3s; background: #222; color: #aaa; }
+.theme-btn:hover { opacity: 0.85; }
+.theme-btn.active { border-color: var(--primary); color: var(--primary); background: var(--primary-light); }
+[data-theme="minimal"] .theme-btn { background: #E5E7EB; color: #6B7280; }
+[data-theme="minimal"] .theme-btn.active { background: #E8E9FC; }
+
+h1 { color: #fff; text-align: center; margin-bottom: 6px; font-size: 28px; }
+[data-theme="minimal"] h1 { color: #fff; }
+.subtitle { color: #888; text-align: center; margin-bottom: 24px; font-size: 13px; }
+
+/* Section headers */
+.section-title { color: #888; font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; text-align: center; margin: 32px 0 16px; }
+[data-theme="tech"] .section-title { color: var(--primary); text-shadow: 0 0 20px rgba(0,212,255,0.3); }
+
+.screens { display: flex; flex-wrap: wrap; gap: 28px; justify-content: center; }
+.screen-wrap { display: flex; flex-direction: column; align-items: center; }
+.screen-label { color: #888; font-size: 11px; margin-top: 10px; letter-spacing: 0.5px; }
+
+/* Phone Frame */
+.phone {
+  width: 375px; height: 740px;
+  border-radius: 40px; overflow: hidden;
+  background: var(--bg); position: relative;
+  border: 3px solid var(--phone-border);
+  box-shadow: var(--phone-shadow);
+  transition: all 0.4s;
+}
+[data-theme="tech"] .phone { border-color: #1E2A45; box-shadow: var(--phone-shadow); }
+.status-bar { height: 44px; background: var(--status-bar-bg); display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 600; color: var(--status-bar-text); }
+.tab-bar { position: absolute; bottom: 0; left: 0; right: 0; height: 56px; background: var(--tab-bar-bg); display: flex; border-top: 1px solid var(--tab-bar-border); }
+.tab-item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; }
+.tab-item .icon { font-size: 20px; opacity: 0.5; }
+.tab-item .label { font-size: 10px; color: var(--text3); }
+.tab-item.active .icon { opacity: 1; }
+.tab-item.active .label { color: var(--primary); font-weight: 600; }
+.content { height: calc(100% - 44px - 56px); overflow-y: auto; }
+.content-no-tab { height: calc(100% - 44px); overflow-y: auto; }
+.card { background: var(--bg-card); margin: 8px 12px; border-radius: 16px; padding: 16px; }
+
+/* Scrollbar */
+.content::-webkit-scrollbar, .content-no-tab::-webkit-scrollbar { width: 0; }
+
+/* ===== COMPONENT: Stats Row ===== */
+.stats-row { display: flex; gap: 8px; padding: 12px; }
+.stat-box { flex: 1; background: var(--bg-card); border-radius: 12px; padding: 12px; text-align: center; box-shadow: 0 1px 4px var(--shadow); }
+.stat-box .num { font-size: 24px; font-weight: 800; color: var(--primary); display: block; }
+.stat-box .lbl { font-size: 11px; color: var(--text3); }
+
+/* Stats Card (gradient) */
+.stats-card-gradient { background: var(--header-gradient); border-radius: 16px; margin: 12px; padding: 16px 12px 12px; }
+.stats-card-row { display: flex; }
+.stats-card-col { flex: 1; text-align: center; }
+.stats-card-col .num { font-size: 24px; font-weight: 800; color: #fff; display: block; }
+.stats-card-col .lbl { font-size: 11px; color: rgba(255,255,255,0.7); }
+.stats-card-divider { width: 1px; background: rgba(255,255,255,0.2); margin: 4px 0; }
+.stats-card-time { font-size: 10px; color: rgba(255,255,255,0.5); text-align: center; margin-top: 8px; }
+
+/* ===== Free Banner ===== */
+.free-banner { display: flex; align-items: center; justify-content: space-between; background: var(--free-banner-bg); padding: 8px 12px; margin: 0 12px 8px; border-radius: 10px; border: 1px solid var(--free-banner-border); }
+.free-text { font-size: 12px; color: var(--free-banner-text); }
+.free-btn { background: var(--btn-primary-bg); color: #fff; font-size: 11px; font-weight: 600; padding: 4px 12px; border-radius: 12px; }
+
+/* ===== Categories ===== */
+.cat-scroll { display: flex; gap: 8px; padding: 8px 12px; overflow-x: auto; }
+.cat-pill { padding: 6px 16px; border-radius: 20px; font-size: 13px; background: var(--cat-inactive-bg); color: var(--text2); white-space: nowrap; display: inline-flex; align-items: center; gap: 4px; }
+.cat-pill.active { background: var(--cat-active-bg); color: #fff; font-weight: 600; }
+.cat-count { display: inline-block; min-width: 16px; height: 16px; line-height: 16px; text-align: center; font-size: 10px; font-weight: 600; background: var(--cat-count-bg); border-radius: 8px; padding: 0 4px; }
+.cat-pill.active .cat-count { background: var(--cat-count-active-bg); color: #fff; }
+
+/* ===== Topic Card ===== */
+.topic-card { background: var(--bg-card); margin: 0 12px 10px; border-radius: 16px; padding: 14px 16px; box-shadow: 0 1px 4px var(--shadow); position: relative; }
+.topic-card.locked { opacity: 0.5; }
+.lock-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: var(--locked-overlay); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 5; border-radius: 16px; backdrop-filter: blur(2px); }
+.lock-icon { font-size: 24px; }
+.lock-text { font-size: 12px; color: var(--primary); font-weight: 600; }
+.tc-header { display: flex; align-items: center; }
+.rank { width: 28px; height: 28px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; color: #fff; margin-right: 10px; flex-shrink: 0; }
+.rank.hot { background: var(--rank-hot); }
+.rank.cold { background: #555; color: #999; }
+[data-theme="minimal"] .rank.cold { background: #D1D5DB; color: #6B7280; }
+.tc-title { flex: 1; font-size: 15px; font-weight: 600; color: var(--text); }
+.tc-title.blurred { color: transparent; text-shadow: 0 0 8px var(--text3); }
+.tc-cat { font-size: 11px; color: var(--tag-text); background: var(--tag-bg); padding: 1px 8px; border-radius: 4px; margin-left: 4px; }
+.tc-heat { text-align: center; margin-left: 10px; }
+.tc-heat .num { font-size: 20px; font-weight: 700; color: var(--heat-color); display: block; line-height: 1.2; }
+.tc-heat .lbl { font-size: 10px; color: var(--text3); }
+.tc-reason { font-size: 13px; color: var(--text2); margin-top: 8px; padding-left: 38px; line-height: 1.5; }
+.tc-footer { display: flex; align-items: center; margin-top: 10px; padding-top: 8px; padding-left: 38px; border-top: 1px solid var(--border); font-size: 12px; color: var(--text3); gap: 16px; }
+
+/* ===== Profile ===== */
+.profile-header { background: var(--header-gradient); padding: 30px 20px 24px; display: flex; align-items: center; }
+.avatar { width: 56px; height: 56px; border-radius: 50%; background: rgba(255,255,255,0.2); border: 2px solid rgba(255,255,255,0.3); display: flex; align-items: center; justify-content: center; font-size: 24px; }
+.user-info { margin-left: 14px; }
+.user-name { font-size: 18px; font-weight: 700; color: #fff; }
+.plan-row { display: flex; align-items: center; gap: 8px; margin-top: 4px; }
+.badge-vip { background: var(--vip-gradient); color: #fff; font-size: 11px; padding: 2px 8px; border-radius: 4px; }
+.badge-free { background: rgba(255,255,255,0.2); color: #fff; font-size: 11px; padding: 2px 8px; border-radius: 4px; }
+.vip-promo { background: var(--free-banner-bg) !important; border: 1px solid var(--free-banner-border); display: flex; align-items: center; }
+.vip-promo-title { font-size: 14px; font-weight: 700; color: var(--free-banner-text); }
+.vip-promo-desc { font-size: 11px; color: var(--free-banner-text); opacity: 0.8; margin-top: 2px; }
+.vip-promo-arrow { font-size: 20px; color: var(--gold); margin-left: auto; }
+.balance-card { margin-top: -4px; position: relative; z-index: 1; }
+.balance-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+.balance-title { font-size: 13px; color: var(--text2); }
+.recharge-tag { background: var(--btn-primary-bg); color: #fff; font-size: 12px; padding: 4px 14px; border-radius: 12px; font-weight: 600; }
+.balance-big { font-size: 36px; font-weight: 800; color: var(--text); }
+.profile-stats { display: flex; }
+.ps-col { flex: 1; text-align: center; }
+.ps-col .num { font-size: 22px; font-weight: 700; color: var(--text); display: block; }
+.ps-col .lbl { font-size: 11px; color: var(--text3); }
+.menu-list { padding: 0 16px; }
+.menu-item { display: flex; align-items: center; padding: 14px 0; border-bottom: 1px solid var(--border); }
+.menu-item:last-child { border-bottom: none; }
+.menu-icon { font-size: 18px; margin-right: 10px; }
+.menu-label { flex: 1; font-size: 14px; color: var(--text); }
+.menu-arrow { font-size: 18px; color: var(--text3); }
+
+/* ===== Recharge / Tab Switch ===== */
+.tab-switch { display: flex; background: var(--bg-card); border-bottom: 1px solid var(--border); }
+.tab-sw-item { flex: 1; text-align: center; padding: 12px 0; font-size: 14px; color: var(--text2); position: relative; }
+.tab-sw-item.active { color: var(--primary); font-weight: 700; }
+.tab-sw-item.active::after { content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 40px; height: 3px; background: var(--primary); border-radius: 2px; }
+.plan-list { display: flex; gap: 10px; padding: 12px; }
+.plan-card { flex: 1; background: var(--bg-card); border-radius: 16px; padding: 16px 12px; border: 2px solid transparent; box-shadow: 0 1px 6px var(--shadow); position: relative; }
+.plan-card.selected { border-color: var(--primary); }
+.plan-tag { position: absolute; top: -1px; right: 8px; background: var(--red); color: #fff; font-size: 10px; padding: 2px 8px; border-radius: 0 0 6px 6px; font-weight: 600; }
+.plan-label { font-size: 18px; font-weight: 700; color: var(--text); display: block; }
+.plan-desc { font-size: 11px; color: var(--text3); }
+.plan-price-row { margin: 8px 0; }
+.plan-price-sym { font-size: 14px; color: var(--red); font-weight: 600; }
+.plan-price { font-size: 28px; font-weight: 800; color: var(--red); }
+.plan-per-day { font-size: 10px; color: var(--text3); margin-left: 4px; }
+.plan-features { display: flex; flex-direction: column; gap: 4px; }
+.plan-feature { font-size: 11px; color: var(--text2); }
+.plan-feature::before { content: '\2713'; color: var(--green); font-weight: 700; margin-right: 4px; }
+.action-bar { position: absolute; bottom: 0; left: 0; right: 0; background: var(--bg-card); padding: 12px 16px; box-shadow: 0 -2px 8px var(--shadow); }
+.btn-primary { background: var(--btn-primary-bg); color: #fff; text-align: center; padding: 12px; border-radius: 12px; font-size: 16px; font-weight: 700; }
+.btn-note { text-align: center; font-size: 11px; color: var(--text3); margin-top: 6px; }
+
+/* ===== Referral ===== */
+.referral-header { background: var(--header-gradient); padding: 30px 20px; text-align: center; }
+.rh-title { font-size: 22px; font-weight: 800; color: #fff; display: block; margin-bottom: 6px; }
+.rh-desc { font-size: 13px; color: rgba(255,255,255,0.8); }
+.rule-item { display: flex; align-items: center; padding: 8px 0; gap: 8px; }
+.rule-badge { width: 40px; height: 24px; display: flex; align-items: center; justify-content: center; background: var(--tag-bg); color: var(--tag-text); font-size: 11px; font-weight: 600; border-radius: 4px; flex-shrink: 0; }
+.rule-text { font-size: 13px; color: var(--text); }
+.rule-note { margin-top: 8px; padding: 8px; background: var(--bg-card-alt); border-radius: 8px; font-size: 11px; color: var(--text3); }
+.share-actions { padding: 16px; display: flex; flex-direction: column; gap: 10px; }
+.btn-outline { text-align: center; padding: 10px; border-radius: 12px; font-size: 14px; color: var(--btn-outline-text); font-weight: 600; border: 1px solid var(--btn-outline-border); }
+
+/* ===== Redemption ===== */
+.code-input { width: 100%; height: 44px; background: var(--input-bg); border: 1px solid var(--input-border); border-radius: 10px; padding: 0 12px; font-size: 16px; font-weight: 600; letter-spacing: 2px; color: var(--text); }
+.input-hint { font-size: 11px; color: var(--text3); text-align: center; margin-top: 8px; }
+
+/* ===== Square Page ===== */
+.report-item { background: var(--bg-card); margin: 8px 12px; border-radius: 14px; padding: 12px; display: flex; gap: 12px; align-items: center; box-shadow: 0 1px 4px var(--shadow); }
+.report-cover { width: 80px; height: 60px; border-radius: 8px; background: linear-gradient(135deg, #374151, #1F2937); flex-shrink: 0; display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative; }
+.report-cover .play-icon { font-size: 20px; opacity: 0.6; }
+.report-cover .platform-dot { position: absolute; top: 4px; left: 4px; width: 8px; height: 8px; border-radius: 50%; }
+.report-body { flex: 1; min-width: 0; }
+.report-title { font-size: 14px; font-weight: 600; color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.report-meta { display: flex; gap: 8px; align-items: center; margin-top: 4px; font-size: 11px; color: var(--text3); }
+.report-tag { font-size: 10px; color: var(--tag-text); background: var(--tag-bg); padding: 1px 6px; border-radius: 3px; }
+.report-score { font-size: 15px; font-weight: 700; color: var(--primary); flex-shrink: 0; }
+.report-arrow { font-size: 18px; color: var(--text3); flex-shrink: 0; }
+
+/* ===== Topic Detail ===== */
+.td-header { background: var(--bg-card); margin: 12px; border-radius: 16px; padding: 16px; }
+.td-keyword { font-size: 22px; font-weight: 800; color: var(--text); margin-bottom: 8px; }
+.td-meta { display: flex; gap: 12px; align-items: center; margin-bottom: 10px; }
+.td-heat { background: var(--tag-bg); color: var(--heat-color); font-size: 13px; font-weight: 700; padding: 4px 10px; border-radius: 8px; }
+.td-cat-tag { font-size: 12px; color: var(--tag-text); background: var(--tag-bg); padding: 2px 10px; border-radius: 6px; }
+.td-reason { font-size: 13px; color: var(--text2); line-height: 1.6; margin-bottom: 12px; }
+.td-angles-title { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 8px; }
+.td-angles { display: flex; flex-wrap: wrap; gap: 6px; }
+.td-angle { background: var(--tag-bg); color: var(--tag-text); font-size: 12px; padding: 4px 10px; border-radius: 12px; }
+.td-platform-tabs { display: flex; gap: 8px; padding: 8px 12px; }
+.td-platform-tab { padding: 6px 14px; border-radius: 16px; font-size: 12px; background: var(--cat-inactive-bg); color: var(--text2); }
+.td-platform-tab.active { background: var(--cat-active-bg); color: #fff; font-weight: 600; }
+.video-grid { display: flex; flex-wrap: wrap; padding: 4px 8px; gap: 8px; }
+.video-grid-item { width: calc(50% - 4px); background: var(--bg-card); border-radius: 10px; overflow: hidden; box-shadow: 0 1px 3px var(--shadow); }
+.vgi-cover { height: 90px; background: linear-gradient(135deg, #374151, #1F2937); display: flex; align-items: center; justify-content: center; position: relative; }
+.vgi-cover .play-sm { font-size: 16px; opacity: 0.5; }
+.vgi-cover .dur { position: absolute; bottom: 4px; right: 4px; background: rgba(0,0,0,0.6); color: #fff; font-size: 9px; padding: 1px 4px; border-radius: 3px; }
+.vgi-info { padding: 8px; }
+.vgi-title { font-size: 12px; font-weight: 600; color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.vgi-stats { font-size: 10px; color: var(--text3); margin-top: 3px; }
+
+/* ===== Video Detail (Full Report) ===== */
+.vd-cover { width: 100%; height: 200px; background: linear-gradient(135deg, #1a1a2e, #374151); display: flex; align-items: center; justify-content: center; position: relative; }
+.vd-cover .play-big { font-size: 48px; opacity: 0.5; }
+.vd-cover .dur-badge { position: absolute; bottom: 8px; right: 8px; background: rgba(0,0,0,0.6); color: #fff; font-size: 11px; padding: 2px 8px; border-radius: 4px; }
+.vd-info-card { margin-top: -12px; position: relative; z-index: 1; border-radius: 16px 16px 12px 12px; }
+.vd-title { font-size: 16px; font-weight: 600; color: var(--text); margin-bottom: 8px; }
+.vd-platform-row { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+.vd-platform-badge { color: #fff; font-size: 11px; padding: 2px 8px; border-radius: 4px; }
+.vd-creator { font-size: 12px; color: var(--text3); }
+.vd-stats { display: flex; gap: 20px; font-size: 13px; color: var(--text2); }
+.vd-stats.masked { color: var(--text3); }
+.vd-masked-banner { margin-top: 8px; padding: 6px 10px; background: var(--free-banner-bg); border-radius: 8px; border: 1px solid var(--free-banner-border); }
+.vd-masked-banner span { font-size: 11px; color: var(--free-banner-text); }
+
+/* Score Circle */
+.score-section { display: flex; align-items: center; gap: 12px; }
+.score-circle { width: 60px; height: 60px; border-radius: 50%; background: var(--score-gradient); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.score-num { font-size: 22px; font-weight: 800; color: #fff; line-height: 1; }
+.score-max { font-size: 11px; color: rgba(255,255,255,0.7); line-height: 1; }
+.score-label { font-size: 14px; font-weight: 600; color: var(--text); }
+.score-sub { font-size: 12px; color: var(--text3); }
+
+/* Radar Chart (SVG placeholder) */
+.radar-placeholder { width: 100%; height: 200px; display: flex; align-items: center; justify-content: center; position: relative; }
+.radar-svg { width: 200px; height: 200px; }
+
+/* Dimension Scores */
+.dim-row { display: flex; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--border); }
+.dim-row:last-child { border-bottom: none; }
+.dim-name { font-size: 13px; color: var(--text); width: 60px; flex-shrink: 0; }
+.dim-bar-wrap { flex: 1; height: 6px; background: var(--border); border-radius: 3px; margin: 0 10px; overflow: hidden; }
+.dim-bar { height: 100%; border-radius: 3px; background: var(--primary-gradient); }
+.dim-score { font-size: 13px; font-weight: 700; color: var(--primary); width: 28px; text-align: right; }
+
+/* Script Timeline */
+.timeline-item { display: flex; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--border); }
+.timeline-item:last-child { border-bottom: none; }
+.tl-dot { width: 10px; height: 10px; border-radius: 50%; margin-top: 4px; flex-shrink: 0; }
+.tl-body { flex: 1; }
+.tl-label { font-size: 12px; font-weight: 700; color: var(--text); }
+.tl-time { font-size: 10px; color: var(--text3); margin-left: 6px; font-weight: 400; }
+.tl-text { font-size: 12px; color: var(--text2); margin-top: 3px; line-height: 1.5; }
+.tl-technique { display: inline-block; font-size: 10px; color: var(--tag-text); background: var(--tag-bg); padding: 2px 6px; border-radius: 4px; margin-top: 4px; }
+
+/* ===== My Unlocks ===== */
+.unlock-item { background: var(--bg-card); margin: 8px 12px; border-radius: 14px; padding: 14px; display: flex; align-items: center; gap: 12px; box-shadow: 0 1px 4px var(--shadow); }
+.unlock-info { flex: 1; min-width: 0; }
+.unlock-title { font-size: 14px; font-weight: 600; color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.unlock-time { font-size: 11px; color: var(--text3); margin-top: 3px; }
+.unlock-score { background: var(--tag-bg); color: var(--primary); font-size: 14px; font-weight: 700; padding: 4px 10px; border-radius: 8px; flex-shrink: 0; }
+
+/* ===== Settings ===== */
+.setting-section { background: var(--bg-card); margin: 8px 12px; border-radius: 14px; padding: 14px; }
+.setting-title { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 10px; }
+.tag-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+.tag-item { padding: 6px 14px; border-radius: 16px; font-size: 12px; background: var(--cat-inactive-bg); color: var(--text2); }
+.tag-item.active { background: var(--cat-active-bg); color: #fff; font-weight: 600; }
+.option-grid { display: flex; gap: 8px; }
+.option-item { flex: 1; text-align: center; padding: 8px; border-radius: 10px; font-size: 12px; border: 1px solid var(--border); color: var(--text2); }
+.option-item.active { border-color: var(--primary); color: var(--primary); font-weight: 600; background: var(--primary-light); }
+.switch-row { display: flex; align-items: center; justify-content: space-between; padding: 4px 0; }
+.switch-label { font-size: 14px; color: var(--text); }
+.switch-toggle { width: 44px; height: 24px; border-radius: 12px; background: var(--primary); position: relative; }
+.switch-toggle .knob { width: 20px; height: 20px; border-radius: 50%; background: #fff; position: absolute; top: 2px; right: 2px; }
+
+/* ===== Coin Grid ===== */
+.coin-grid { display: flex; flex-wrap: wrap; padding: 0 12px; gap: 10px; }
+.coin-pkg { width: calc(50% - 5px); background: var(--bg-card); border-radius: 12px; padding: 16px; text-align: center; border: 2px solid transparent; box-shadow: 0 1px 4px var(--shadow); position: relative; }
+.coin-pkg.selected { border-color: var(--primary); }
+.coin-pkg .hot-tag { position: absolute; top: -1px; right: 8px; background: var(--red); color: #fff; font-size: 10px; padding: 2px 8px; border-radius: 0 0 6px 6px; font-weight: 600; }
+.coin-amount { font-size: 16px; font-weight: 700; color: var(--text); }
+.coin-bonus { font-size: 11px; color: var(--green); }
+.coin-price { font-size: 14px; color: var(--primary); font-weight: 600; margin-top: 4px; }
+
+/* ===== Bottom Unlock Bar ===== */
+.bottom-bar { position: absolute; bottom: 0; left: 0; right: 0; background: var(--bg-card); padding: 10px 16px 16px; box-shadow: 0 -2px 8px var(--shadow); }
+.bottom-hint { font-size: 11px; color: var(--text3); text-align: center; margin-bottom: 6px; }
+</style>
+</head>
+<body data-theme="douyin">
+
+<h1>选题雷达 v4.0</h1>
+<p class="subtitle">WeChat Mini Program -- 全页面预览 -- 16屏 -- 支持主题切换 -- 含营销增长系统</p>
+
+<!-- Theme Switcher -->
+<div class="theme-bar">
+  <button class="theme-btn active" onclick="setTheme('douyin', this)">抖音风</button>
+  <button class="theme-btn" onclick="setTheme('tech', this)">科技风</button>
+  <button class="theme-btn" onclick="setTheme('minimal', this)">极简风</button>
+</div>
+
+<!-- ===== SECTION: TAB PAGES ===== -->
+<div class="section-title">--- Tab Pages ---</div>
+<div class="screens">
+
+<!-- Screen 1: Discover (Free User) -->
+<div class="screen-wrap">
+<div class="phone">
+  <div class="status-bar">选题发现</div>
+  <div class="content">
+    <div class="stats-card-gradient">
+      <div class="stats-card-row">
+        <div class="stats-card-col"><span class="num">30</span><span class="lbl">今日选题</span></div>
+        <div class="stats-card-divider"></div>
+        <div class="stats-card-col"><span class="num">150</span><span class="lbl">爆款视频</span></div>
+        <div class="stats-card-divider"></div>
+        <div class="stats-card-col"><span class="num">12</span><span class="lbl">覆盖行业</span></div>
+      </div>
+      <div class="stats-card-time">更新于 10:30</div>
+    </div>
+
+    <div class="free-banner">
+      <span class="free-text">免费版: 仅显示3个选题 | 数据延迟1天</span>
+      <span class="free-btn">升级VIP</span>
+    </div>
+
+    <div class="cat-scroll">
+      <div class="cat-pill active">全部 <span class="cat-count">30</span></div>
+      <div class="cat-pill">美食 <span class="cat-count">5</span></div>
+      <div class="cat-pill">教育 <span class="cat-count">4</span></div>
+      <div class="cat-pill">健身 <span class="cat-count">6</span></div>
+      <div class="cat-pill">旅行 <span class="cat-count">3</span></div>
+    </div>
+
+    <div class="topic-card">
+      <div class="tc-header">
+        <div class="rank hot">1</div>
+        <span class="tc-title">30天瘦20斤食谱</span>
+        <span class="tc-cat">健身</span>
+        <div class="tc-heat"><span class="num">95</span><span class="lbl">热度</span></div>
+      </div>
+      <div class="tc-reason">减肥饮食在春季搜索量暴涨，适合做系列内容</div>
+      <div class="tc-footer"><span>&#9654; 28个视频</span><span>&#9829; 最高52w</span></div>
+    </div>
+
+    <div class="topic-card">
+      <div class="tc-header">
+        <div class="rank hot">2</div>
+        <span class="tc-title">AI工具实测对比</span>
+        <span class="tc-cat">科技</span>
+        <div class="tc-heat"><span class="num">88</span><span class="lbl">热度</span></div>
+      </div>
+      <div class="tc-reason">AI赛道持续火爆，工具测评类内容涨粉快</div>
+      <div class="tc-footer"><span>&#9654; 35个视频</span><span>&#9829; 最高38w</span></div>
+    </div>
+
+    <div class="topic-card">
+      <div class="tc-header">
+        <div class="rank hot">3</div>
+        <span class="tc-title">春日露营装备清单</span>
+        <span class="tc-cat">旅行</span>
+        <div class="tc-heat"><span class="num">82</span><span class="lbl">热度</span></div>
+      </div>
+      <div class="tc-footer"><span>&#9654; 22个视频</span><span>&#9829; 最高25w</span></div>
+    </div>
+
+    <div class="topic-card locked">
+      <div class="lock-overlay"><span class="lock-icon">&#128274;</span><span class="lock-text">升级VIP查看</span></div>
+      <div class="tc-header">
+        <div class="rank cold">4</div>
+        <span class="tc-title blurred">新***</span>
+        <div class="tc-heat"><span class="num">--</span><span class="lbl">热度</span></div>
+      </div>
+    </div>
+    <div class="topic-card locked">
+      <div class="lock-overlay"><span class="lock-icon">&#128274;</span><span class="lock-text">升级VIP查看</span></div>
+      <div class="tc-header">
+        <div class="rank cold">5</div>
+        <span class="tc-title blurred">月***</span>
+        <div class="tc-heat"><span class="num">--</span><span class="lbl">热度</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="tab-bar">
+    <div class="tab-item active"><span class="icon">&#128269;</span><span class="label">选题发现</span></div>
+    <div class="tab-item"><span class="icon">&#128218;</span><span class="label">拆解广场</span></div>
+    <div class="tab-item"><span class="icon">&#128100;</span><span class="label">我的</span></div>
+  </div>
+</div>
+<div class="screen-label">1. 选题发现 (免费版)</div>
+</div>
+
+<!-- Screen 2: Square (拆解广场) -->
+<div class="screen-wrap">
+<div class="phone">
+  <div class="status-bar">拆解广场</div>
+  <div class="content">
+    <div class="cat-scroll">
+      <div class="cat-pill active">全部</div>
+      <div class="cat-pill" style="color:#FE2C55;">抖音</div>
+      <div class="cat-pill" style="color:#FF6600;">快手</div>
+      <div class="cat-pill" style="color:#07C160;">视频号</div>
+    </div>
+
+    <div class="report-item">
+      <div class="report-cover"><span class="play-icon">&#9654;</span><div class="platform-dot" style="background:#FE2C55;"></div></div>
+      <div class="report-body">
+        <div class="report-title">30天瘦20斤 | 不节食健康食谱全攻略</div>
+        <div class="report-meta"><span>抖音</span><span>&#9829; 52.3w</span><span class="report-tag">健身</span></div>
+      </div>
+      <span class="report-score">8.5</span>
+      <span class="report-arrow">&#8250;</span>
+    </div>
+
+    <div class="report-item">
+      <div class="report-cover"><span class="play-icon">&#9654;</span><div class="platform-dot" style="background:#FE2C55;"></div></div>
+      <div class="report-body">
+        <div class="report-title">ChatGPT vs Claude 深度实测，结果出乎意料</div>
+        <div class="report-meta"><span>抖音</span><span>&#9829; 38.1w</span><span class="report-tag">科技</span></div>
+      </div>
+      <span class="report-score">9.2</span>
+      <span class="report-arrow">&#8250;</span>
+    </div>
+
+    <div class="report-item">
+      <div class="report-cover"><span class="play-icon">&#9654;</span><div class="platform-dot" style="background:#FF6600;"></div></div>
+      <div class="report-body">
+        <div class="report-title">一个人的露营 vlog | 春天的周末就该这样过</div>
+        <div class="report-meta"><span>快手</span><span>&#9829; 18.7w</span><span class="report-tag">旅行</span></div>
+      </div>
+      <span class="report-score">7.8</span>
+      <span class="report-arrow">&#8250;</span>
+    </div>
+
+    <div class="report-item">
+      <div class="report-cover"><span class="play-icon">&#9654;</span><div class="platform-dot" style="background:#07C160;"></div></div>
+      <div class="report-body">
+        <div class="report-title">5分钟学会Excel数据透视表，效率翻倍</div>
+        <div class="report-meta"><span>视频号</span><span>&#9829; 12.4w</span><span class="report-tag">教育</span></div>
+      </div>
+      <span class="report-score">8.0</span>
+      <span class="report-arrow">&#8250;</span>
+    </div>
+
+    <div class="report-item">
+      <div class="report-cover"><span class="play-icon">&#9654;</span><div class="platform-dot" style="background:#FE2C55;"></div></div>
+      <div class="report-body">
+        <div class="report-title">新手做自媒体千万别犯这3个错误</div>
+        <div class="report-meta"><span>抖音</span><span>&#9829; 25.6w</span><span class="report-tag">知识</span></div>
+      </div>
+      <span class="report-score">8.8</span>
+      <span class="report-arrow">&#8250;</span>
+    </div>
+
+    <div class="report-item">
+      <div class="report-cover"><span class="play-icon">&#9654;</span><div class="platform-dot" style="background:#FF6600;"></div></div>
+      <div class="report-body">
+        <div class="report-title">在家做正宗螺蛳粉，比外面好吃100倍</div>
+        <div class="report-meta"><span>快手</span><span>&#9829; 31.2w</span><span class="report-tag">美食</span></div>
+      </div>
+      <span class="report-score">7.5</span>
+      <span class="report-arrow">&#8250;</span>
+    </div>
+  </div>
+  <div class="tab-bar">
+    <div class="tab-item"><span class="icon">&#128269;</span><span class="label">选题发现</span></div>
+    <div class="tab-item active"><span class="icon">&#128218;</span><span class="label">拆解广场</span></div>
+    <div class="tab-item"><span class="icon">&#128100;</span><span class="label">我的</span></div>
+  </div>
+</div>
+<div class="screen-label">2. 拆解广场</div>
+</div>
+
+<!-- Screen 3: Profile (Free User) -->
+<div class="screen-wrap">
+<div class="phone">
+  <div class="status-bar">我的</div>
+  <div class="content">
+    <div class="profile-header">
+      <div class="avatar">&#128100;</div>
+      <div class="user-info">
+        <div class="user-name">小明创作者</div>
+        <div class="plan-row"><span class="badge-free">免费版</span></div>
+      </div>
+    </div>
+    <div class="vip-promo card">
+      <div><div class="vip-promo-title">升级VIP会员</div><div class="vip-promo-desc">解锁全部30个实时选题 + 完整视频数据</div></div>
+      <span class="vip-promo-arrow">&#8250;</span>
+    </div>
+    <div class="balance-card card">
+      <div class="balance-header"><span class="balance-title">雷达币余额</span><span class="recharge-tag">充值</span></div>
+      <span class="balance-big">15</span>
+    </div>
+    <div class="card profile-stats">
+      <div class="ps-col"><span class="num">3</span><span class="lbl">拆解报告</span></div>
+      <div class="ps-col"><span class="num">0</span><span class="lbl">AI生成</span></div>
+      <div class="ps-col"><span class="num">1</span><span class="lbl">编辑次数</span></div>
+    </div>
+    <div class="card menu-list">
+      <div class="menu-item"><span class="menu-icon">&#11088;</span><span class="menu-label">VIP会员</span><span class="menu-arrow">&#8250;</span></div>
+      <div class="menu-item"><span class="menu-icon">&#128203;</span><span class="menu-label">已解锁报告</span><span class="menu-arrow">&#8250;</span></div>
+      <div class="menu-item"><span class="menu-icon">&#127873;</span><span class="menu-label">邀请有奖</span><span class="menu-arrow">&#8250;</span></div>
+      <div class="menu-item"><span class="menu-icon">&#127903;</span><span class="menu-label">兑换码</span><span class="menu-arrow">&#8250;</span></div>
+      <div class="menu-item"><span class="menu-icon">&#128176;</span><span class="menu-label">雷达币充值</span><span class="menu-arrow">&#8250;</span></div>
+      <div class="menu-item"><span class="menu-icon">&#9881;</span><span class="menu-label">偏好设置</span><span class="menu-arrow">&#8250;</span></div>
+    </div>
+  </div>
+  <div class="tab-bar">
+    <div class="tab-item"><span class="icon">&#128269;</span><span class="label">选题发现</span></div>
+    <div class="tab-item"><span class="icon">&#128218;</span><span class="label">拆解广场</span></div>
+    <div class="tab-item active"><span class="icon">&#128100;</span><span class="label">我的</span></div>
+  </div>
+</div>
+<div class="screen-label">3. 个人中心 (免费版)</div>
+</div>
+
+</div>
+
+<!-- ===== SECTION: DETAIL PAGES ===== -->
+<div class="section-title">--- Detail Pages ---</div>
+<div class="screens">
+
+<!-- Screen 4: Topic Detail -->
+<div class="screen-wrap">
+<div class="phone">
+  <div class="status-bar">&#8249; 选题详情</div>
+  <div class="content-no-tab">
+    <div class="td-header">
+      <div class="td-keyword">30天瘦20斤食谱</div>
+      <div class="td-meta">
+        <span class="td-heat">&#128293; 热度 95</span>
+        <span class="td-cat-tag">健身</span>
+        <span style="font-size:11px;color:var(--text3);">28个关联视频</span>
+      </div>
+      <div class="td-reason">减肥饮食在春季搜索量暴涨，「30天」框架自带连续追更属性，适合做系列内容。建议结合真人出镜+食物特写，增强可信度。</div>
+      <div class="td-angles-title">推荐创作角度</div>
+      <div class="td-angles">
+        <span class="td-angle">食谱清单</span>
+        <span class="td-angle">真人实测打卡</span>
+        <span class="td-angle">科学原理讲解</span>
+        <span class="td-angle">翻车合集</span>
+      </div>
+    </div>
+
+    <div class="td-platform-tabs">
+      <div class="td-platform-tab active">全部</div>
+      <div class="td-platform-tab">抖音</div>
+      <div class="td-platform-tab">快手</div>
+      <div class="td-platform-tab">视频号</div>
+    </div>
+
+    <div class="video-grid">
+      <div class="video-grid-item">
+        <div class="vgi-cover"><span class="play-sm">&#9654;</span><span class="dur">01:23</span></div>
+        <div class="vgi-info"><div class="vgi-title">30天食谱分享Day1</div><div class="vgi-stats">&#9829; 52.3w &nbsp; &#128172; 1.2w</div></div>
+      </div>
+      <div class="video-grid-item">
+        <div class="vgi-cover"><span class="play-sm">&#9654;</span><span class="dur">02:15</span></div>
+        <div class="vgi-info"><div class="vgi-title">不节食也能瘦？实测</div><div class="vgi-stats">&#9829; 38.1w &nbsp; &#128172; 8.5k</div></div>
+      </div>
+      <div class="video-grid-item">
+        <div class="vgi-cover"><span class="play-sm">&#9654;</span><span class="dur">00:58</span></div>
+        <div class="vgi-info"><div class="vgi-title">每天一杯刮油水</div><div class="vgi-stats">&#9829; 25.6w &nbsp; &#128172; 5.3k</div></div>
+      </div>
+      <div class="video-grid-item">
+        <div class="vgi-cover"><span class="play-sm">&#9654;</span><span class="dur">01:45</span></div>
+        <div class="vgi-info"><div class="vgi-title">减脂餐一周不重样</div><div class="vgi-stats">&#9829; 18.7w &nbsp; &#128172; 3.1k</div></div>
+      </div>
+      <div class="video-grid-item">
+        <div class="vgi-cover"><span class="play-sm">&#9654;</span><span class="dur">03:02</span></div>
+        <div class="vgi-info"><div class="vgi-title">营养师推荐的食谱</div><div class="vgi-stats">&#9829; 12.4w &nbsp; &#128172; 2.8k</div></div>
+      </div>
+      <div class="video-grid-item">
+        <div class="vgi-cover"><span class="play-sm">&#9654;</span><span class="dur">01:10</span></div>
+        <div class="vgi-info"><div class="vgi-title">减肥最该吃的5种食物</div><div class="vgi-stats">&#9829; 9.8w &nbsp; &#128172; 1.5k</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="screen-label">4. 选题详情</div>
+</div>
+
+<!-- Screen 5: Video Detail (Masked / Free) -->
+<div class="screen-wrap">
+<div class="phone">
+  <div class="status-bar">&#8249; 视频详情</div>
+  <div class="content-no-tab">
+    <div class="vd-cover"><span class="play-big">&#9654;</span><span class="dur-badge">01:23</span></div>
+    <div class="vd-info-card card">
+      <div class="vd-title">30天瘦20斤食谱分享</div>
+      <div class="vd-platform-row">
+        <span class="vd-platform-badge" style="background:#FE2C55;">抖音</span>
+        <span class="vd-creator">健身达人小李</span>
+      </div>
+      <div class="vd-stats masked">
+        <span>&#9829; ***</span>
+        <span>&#128172; ***</span>
+        <span>&#8599; ***</span>
+      </div>
+      <div class="vd-masked-banner"><span>免费版数据已隐藏，升级VIP查看真实数据</span></div>
+    </div>
+    <div class="card">
+      <div style="font-size:15px;font-weight:700;color:var(--text);margin-bottom:12px;">拆解评分</div>
+      <div class="score-section">
+        <div class="score-circle"><span class="score-num">8.5</span><span class="score-max">/10</span></div>
+        <div><div class="score-label">综合评分</div><div class="score-sub">28人已解锁</div></div>
+      </div>
+    </div>
+    <div class="card" style="text-align:center;padding:32px 16px;color:var(--text3);font-size:13px;">
+      &#128274; 解锁查看完整维度评分、脚本拆解和AI分析
+    </div>
+    <div class="bottom-bar">
+      <div class="bottom-hint">解锁查看完整维度评语和脚本拆解</div>
+      <div class="btn-primary">解锁报告 &middot; 5 雷达币</div>
+    </div>
+  </div>
+</div>
+<div class="screen-label">5. 视频详情 (数据遮蔽)</div>
+</div>
+
+<!-- Screen 6: Video Detail (Full AI Report - Enhanced) -->
+<div class="screen-wrap">
+<div class="phone">
+  <div class="status-bar">&#8249; AI拆解报告</div>
+  <div class="content-no-tab">
+    <div class="vd-cover"><span class="play-big">&#9654;</span><span class="dur-badge">01:23</span></div>
+    <div class="vd-info-card card">
+      <div class="vd-title">30天瘦20斤食谱分享</div>
+      <div class="vd-platform-row">
+        <span class="vd-platform-badge" style="background:#FE2C55;">抖音</span>
+        <span class="vd-creator">健身达人小李</span>
+      </div>
+      <div class="vd-stats">
+        <span>&#9829; 52.3w</span>
+        <span>&#128172; 1.2w</span>
+        <span>&#8599; 8.5k</span>
+      </div>
+    </div>
+
+    <!-- 1. Score + 7-Dim Radar -->
+    <div class="card">
+      <div style="font-size:15px;font-weight:700;color:var(--text);margin-bottom:12px;">拆解评分</div>
+      <div class="score-section" style="margin-bottom:16px;">
+        <div class="score-circle"><span class="score-num">8.5</span><span class="score-max">/10</span></div>
+        <div><div class="score-label">综合评分</div><div class="score-sub">VIP专属完整报告</div></div>
+      </div>
+      <!-- 7-Dimension Radar Chart SVG -->
+      <div class="radar-placeholder">
+        <svg class="radar-svg" viewBox="0 0 240 240">
+          <!-- Heptagon grid (3 levels) -->
+          <polygon points="120,24 183,55 198,126 163,190 77,190 42,126 57,55" fill="none" stroke="var(--border)" stroke-width="1"/>
+          <polygon points="120,48 166,70 178,124 152,174 88,174 62,124 74,70" fill="none" stroke="var(--border)" stroke-width="0.5"/>
+          <polygon points="120,72 150,86 158,122 142,158 98,158 82,122 90,86" fill="none" stroke="var(--border)" stroke-width="0.5"/>
+          <!-- Axes -->
+          <line x1="120" y1="120" x2="120" y2="24" stroke="var(--border)" stroke-width="0.5"/>
+          <line x1="120" y1="120" x2="183" y2="55" stroke="var(--border)" stroke-width="0.5"/>
+          <line x1="120" y1="120" x2="198" y2="126" stroke="var(--border)" stroke-width="0.5"/>
+          <line x1="120" y1="120" x2="163" y2="190" stroke="var(--border)" stroke-width="0.5"/>
+          <line x1="120" y1="120" x2="77" y2="190" stroke="var(--border)" stroke-width="0.5"/>
+          <line x1="120" y1="120" x2="42" y2="126" stroke="var(--border)" stroke-width="0.5"/>
+          <line x1="120" y1="120" x2="57" y2="55" stroke="var(--border)" stroke-width="0.5"/>
+          <!-- Data polygon (scores: 9,8.5,8,7.8,8.2,7.5,8.8) -->
+          <polygon points="120,30 177,58 191,126 155,182 82,184 50,126 61,58" fill="var(--primary)" fill-opacity="0.15" stroke="var(--primary)" stroke-width="2"/>
+          <!-- Dots -->
+          <circle cx="120" cy="30" r="3" fill="var(--primary)"/>
+          <circle cx="177" cy="58" r="3" fill="var(--primary)"/>
+          <circle cx="191" cy="126" r="3" fill="var(--primary)"/>
+          <circle cx="155" cy="182" r="3" fill="var(--primary)"/>
+          <circle cx="82" cy="184" r="3" fill="var(--primary)"/>
+          <circle cx="50" cy="126" r="3" fill="var(--primary)"/>
+          <circle cx="61" cy="58" r="3" fill="var(--primary)"/>
+          <!-- 7 Labels -->
+          <text x="120" y="16" text-anchor="middle" fill="var(--text2)" font-size="9">选题力</text>
+          <text x="192" y="52" text-anchor="start" fill="var(--text2)" font-size="9">钩子力</text>
+          <text x="206" y="130" text-anchor="start" fill="var(--text2)" font-size="9">节奏力</text>
+          <text x="168" y="200" text-anchor="start" fill="var(--text2)" font-size="9">表现力</text>
+          <text x="72" y="200" text-anchor="end" fill="var(--text2)" font-size="9">留存力</text>
+          <text x="34" y="130" text-anchor="end" fill="var(--text2)" font-size="9">情感力</text>
+          <text x="48" y="52" text-anchor="end" fill="var(--text2)" font-size="9">变现力</text>
+        </svg>
+      </div>
+    </div>
+
+    <!-- 2. 7-Dimension Scores with Comments -->
+    <div class="card">
+      <div style="font-size:15px;font-weight:700;color:var(--text);margin-bottom:12px;">7维度评分</div>
+      <div class="dim-row"><span class="dim-name" style="color:#7C3AED;">选题力</span><div class="dim-bar-wrap"><div class="dim-bar" style="width:90%;background:linear-gradient(90deg,#7C3AED,#9F7AEA);"></div></div><span class="dim-score" style="color:#7C3AED;">9.0</span></div>
+      <div style="font-size:11px;color:var(--text3);padding:0 0 8px 60px;line-height:1.5;">精准切入春季减肥刚需，"30天/20斤"数字锚点制造强烈可量化的期待</div>
+      <div class="dim-row"><span class="dim-name" style="color:#EF4444;">钩子力</span><div class="dim-bar-wrap"><div class="dim-bar" style="width:85%;background:linear-gradient(90deg,#EF4444,#F87171);"></div></div><span class="dim-score" style="color:#EF4444;">8.5</span></div>
+      <div style="font-size:11px;color:var(--text3);padding:0 0 8px 60px;line-height:1.5;">反常识开头"不节食不运动"直击认知冲突，3秒完播率预估&gt;85%</div>
+      <div class="dim-row"><span class="dim-name" style="color:#F59E0B;">节奏力</span><div class="dim-bar-wrap"><div class="dim-bar" style="width:80%;background:linear-gradient(90deg,#F59E0B,#FBBF24);"></div></div><span class="dim-score" style="color:#F59E0B;">8.0</span></div>
+      <div style="font-size:11px;color:var(--text3);padding:0 0 8px 60px;line-height:1.5;">每7-10s切换场景避免视觉疲劳，信息密度适中，节奏紧凑但不赶</div>
+      <div class="dim-row"><span class="dim-name" style="color:#10B981;">表现力</span><div class="dim-bar-wrap"><div class="dim-bar" style="width:78%;background:linear-gradient(90deg,#10B981,#34D399);"></div></div><span class="dim-score" style="color:#10B981;">7.8</span></div>
+      <div style="font-size:11px;color:var(--text3);padding:0 0 8px 60px;line-height:1.5;">真人出镜增强信任感，烹饪特写镜头有美感但语速可加快提升紧迫感</div>
+      <div class="dim-row"><span class="dim-name" style="color:#3B82F6;">留存力</span><div class="dim-bar-wrap"><div class="dim-bar" style="width:82%;background:linear-gradient(90deg,#3B82F6,#60A5FA);"></div></div><span class="dim-score" style="color:#3B82F6;">8.2</span></div>
+      <div style="font-size:11px;color:var(--text3);padding:0 0 8px 60px;line-height:1.5;">"下期更新第二周食谱"制造开放循环，评论区引导有效拉升关注转化</div>
+      <div class="dim-row"><span class="dim-name" style="color:#EC4899;">情感力</span><div class="dim-bar-wrap"><div class="dim-bar" style="width:75%;background:linear-gradient(90deg,#EC4899,#F472B6);"></div></div><span class="dim-score" style="color:#EC4899;">7.5</span></div>
+      <div style="font-size:11px;color:var(--text3);padding:0 0 8px 60px;line-height:1.5;">前后体重对比触发希望感，但中段叙事稍平，缺少"失败-逆转"情感高点</div>
+      <div class="dim-row"><span class="dim-name" style="color:#06B6D4;">变现力</span><div class="dim-bar-wrap"><div class="dim-bar" style="width:88%;background:linear-gradient(90deg,#06B6D4,#22D3EE);"></div></div><span class="dim-score" style="color:#06B6D4;">8.8</span></div>
+      <div style="font-size:11px;color:var(--text3);padding:0 0 4px 60px;line-height:1.5;">天然带货场景（食材/厨具），评论区可挂车，适合知识付费+电商双变现</div>
+    </div>
+
+    <!-- 3. Hook Deep Analysis -->
+    <div class="card">
+      <div style="font-size:15px;font-weight:700;color:var(--text);margin-bottom:12px;">钩子深度拆解</div>
+      <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:10px;">
+        <span style="font-size:11px;font-weight:600;padding:3px 8px;border-radius:4px;background:rgba(239,68,68,0.1);color:#EF4444;">反常识钩子</span>
+        <span style="font-size:11px;font-weight:600;padding:3px 8px;border-radius:4px;background:rgba(124,58,237,0.1);color:#7C3AED;">产品堆叠</span>
+        <span style="font-size:11px;font-weight:700;color:#F59E0B;margin-left:auto;">强度 9/10</span>
+      </div>
+      <div style="border-bottom:1px solid var(--border);padding:8px 0;">
+        <span style="font-size:10px;font-weight:600;color:var(--text3);display:block;margin-bottom:3px;">文字钩子内容</span>
+        <span style="font-size:12px;color:var(--text2);line-height:1.5;">"不节食不运动，30天瘦20斤" -- 违反常识认知，触发好奇心缺口</span>
+      </div>
+      <div style="border-bottom:1px solid var(--border);padding:8px 0;">
+        <span style="font-size:10px;font-weight:600;color:var(--text3);display:block;margin-bottom:3px;">视觉钩子描述</span>
+        <span style="font-size:12px;color:var(--text2);line-height:1.5;">开场即展示一桌精致减脂餐+体重秤数字跳动，视觉冲击力强</span>
+      </div>
+      <div style="border-bottom:1px solid var(--border);padding:8px 0;">
+        <span style="font-size:10px;font-weight:600;color:var(--text3);display:block;margin-bottom:3px;">文字+画面协同</span>
+        <span style="font-size:12px;color:var(--text2);line-height:1.5;">文字制造认知冲突，画面用美食堆叠佐证"不节食也能瘦"，形成自洽闭环</span>
+      </div>
+      <div style="padding:8px 0;">
+        <span style="font-size:10px;font-weight:600;color:var(--text3);display:block;margin-bottom:3px;">声音设计</span>
+        <span style="font-size:12px;color:var(--text2);line-height:1.5;">节奏感强的轻快BGM，烹饪ASMR音效增强沉浸感</span>
+      </div>
+    </div>
+
+    <!-- 4. Retention Mechanisms -->
+    <div class="card">
+      <div style="font-size:15px;font-weight:700;color:var(--text);margin-bottom:12px;">留存机制分析</div>
+      <div style="margin-bottom:10px;">
+        <span style="font-size:12px;font-weight:600;color:var(--text);display:block;margin-bottom:6px;">开放循环</span>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;">
+          <span style="font-size:11px;color:#3B82F6;background:rgba(59,130,246,0.08);padding:4px 8px;border-radius:6px;">下期公布第二周食谱</span>
+          <span style="font-size:11px;color:#3B82F6;background:rgba(59,130,246,0.08);padding:4px 8px;border-radius:6px;">评论区揭秘食材清单</span>
+        </div>
+      </div>
+      <div style="margin-bottom:10px;">
+        <span style="font-size:12px;font-weight:600;color:var(--text);display:block;margin-bottom:6px;">模式打断</span>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;">
+          <span style="font-size:11px;color:#F59E0B;background:rgba(245,158,11,0.08);padding:4px 8px;border-radius:6px;">0:15处突切体重秤特写</span>
+          <span style="font-size:11px;color:#F59E0B;background:rgba(245,158,11,0.08);padding:4px 8px;border-radius:6px;">0:45处变速展示7天餐品</span>
+        </div>
+      </div>
+      <div>
+        <span style="font-size:12px;font-weight:600;color:var(--text);display:block;margin-bottom:6px;">好奇心缺口</span>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;">
+          <span style="font-size:11px;color:#7C3AED;background:rgba(124,58,237,0.08);padding:4px 8px;border-radius:6px;">到底吃了什么能不饿?</span>
+          <span style="font-size:11px;color:#7C3AED;background:rgba(124,58,237,0.08);padding:4px 8px;border-radius:6px;">第30天真的能瘦20斤?</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. Viral Coefficient -->
+    <div class="card">
+      <div style="font-size:15px;font-weight:700;color:var(--text);margin-bottom:12px;">病毒传播系数</div>
+      <div style="display:flex;gap:8px;margin-bottom:10px;">
+        <div style="flex:1;text-align:center;background:var(--bg-card-alt);border-radius:8px;padding:10px 4px;">
+          <span style="font-size:20px;font-weight:800;color:var(--primary);display:block;">18</span>
+          <span style="font-size:9px;color:var(--text3);display:block;margin-top:2px;">可分享性</span>
+        </div>
+        <div style="flex:1;text-align:center;background:var(--bg-card-alt);border-radius:8px;padding:10px 4px;">
+          <span style="font-size:20px;font-weight:800;color:var(--primary);display:block;">16</span>
+          <span style="font-size:9px;color:var(--text3);display:block;margin-top:2px;">评论诱饵</span>
+        </div>
+        <div style="flex:1;text-align:center;background:var(--bg-card-alt);border-radius:8px;padding:10px 4px;">
+          <span style="font-size:20px;font-weight:800;color:var(--primary);display:block;">15</span>
+          <span style="font-size:9px;color:var(--text3);display:block;margin-top:2px;">收藏价值</span>
+        </div>
+        <div style="flex:1;text-align:center;background:var(--primary-light);border-radius:8px;padding:10px 4px;">
+          <span style="font-size:20px;font-weight:800;color:var(--accent2);display:block;">49</span>
+          <span style="font-size:9px;color:var(--text3);display:block;margin-top:2px;">总分/70</span>
+        </div>
+      </div>
+      <div style="text-align:center;font-size:13px;font-weight:700;color:#10B981;padding:8px;background:rgba(16,185,129,0.06);border-radius:8px;margin-bottom:8px;">高传播潜力 -- 推荐复制此模式</div>
+      <div style="font-size:12px;color:var(--text2);line-height:1.6;">实用型食谱内容天然具备"转发给需要的朋友"动机，数字化结果承诺激发收藏欲</div>
+    </div>
+
+    <!-- 6. Emotional Arc -->
+    <div class="card">
+      <div style="font-size:15px;font-weight:700;color:var(--text);margin-bottom:12px;">情感弧线</div>
+      <div style="display:inline-block;font-size:12px;font-weight:700;color:#EC4899;background:rgba(236,72,153,0.08);padding:4px 12px;border-radius:12px;margin-bottom:8px;">先抑后扬型</div>
+      <div style="font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:10px;">开头用"减肥失败"制造共情焦虑，中段用美食画面缓解紧张，结尾用身材对比制造希望高潮，完成焦虑-舒适-激动的情感三段式</div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px;">
+        <span style="font-size:10px;color:#EC4899;background:rgba(236,72,153,0.06);padding:3px 8px;border-radius:4px;">焦虑</span>
+        <span style="font-size:10px;color:#EC4899;background:rgba(236,72,153,0.06);padding:3px 8px;border-radius:4px;">共鸣</span>
+        <span style="font-size:10px;color:#EC4899;background:rgba(236,72,153,0.06);padding:3px 8px;border-radius:4px;">期待</span>
+        <span style="font-size:10px;color:#EC4899;background:rgba(236,72,153,0.06);padding:3px 8px;border-radius:4px;">希望</span>
+        <span style="font-size:10px;color:#EC4899;background:rgba(236,72,153,0.06);padding:3px 8px;border-radius:4px;">行动欲</span>
+      </div>
+      <div style="font-size:12px;color:var(--text3);font-style:italic;">情感峰值: 1:08处身材对比出现，弹幕密度达峰值</div>
+    </div>
+
+    <!-- 7. Script Timeline -->
+    <div class="card">
+      <div style="font-size:15px;font-weight:700;color:var(--text);margin-bottom:12px;">脚本拆解</div>
+      <div class="timeline-item">
+        <div class="tl-dot" style="background:#EF4444;"></div>
+        <div class="tl-body">
+          <span class="tl-label">开场钩子</span><span class="tl-time">00:00-00:03</span>
+          <div class="tl-text">"不节食不运动，30天我瘦了20斤！" -- 制造好奇心和冲突感</div>
+          <span class="tl-technique">悬念钩子</span>
+          <div style="font-size:10px;color:var(--text3);margin-top:3px;line-height:1.4;">心理学: 好奇心缺口理论(Loewenstein) -- 违反预期触发信息搜索动机</div>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="tl-dot" style="background:#F59E0B;"></div>
+        <div class="tl-body">
+          <span class="tl-label">痛点切入</span><span class="tl-time">00:03-00:15</span>
+          <div class="tl-text">"你是不是也试过各种减肥方法，最后都反弹了？" -- 引发共鸣</div>
+          <span class="tl-technique">痛点共鸣</span>
+          <div style="font-size:10px;color:var(--text3);margin-top:3px;line-height:1.4;">心理学: 巴纳姆效应 -- 模糊描述让用户觉得"说的就是我"</div>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="tl-dot" style="background:#5B5FE6;"></div>
+        <div class="tl-body">
+          <span class="tl-label">核心内容</span><span class="tl-time">00:15-01:05</span>
+          <div class="tl-text">分步展示7天食谱+食材选择，穿插真人出镜烹饪过程</div>
+          <span class="tl-technique">干货密集+权威背书</span>
+          <div style="font-size:10px;color:var(--text3);margin-top:3px;line-height:1.4;">心理学: 宜家效应 -- 参与感让用户觉得方案更有价值，提升收藏率</div>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="tl-dot" style="background:#7C3AED;"></div>
+        <div class="tl-body">
+          <span class="tl-label">情绪高潮</span><span class="tl-time">01:05-01:15</span>
+          <div class="tl-text">展示体重对比图+前后身材变化，配合激昂BGM</div>
+          <span class="tl-technique">视觉冲击+对比锚定</span>
+          <div style="font-size:10px;color:var(--text3);margin-top:3px;line-height:1.4;">心理学: 峰终定律 -- 情感峰值决定整体评价和分享意愿</div>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="tl-dot" style="background:#10B981;"></div>
+        <div class="tl-body">
+          <span class="tl-label">行动引导</span><span class="tl-time">01:15-01:23</span>
+          <div class="tl-text">"关注我，下期更新第二周食谱" + 评论区置顶食材清单</div>
+          <span class="tl-technique">CTA引导+开放循环</span>
+          <div style="font-size:10px;color:var(--text3);margin-top:3px;line-height:1.4;">心理学: 蔡格尼克效应 -- 未完成任务制造心理张力驱动关注行为</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 8. Replicable Elements -->
+    <div class="card">
+      <div style="font-size:15px;font-weight:700;color:var(--text);margin-bottom:12px;">可复制要素</div>
+      <div style="background:var(--primary-light);border:1px solid var(--border);border-radius:8px;padding:12px;margin-bottom:12px;">
+        <span style="font-size:13px;font-weight:600;color:var(--primary);line-height:1.5;">通用框架: "反常识数字承诺 + 分步教程 + 前后对比 + 系列预告"</span>
+      </div>
+      <div style="margin-bottom:10px;">
+        <span style="font-size:11px;font-weight:700;color:#10B981;display:block;margin-bottom:4px;">可直接复制</span>
+        <span style="font-size:12px;color:var(--text2);line-height:1.6;display:block;padding-left:10px;">- 数字量化标题公式 (X天/X斤/X招)</span>
+        <span style="font-size:12px;color:var(--text2);line-height:1.6;display:block;padding-left:10px;">- 评论区置顶清单引导互动</span>
+        <span style="font-size:12px;color:var(--text2);line-height:1.6;display:block;padding-left:10px;">- 系列化内容预告制造关注动机</span>
+      </div>
+      <div style="margin-bottom:10px;">
+        <span style="font-size:11px;font-weight:700;color:#F59E0B;display:block;margin-bottom:4px;">需要适配调整</span>
+        <span style="font-size:12px;color:var(--text2);line-height:1.6;display:block;padding-left:10px;">- 真人出镜需根据个人形象调整风格</span>
+        <span style="font-size:12px;color:var(--text2);line-height:1.6;display:block;padding-left:10px;">- BGM和变速节奏需匹配自身内容调性</span>
+      </div>
+      <div>
+        <span style="font-size:11px;font-weight:700;color:var(--text3);display:block;margin-bottom:4px;">不可复制（核心壁垒）</span>
+        <span style="font-size:12px;color:var(--text2);line-height:1.6;display:block;padding-left:10px;">- 创作者个人IP信任度和粉丝基础</span>
+        <span style="font-size:12px;color:var(--text2);line-height:1.6;display:block;padding-left:10px;">- 真实减肥经历的说服力</span>
+      </div>
+    </div>
+
+    <!-- 9. Creator Tips -->
+    <div class="card">
+      <div style="font-size:15px;font-weight:700;color:var(--text);margin-bottom:12px;">创作实操建议</div>
+      <div style="margin-bottom:12px;">
+        <span style="font-size:12px;font-weight:700;color:var(--primary);display:block;margin-bottom:6px;">标题模板</span>
+        <span style="font-size:12px;color:var(--text2);display:block;padding:4px 0;">"X天X斤，我只做了这X件事"</span>
+        <span style="font-size:12px;color:var(--text2);display:block;padding:4px 0;">"全网都在做的X，其实只需X步"</span>
+      </div>
+      <div style="margin-bottom:12px;">
+        <span style="font-size:12px;font-weight:700;color:var(--primary);display:block;margin-bottom:6px;">开头钩子模板</span>
+        <span style="font-size:12px;color:var(--text2);display:block;padding:4px 0;">"不XX不XX，我XX了YY" (反常识公式)</span>
+        <span style="font-size:12px;color:var(--text2);display:block;padding:4px 0;">"你是不是也XX？试试这个方法" (痛点公式)</span>
+      </div>
+      <div style="margin-bottom:12px;">
+        <span style="font-size:12px;font-weight:700;color:var(--primary);display:block;margin-bottom:6px;">A/B测试建议</span>
+        <span style="font-size:12px;color:var(--text2);display:block;padding:4px 0;">版本A: 开头先展示结果 vs 版本B: 开头先抛痛点</span>
+        <span style="font-size:12px;color:var(--text2);display:block;padding:4px 0;">版本A: 全程解说 vs 版本B: 纯字幕+BGM</span>
+      </div>
+      <div>
+        <span style="font-size:12px;font-weight:700;color:#EF4444;display:block;margin-bottom:6px;">常见误区</span>
+        <span style="font-size:12px;color:var(--text2);background:rgba(239,68,68,0.05);padding:6px 8px;border-radius:6px;display:block;margin-bottom:4px;">开头超过5秒才切入正题 -- 完播率断崖下降</span>
+        <span style="font-size:12px;color:var(--text2);background:rgba(239,68,68,0.05);padding:6px 8px;border-radius:6px;display:block;">标题过度夸张导致用户预期管理失败 -- 差评率上升</span>
+      </div>
+    </div>
+
+    <!-- 10. AI Summary -->
+    <div class="card" style="margin-bottom:60px;">
+      <div style="font-size:15px;font-weight:700;color:var(--text);margin-bottom:8px;">AI分析总结</div>
+      <div style="font-size:13px;color:var(--text2);line-height:1.7;">
+        该视频选题精准切中"春季减肥"时令热点，标题用数字量化（30天/20斤）制造强烈期待感。开头3秒用反常识冲突成功留人，节奏紧凑，内容以"干货密集"风格展示食谱，穿插真人出镜增强信任。结尾用前后对比制造视觉冲击，收口到关注引导非常自然。病毒系数49/70属于高传播潜力，核心驱动力在于实用内容的"替他人收藏"属性。建议可参考此类"数字承诺+分步教学+结果展示+系列预告"的四段式框架进行创作。
+      </div>
+    </div>
+  </div>
+</div>
+<div class="screen-label">6. AI拆解报告 (专业版)</div>
+</div>
+
+</div>
+
+<!-- ===== SECTION: BUSINESS PAGES ===== -->
+<div class="section-title">--- Business Pages ---</div>
+<div class="screens">
+
+<!-- Screen 7: VIP Subscription -->
+<div class="screen-wrap">
+<div class="phone">
+  <div class="status-bar">&#8249; 充值中心</div>
+  <div class="content-no-tab">
+    <div class="tab-switch">
+      <div class="tab-sw-item active">VIP会员</div>
+      <div class="tab-sw-item">雷达币充值</div>
+    </div>
+    <div class="plan-list">
+      <div class="plan-card selected">
+        <div class="plan-label">月卡</div>
+        <div class="plan-desc">30天</div>
+        <div class="plan-price-row"><span class="plan-price-sym">&#165;</span><span class="plan-price">59.9</span><span class="plan-per-day">约&#165;2.0/天</span></div>
+        <div class="plan-features">
+          <div class="plan-feature">全部30个选题</div>
+          <div class="plan-feature">实时数据</div>
+          <div class="plan-feature">5次AI报告/月</div>
+          <div class="plan-feature">3个行业</div>
+          <div class="plan-feature">7天历史</div>
+        </div>
+      </div>
+      <div class="plan-card">
+        <div class="plan-tag">省30%</div>
+        <div class="plan-label">年卡</div>
+        <div class="plan-desc">365天</div>
+        <div class="plan-price-row"><span class="plan-price-sym">&#165;</span><span class="plan-price">499</span><span class="plan-per-day">约&#165;1.4/天</span></div>
+        <div class="plan-features">
+          <div class="plan-feature">全部30个选题</div>
+          <div class="plan-feature">实时数据</div>
+          <div class="plan-feature">15次AI报告/月</div>
+          <div class="plan-feature">全行业</div>
+          <div class="plan-feature">30天历史</div>
+        </div>
+      </div>
+    </div>
+    <div class="action-bar">
+      <div class="btn-primary">立即开通VIP</div>
+      <div class="btn-note">开通即表示同意《VIP服务协议》，到期后不自动续费</div>
+    </div>
+  </div>
+</div>
+<div class="screen-label">7. VIP订阅</div>
+</div>
+
+<!-- Screen 8: Coin Recharge -->
+<div class="screen-wrap">
+<div class="phone">
+  <div class="status-bar">&#8249; 充值中心</div>
+  <div class="content-no-tab">
+    <div class="tab-switch">
+      <div class="tab-sw-item">VIP会员</div>
+      <div class="tab-sw-item active">雷达币充值</div>
+    </div>
+    <div style="background:var(--header-gradient);padding:24px 20px;text-align:center;color:#fff;">
+      <div style="font-size:13px;opacity:0.8;">当前余额</div>
+      <div style="font-size:36px;font-weight:800;">15</div>
+      <div style="font-size:12px;opacity:0.7;">雷达币</div>
+    </div>
+    <div style="font-size:15px;font-weight:600;color:var(--text);padding:16px 16px 8px;">选择充值套餐</div>
+    <div class="coin-grid">
+      <div class="coin-pkg"><div class="coin-amount">10 雷达币</div><div class="coin-price">&#165;9.9</div></div>
+      <div class="coin-pkg selected"><div class="hot-tag">热门</div><div class="coin-amount">40 雷达币</div><div class="coin-bonus">含赠送 5 币</div><div class="coin-price">&#165;29.9</div></div>
+      <div class="coin-pkg"><div class="hot-tag">送20</div><div class="coin-amount">100 雷达币</div><div class="coin-bonus">含赠送 20 币</div><div class="coin-price">&#165;59.9</div></div>
+      <div class="coin-pkg"><div class="hot-tag">送50</div><div class="coin-amount">200 雷达币</div><div class="coin-bonus">含赠送 50 币</div><div class="coin-price">&#165;99.9</div></div>
+    </div>
+    <div class="action-bar">
+      <div class="btn-primary">立即充值</div>
+      <div class="btn-note">充值即表示同意《用户服务协议》</div>
+    </div>
+  </div>
+</div>
+<div class="screen-label">8. 雷达币充值</div>
+</div>
+
+<!-- Screen 9: Referral (Upgraded with Tiered Rewards + Leaderboard) -->
+<div class="screen-wrap">
+<div class="phone">
+  <div class="status-bar">&#8249; 邀请有奖</div>
+  <div class="content-no-tab" style="overflow-y:auto;">
+    <div class="referral-header">
+      <span class="rh-title">邀请好友 赚雷达币</span>
+      <span class="rh-desc">推荐越多，奖励越高</span>
+    </div>
+    <!-- Stats -->
+    <div class="card" style="display:flex;">
+      <div style="flex:1;text-align:center;"><span style="font-size:22px;font-weight:700;color:var(--primary);display:block;">12</span><span style="font-size:11px;color:var(--text3);">邀请人数</span></div>
+      <div style="flex:1;text-align:center;"><span style="font-size:22px;font-weight:700;color:var(--primary);display:block;">8</span><span style="font-size:11px;color:var(--text3);">有效邀请</span></div>
+      <div style="flex:1;text-align:center;"><span style="font-size:22px;font-weight:700;color:var(--primary);display:block;">230</span><span style="font-size:11px;color:var(--text3);">获得雷达币</span></div>
+    </div>
+    <!-- My Tier -->
+    <div class="card">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+        <div style="width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#C0C0C0,#E8E8E8);display:flex;align-items:center;justify-content:center;font-size:20px;">&#x1F948;</div>
+        <div>
+          <div style="font-size:16px;font-weight:700;color:var(--text);">白银推荐官</div>
+          <div style="font-size:11px;color:var(--text3);">每次推荐奖励 15币</div>
+        </div>
+        <div style="margin-left:auto;padding:3px 10px;border-radius:12px;background:linear-gradient(135deg,#C0C0C0,#8B8B8B);color:#fff;font-size:11px;font-weight:600;">Silver</div>
+      </div>
+      <div style="margin-bottom:6px;display:flex;justify-content:space-between;font-size:11px;color:var(--text3);"><span>8 / 30 有效推荐</span><span>下一级: 黄金</span></div>
+      <div style="height:6px;background:var(--border);border-radius:3px;overflow:hidden;"><div style="height:100%;width:27%;background:linear-gradient(90deg,#C0C0C0,#5B5FE6);border-radius:3px;"></div></div>
+    </div>
+    <!-- Leaderboard -->
+    <div class="card">
+      <div style="font-size:15px;font-weight:700;color:var(--text);margin-bottom:12px;">&#x1F3C6; 推荐排行榜</div>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border);">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span style="width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,#FFD700,#FFA500);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;">1</span>
+          <span style="font-size:13px;color:var(--text);">a3f***81d</span>
+        </div>
+        <span style="font-size:12px;font-weight:600;color:var(--gold);">156人</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border);">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span style="width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,#C0C0C0,#888);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;">2</span>
+          <span style="font-size:13px;color:var(--text);">7b2***e5f</span>
+        </div>
+        <span style="font-size:12px;font-weight:600;color:var(--text2);">98人</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border);">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span style="width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,#CD7F32,#8B5E3C);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;">3</span>
+          <span style="font-size:13px;color:var(--text);">f91***3a7</span>
+        </div>
+        <span style="font-size:12px;font-weight:600;color:var(--text2);">72人</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;background:var(--primary-light);border-radius:8px;padding:8px;margin-top:4px;">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span style="width:24px;height:24px;border-radius:50%;background:var(--border);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--text2);">15</span>
+          <span style="font-size:13px;color:var(--primary);font-weight:600;">我 (当前)</span>
+        </div>
+        <span style="font-size:12px;font-weight:600;color:var(--primary);">8人</span>
+      </div>
+    </div>
+    <!-- Tier Rules -->
+    <div class="card">
+      <div style="font-size:15px;font-weight:700;color:var(--text);margin-bottom:10px;">阶梯奖励</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+        <div style="padding:10px;border-radius:10px;background:linear-gradient(135deg,rgba(205,127,50,0.1),rgba(205,127,50,0.05));border:1px solid rgba(205,127,50,0.2);">
+          <div style="font-size:12px;font-weight:700;color:#CD7F32;">&#x1F949; 青铜</div>
+          <div style="font-size:10px;color:var(--text3);margin-top:2px;">0人起 | 注册+10币</div>
+        </div>
+        <div style="padding:10px;border-radius:10px;background:linear-gradient(135deg,rgba(192,192,192,0.15),rgba(192,192,192,0.05));border:1px solid rgba(192,192,192,0.3);">
+          <div style="font-size:12px;font-weight:700;color:#888;">&#x1F948; 白银</div>
+          <div style="font-size:10px;color:var(--text3);margin-top:2px;">10人起 | 注册+15币</div>
+        </div>
+        <div style="padding:10px;border-radius:10px;background:linear-gradient(135deg,rgba(255,215,0,0.15),rgba(255,215,0,0.05));border:1px solid rgba(255,215,0,0.3);">
+          <div style="font-size:12px;font-weight:700;color:#D4A017;">&#x1F947; 黄金</div>
+          <div style="font-size:10px;color:var(--text3);margin-top:2px;">30人起 | 注册+20币</div>
+        </div>
+        <div style="padding:10px;border-radius:10px;background:linear-gradient(135deg,rgba(91,95,230,0.15),rgba(124,58,237,0.1));border:1px solid rgba(91,95,230,0.3);">
+          <div style="font-size:12px;font-weight:700;color:var(--primary);">&#x1F48E; 钻石</div>
+          <div style="font-size:10px;color:var(--text3);margin-top:2px;">100人起 | 注册+30币</div>
+        </div>
+      </div>
+    </div>
+    <div class="share-actions">
+      <div class="btn-primary">分享给好友</div>
+      <div class="btn-outline">生成邀请海报</div>
+    </div>
+  </div>
+</div>
+<div class="screen-label">9. 邀请有奖 (阶梯版)</div>
+</div>
+
+<!-- Screen 10: Redemption -->
+<div class="screen-wrap">
+<div class="phone">
+  <div class="status-bar">&#8249; 兑换码</div>
+  <div class="content-no-tab">
+    <div class="card" style="margin-top:8px;">
+      <div style="font-size:15px;font-weight:700;color:var(--text);margin-bottom:12px;">输入兑换码</div>
+      <div style="margin-bottom:12px;">
+        <input class="code-input" placeholder="请输入兑换码" value="TR8A3FX2K1" readonly />
+      </div>
+      <div class="btn-primary" style="margin-bottom:8px;">立即兑换</div>
+      <div class="input-hint">兑换码由运营发放，可兑换VIP会员天数</div>
+    </div>
+    <div class="card">
+      <div style="font-size:15px;font-weight:700;color:var(--text);margin-bottom:12px;">兑换记录</div>
+      <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);">
+        <div><div style="font-size:14px;font-weight:600;color:var(--text);letter-spacing:1px;">TR8A3FX2K1</div><div style="font-size:11px;color:var(--text3);margin-top:2px;">2026-03-05</div></div>
+        <div style="font-size:13px;font-weight:600;color:var(--green);">+7天VIP</div>
+      </div>
+      <div style="display:flex;justify-content:space-between;padding:10px 0;">
+        <div><div style="font-size:14px;font-weight:600;color:var(--text);letter-spacing:1px;">TRWELCOME3</div><div style="font-size:11px;color:var(--text3);margin-top:2px;">2026-02-28</div></div>
+        <div style="font-size:13px;font-weight:600;color:var(--green);">+3天VIP</div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="screen-label">10. 兑换码</div>
+</div>
+
+</div>
+
+<!-- ===== SECTION: MARKETING & GROWTH ===== -->
+<div class="section-title">--- Marketing & Growth ---</div>
+<div class="screens">
+
+<!-- Screen 11: Promo Notes (推广笔记换时长) -->
+<div class="screen-wrap">
+<div class="phone">
+  <div class="status-bar">&#8249; 推广换VIP</div>
+  <div class="content-no-tab" style="overflow-y:auto;">
+    <!-- Header -->
+    <div style="background:var(--header-gradient);padding:20px 16px;text-align:center;">
+      <div style="font-size:20px;font-weight:800;color:#fff;">推广换VIP</div>
+      <div style="font-size:12px;color:rgba(255,255,255,0.8);margin-top:4px;">发推广笔记，免费获得VIP时长</div>
+    </div>
+    <!-- Reward Rules -->
+    <div class="card">
+      <div style="font-size:15px;font-weight:700;color:var(--text);margin-bottom:10px;">&#x1F381; 奖励规则</div>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <div style="display:flex;align-items:center;gap:8px;"><span style="padding:2px 8px;border-radius:6px;background:#FF2442;color:#fff;font-size:10px;font-weight:600;">小红书</span><span style="font-size:12px;color:var(--text);">发布笔记 +3天VIP</span></div>
+        <div style="display:flex;align-items:center;gap:8px;"><span style="padding:2px 8px;border-radius:6px;background:#111;color:#fff;font-size:10px;font-weight:600;">抖音</span><span style="font-size:12px;color:var(--text);">发布视频/评论 +3天VIP</span></div>
+        <div style="display:flex;align-items:center;gap:8px;"><span style="padding:2px 8px;border-radius:6px;background:#07C160;color:#fff;font-size:10px;font-weight:600;">朋友圈</span><span style="font-size:12px;color:var(--text);">分享截图 +1天VIP</span></div>
+      </div>
+      <div style="margin-top:10px;padding:8px;background:var(--primary-light);border-radius:8px;font-size:11px;color:var(--primary);font-weight:600;">&#x2728; 首次发布奖励翻倍! 每月每平台可提交2次</div>
+    </div>
+    <!-- Platform Tabs -->
+    <div style="display:flex;gap:8px;padding:0 12px;margin-bottom:4px;">
+      <div style="flex:1;padding:8px;border-radius:10px;background:var(--primary);color:#fff;text-align:center;font-size:13px;font-weight:600;">小红书</div>
+      <div style="flex:1;padding:8px;border-radius:10px;background:var(--bg-card-alt);color:var(--text2);text-align:center;font-size:13px;">抖音</div>
+      <div style="flex:1;padding:8px;border-radius:10px;background:var(--bg-card-alt);color:var(--text2);text-align:center;font-size:13px;">朋友圈</div>
+    </div>
+    <!-- Upload Area -->
+    <div class="card">
+      <div style="border:2px dashed var(--border);border-radius:12px;padding:24px;text-align:center;">
+        <div style="font-size:28px;margin-bottom:6px;">&#x1F4F7;</div>
+        <div style="font-size:13px;color:var(--text2);">点击上传推广截图</div>
+        <div style="font-size:11px;color:var(--text3);margin-top:4px;">支持 JPG / PNG</div>
+      </div>
+      <div style="margin-top:12px;">
+        <input class="code-input" placeholder="笔记链接 (选填)" readonly />
+      </div>
+      <div class="btn-primary" style="margin-top:12px;">提交审核</div>
+    </div>
+    <!-- My Records -->
+    <div class="card">
+      <div style="font-size:15px;font-weight:700;color:var(--text);margin-bottom:10px;">我的记录</div>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border);">
+        <div>
+          <div style="display:flex;align-items:center;gap:6px;"><span style="padding:1px 6px;border-radius:4px;background:#FF2442;color:#fff;font-size:9px;">小红书</span><span style="font-size:12px;color:var(--text);">03-06</span></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span style="font-size:12px;color:var(--green);font-weight:600;">+6天VIP</span>
+          <span style="padding:2px 8px;border-radius:6px;background:rgba(16,185,129,0.1);color:#10B981;font-size:10px;">已通过</span>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;">
+        <div>
+          <div style="display:flex;align-items:center;gap:6px;"><span style="padding:1px 6px;border-radius:4px;background:#07C160;color:#fff;font-size:9px;">朋友圈</span><span style="font-size:12px;color:var(--text);">03-05</span></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span style="font-size:12px;color:var(--text3);">+1天VIP</span>
+          <span style="padding:2px 8px;border-radius:6px;background:rgba(245,158,11,0.1);color:#F59E0B;font-size:10px;">审核中</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="screen-label">11. 推广笔记换时长</div>
+</div>
+
+<!-- Screen 12: Share Center (千人千面推广内容) -->
+<div class="screen-wrap">
+<div class="phone">
+  <div class="status-bar">&#8249; 分享中心</div>
+  <div class="content-no-tab" style="overflow-y:auto;">
+    <!-- Header -->
+    <div style="background:var(--header-gradient);padding:20px 16px;text-align:center;">
+      <div style="font-size:20px;font-weight:800;color:#fff;">分享中心</div>
+      <div style="font-size:12px;color:rgba(255,255,255,0.8);margin-top:4px;">AI一键生成专属推广文案</div>
+    </div>
+    <!-- Platform Tabs -->
+    <div style="display:flex;gap:8px;padding:12px;">
+      <div style="flex:1;padding:8px;border-radius:10px;background:var(--primary);color:#fff;text-align:center;font-size:13px;font-weight:600;">小红书</div>
+      <div style="flex:1;padding:8px;border-radius:10px;background:var(--bg-card-alt);color:var(--text2);text-align:center;font-size:13px;">抖音</div>
+      <div style="flex:1;padding:8px;border-radius:10px;background:var(--bg-card-alt);color:var(--text2);text-align:center;font-size:13px;">朋友圈</div>
+    </div>
+    <!-- Generate Button -->
+    <div style="padding:0 12px;margin-bottom:12px;">
+      <div class="btn-primary" style="display:flex;align-items:center;justify-content:center;gap:6px;">&#x2728; AI生成专属文案</div>
+    </div>
+    <!-- Generated Content Cards -->
+    <div class="card" style="border-left:3px solid #10B981;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+        <span style="padding:2px 8px;border-radius:6px;background:rgba(16,185,129,0.1);color:#10B981;font-size:10px;font-weight:600;">真诚体验型</span>
+        <span style="padding:4px 12px;border-radius:8px;background:var(--primary);color:#fff;font-size:11px;font-weight:600;cursor:pointer;">复制</span>
+      </div>
+      <div style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:6px;">用了30天的真实感受</div>
+      <div style="font-size:12px;color:var(--text2);line-height:1.6;">作为美食博主，选题一直是最头疼的问题。用了选题雷达一个月，每天5分钟就能找到爆款选题，已经解锁了12份深度报告...</div>
+      <div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:8px;">
+        <span style="font-size:10px;color:var(--primary);background:var(--tag-bg);padding:2px 6px;border-radius:4px;">#选题雷达</span>
+        <span style="font-size:10px;color:var(--primary);background:var(--tag-bg);padding:2px 6px;border-radius:4px;">#美食博主工具</span>
+        <span style="font-size:10px;color:var(--primary);background:var(--tag-bg);padding:2px 6px;border-radius:4px;">#自媒体必备</span>
+      </div>
+    </div>
+    <div class="card" style="border-left:3px solid #3B82F6;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+        <span style="padding:2px 8px;border-radius:6px;background:rgba(59,130,246,0.1);color:#3B82F6;font-size:10px;font-weight:600;">数据展示型</span>
+        <span style="padding:4px 12px;border-radius:8px;background:var(--primary);color:#fff;font-size:11px;font-weight:600;cursor:pointer;">复制</span>
+      </div>
+      <div style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:6px;">我的选题效率提升了5倍</div>
+      <div style="font-size:12px;color:var(--text2);line-height:1.6;">使用前: 每天花2小时找选题。使用后: 5分钟精准定位3个爆款方向，AI深度拆解告诉你为什么能火...</div>
+      <div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:8px;">
+        <span style="font-size:10px;color:var(--primary);background:var(--tag-bg);padding:2px 6px;border-radius:4px;">#效率工具</span>
+        <span style="font-size:10px;color:var(--primary);background:var(--tag-bg);padding:2px 6px;border-radius:4px;">#数据说话</span>
+      </div>
+    </div>
+    <div class="card" style="border-left:3px solid #F59E0B;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+        <span style="padding:2px 8px;border-radius:6px;background:rgba(245,158,11,0.1);color:#F59E0B;font-size:10px;font-weight:600;">痛点共鸣型</span>
+        <span style="padding:4px 12px;border-radius:8px;background:var(--primary);color:#fff;font-size:11px;font-weight:600;cursor:pointer;">复制</span>
+      </div>
+      <div style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:6px;">还在为选题发愁吗?</div>
+      <div style="font-size:12px;color:var(--text2);line-height:1.6;">做自媒体最怕什么? 不是剪辑，不是拍摄，而是不知道拍什么! 选题雷达用AI帮你发现正在起飞的选题...</div>
+    </div>
+  </div>
+</div>
+<div class="screen-label">12. 分享中心 (AI文案)</div>
+</div>
+
+<!-- Screen 13: Achievements (成就系统) -->
+<div class="screen-wrap">
+<div class="phone">
+  <div class="status-bar">&#8249; 我的成就</div>
+  <div class="content-no-tab" style="overflow-y:auto;">
+    <!-- Header -->
+    <div style="background:var(--header-gradient);padding:20px 16px;text-align:center;">
+      <div style="font-size:20px;font-weight:800;color:#fff;">我的成就</div>
+      <div style="font-size:14px;color:rgba(255,255,255,0.9);margin-top:6px;">已解锁 5 / 8</div>
+      <div style="height:4px;background:rgba(255,255,255,0.2);border-radius:2px;margin-top:8px;"><div style="height:100%;width:62.5%;background:#fff;border-radius:2px;"></div></div>
+    </div>
+    <!-- Basic Achievements -->
+    <div style="padding:8px 12px 0;"><div style="font-size:13px;font-weight:700;color:var(--text2);margin-bottom:4px;">&#x1F31F; 基础成就</div></div>
+    <div class="card" style="display:flex;align-items:center;gap:12px;">
+      <div style="width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#10B981,#059669);display:flex;align-items:center;justify-content:center;font-size:20px;">&#x1F389;</div>
+      <div style="flex:1;">
+        <div style="font-size:14px;font-weight:700;color:var(--text);">初来乍到</div>
+        <div style="font-size:11px;color:var(--text3);">首次登录</div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:2px;">
+        <span style="padding:2px 10px;border-radius:8px;background:rgba(16,185,129,0.1);color:#10B981;font-size:10px;font-weight:600;">已解锁</span>
+        <span style="font-size:10px;color:var(--green);">+2币</span>
+      </div>
+    </div>
+    <div class="card" style="display:flex;align-items:center;gap:12px;">
+      <div style="width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#10B981,#059669);display:flex;align-items:center;justify-content:center;font-size:20px;">&#x1F50D;</div>
+      <div style="flex:1;">
+        <div style="font-size:14px;font-weight:700;color:var(--text);">选题猎手</div>
+        <div style="font-size:11px;color:var(--text3);">浏览30个选题</div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:2px;">
+        <span style="padding:2px 10px;border-radius:8px;background:rgba(16,185,129,0.1);color:#10B981;font-size:10px;font-weight:600;">已解锁</span>
+        <span style="font-size:10px;color:var(--green);">+3币</span>
+      </div>
+    </div>
+    <!-- Advanced Achievements -->
+    <div style="padding:8px 12px 0;"><div style="font-size:13px;font-weight:700;color:var(--text2);margin-bottom:4px;">&#x1F680; 进阶成就</div></div>
+    <div class="card" style="display:flex;align-items:center;gap:12px;">
+      <div style="width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#3B82F6,#1D4ED8);display:flex;align-items:center;justify-content:center;font-size:20px;">&#x1F4CA;</div>
+      <div style="flex:1;">
+        <div style="font-size:14px;font-weight:700;color:var(--text);">拆解达人</div>
+        <div style="font-size:11px;color:var(--text3);">解锁5份报告</div>
+        <div style="height:4px;background:var(--border);border-radius:2px;margin-top:4px;"><div style="height:100%;width:60%;background:var(--primary);border-radius:2px;"></div></div>
+        <div style="font-size:10px;color:var(--text3);margin-top:2px;">3 / 5</div>
+      </div>
+      <span style="font-size:10px;color:var(--text3);">+5币</span>
+    </div>
+    <div class="card" style="display:flex;align-items:center;gap:12px;">
+      <div style="width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#10B981,#059669);display:flex;align-items:center;justify-content:center;font-size:20px;">&#x1F91D;</div>
+      <div style="flex:1;">
+        <div style="font-size:14px;font-weight:700;color:var(--text);">社交蝴蝶</div>
+        <div style="font-size:11px;color:var(--text3);">推荐5位好友</div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:2px;">
+        <span style="padding:2px 10px;border-radius:8px;background:rgba(16,185,129,0.1);color:#10B981;font-size:10px;font-weight:600;">已解锁</span>
+        <div style="display:flex;align-items:center;gap:4px;">
+          <span style="font-size:10px;color:var(--green);">+10币</span>
+          <span style="padding:2px 6px;border-radius:4px;background:var(--primary);color:#fff;font-size:9px;font-weight:600;">分享+5</span>
+        </div>
+      </div>
+    </div>
+    <!-- Rare Achievements -->
+    <div style="padding:8px 12px 0;"><div style="font-size:13px;font-weight:700;color:var(--text2);margin-bottom:4px;">&#x1F48E; 稀有成就</div></div>
+    <div class="card" style="display:flex;align-items:center;gap:12px;opacity:0.7;">
+      <div style="width:44px;height:44px;border-radius:50%;background:var(--border);display:flex;align-items:center;justify-content:center;font-size:20px;filter:grayscale(100%);">&#x1F451;</div>
+      <div style="flex:1;">
+        <div style="font-size:14px;font-weight:700;color:var(--text);">深度研究者</div>
+        <div style="font-size:11px;color:var(--text3);">解锁20份报告</div>
+        <div style="height:4px;background:var(--border);border-radius:2px;margin-top:4px;"><div style="height:100%;width:15%;background:var(--primary);border-radius:2px;"></div></div>
+        <div style="font-size:10px;color:var(--text3);margin-top:2px;">3 / 20</div>
+      </div>
+      <span style="font-size:10px;color:var(--text3);">+10币+3天</span>
+    </div>
+    <div class="card" style="display:flex;align-items:center;gap:12px;opacity:0.7;">
+      <div style="width:44px;height:44px;border-radius:50%;background:var(--border);display:flex;align-items:center;justify-content:center;font-size:20px;filter:grayscale(100%);">&#x1F3C6;</div>
+      <div style="flex:1;">
+        <div style="font-size:14px;font-weight:700;color:var(--text);">百日用户</div>
+        <div style="font-size:11px;color:var(--text3);">注册满100天</div>
+        <div style="height:4px;background:var(--border);border-radius:2px;margin-top:4px;"><div style="height:100%;width:38%;background:var(--primary);border-radius:2px;"></div></div>
+        <div style="font-size:10px;color:var(--text3);margin-top:2px;">38 / 100天</div>
+      </div>
+      <span style="font-size:10px;color:var(--text3);">+15币+7天</span>
+    </div>
+  </div>
+</div>
+<div class="screen-label">13. 成就系统</div>
+</div>
+
+<!-- Screen 14: Retention / Churn Prevention -->
+<div class="screen-wrap">
+<div class="phone">
+  <div class="status-bar">&#8249; 续费优惠</div>
+  <div class="content-no-tab" style="overflow-y:auto;">
+    <!-- Urgency Header -->
+    <div style="background:linear-gradient(135deg,#F59E0B,#D97706);padding:20px 16px;text-align:center;">
+      <div style="font-size:14px;color:rgba(255,255,255,0.9);">您的VIP即将到期</div>
+      <div style="font-size:28px;font-weight:800;color:#fff;margin:8px 0;">剩余 3 天</div>
+      <div style="font-size:12px;color:rgba(255,255,255,0.8);">续费享受专属优惠</div>
+    </div>
+    <!-- Special Offer -->
+    <div class="card" style="border:2px solid var(--gold);position:relative;">
+      <div style="position:absolute;top:-1px;right:12px;padding:2px 12px;background:linear-gradient(135deg,#F59E0B,#D97706);color:#fff;font-size:10px;font-weight:700;border-radius:0 0 8px 8px;">限时优惠</div>
+      <div style="font-size:16px;font-weight:700;color:var(--text);margin-bottom:10px;">&#x1F525; 续费8折特惠</div>
+      <div style="display:flex;align-items:baseline;gap:6px;margin-bottom:8px;">
+        <span style="font-size:28px;font-weight:800;color:var(--primary);">&#xA5;47.9</span>
+        <span style="font-size:14px;color:var(--text3);text-decoration:line-through;">&#xA5;59.9</span>
+        <span style="padding:2px 8px;border-radius:6px;background:rgba(239,68,68,0.1);color:#EF4444;font-size:10px;font-weight:600;">省&#xA5;12</span>
+      </div>
+      <div style="font-size:12px;color:var(--text2);margin-bottom:4px;">&#x2705; 额外赠送 10 雷达币</div>
+      <div style="font-size:12px;color:var(--text2);margin-bottom:12px;">&#x2705; 每月15份深度报告</div>
+      <div class="btn-primary">立即续费</div>
+      <div style="text-align:center;margin-top:8px;font-size:11px;color:var(--text3);">优惠倒计时 23:45:12</div>
+    </div>
+    <!-- Usage Memory -->
+    <div class="card">
+      <div style="font-size:15px;font-weight:700;color:var(--text);margin-bottom:10px;">&#x1F4DD; 你的使用回忆</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <div style="padding:12px;border-radius:10px;background:var(--primary-light);text-align:center;">
+          <div style="font-size:20px;font-weight:800;color:var(--primary);">42</div>
+          <div style="font-size:11px;color:var(--text3);">发现选题</div>
+        </div>
+        <div style="padding:12px;border-radius:10px;background:var(--primary-light);text-align:center;">
+          <div style="font-size:20px;font-weight:800;color:var(--primary);">8</div>
+          <div style="font-size:11px;color:var(--text3);">深度报告</div>
+        </div>
+        <div style="padding:12px;border-radius:10px;background:var(--primary-light);text-align:center;">
+          <div style="font-size:20px;font-weight:800;color:var(--primary);">23天</div>
+          <div style="font-size:11px;color:var(--text3);">使用时长</div>
+        </div>
+        <div style="padding:12px;border-radius:10px;background:var(--primary-light);text-align:center;">
+          <div style="font-size:20px;font-weight:800;color:var(--primary);">5</div>
+          <div style="font-size:11px;color:var(--text3);">邀请好友</div>
+        </div>
+      </div>
+    </div>
+    <!-- Health Score -->
+    <div class="card">
+      <div style="font-size:15px;font-weight:700;color:var(--text);margin-bottom:10px;">&#x1F4AA; 活跃健康度</div>
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+        <div style="width:60px;height:60px;border-radius:50%;border:4px solid #10B981;display:flex;align-items:center;justify-content:center;">
+          <span style="font-size:18px;font-weight:800;color:#10B981;">78</span>
+        </div>
+        <div>
+          <div style="font-size:14px;font-weight:600;color:#10B981;">健康</div>
+          <div style="font-size:11px;color:var(--text3);">活跃度高于82%的用户</div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:6px;">
+        <div style="display:flex;align-items:center;gap:8px;font-size:11px;"><span style="color:var(--text3);width:50px;">登录</span><div style="flex:1;height:4px;background:var(--border);border-radius:2px;"><div style="height:100%;width:85%;background:#10B981;border-radius:2px;"></div></div><span style="color:var(--text2);width:20px;text-align:right;">17</span></div>
+        <div style="display:flex;align-items:center;gap:8px;font-size:11px;"><span style="color:var(--text3);width:50px;">功能</span><div style="flex:1;height:4px;background:var(--border);border-radius:2px;"><div style="height:100%;width:72%;background:#3B82F6;border-radius:2px;"></div></div><span style="color:var(--text2);width:20px;text-align:right;">18</span></div>
+        <div style="display:flex;align-items:center;gap:8px;font-size:11px;"><span style="color:var(--text3);width:50px;">解锁</span><div style="flex:1;height:4px;background:var(--border);border-radius:2px;"><div style="height:100%;width:64%;background:#8B5CF6;border-radius:2px;"></div></div><span style="color:var(--text2);width:20px;text-align:right;">16</span></div>
+        <div style="display:flex;align-items:center;gap:8px;font-size:11px;"><span style="color:var(--text3);width:50px;">互动</span><div style="flex:1;height:4px;background:var(--border);border-radius:2px;"><div style="height:100%;width:80%;background:#F59E0B;border-radius:2px;"></div></div><span style="color:var(--text2);width:20px;text-align:right;">12</span></div>
+        <div style="display:flex;align-items:center;gap:8px;font-size:11px;"><span style="color:var(--text3);width:50px;">付费</span><div style="flex:1;height:4px;background:var(--border);border-radius:2px;"><div style="height:100%;width:100%;background:#10B981;border-radius:2px;"></div></div><span style="color:var(--text2);width:20px;text-align:right;">15</span></div>
+      </div>
+    </div>
+    <div style="padding:0 12px 16px;">
+      <div class="btn-outline" style="text-align:center;font-size:13px;color:var(--text3);">暂时不续费</div>
+    </div>
+  </div>
+</div>
+<div class="screen-label">14. 到期挽留 + 健康评分</div>
+</div>
+
+</div>
+
+<!-- ===== SECTION: USER PAGES ===== -->
+<div class="section-title">--- User Pages ---</div>
+<div class="screens">
+
+<!-- Screen 15: My Unlocks -->
+<div class="screen-wrap">
+<div class="phone">
+  <div class="status-bar">&#8249; 已解锁报告</div>
+  <div class="content-no-tab">
+    <div class="unlock-item">
+      <div class="unlock-info">
+        <div class="unlock-title">30天瘦20斤食谱分享</div>
+        <div class="unlock-time">2026-03-08 14:30 解锁</div>
+      </div>
+      <span class="unlock-score">8.5</span>
+      <span class="report-arrow">&#8250;</span>
+    </div>
+    <div class="unlock-item">
+      <div class="unlock-info">
+        <div class="unlock-title">ChatGPT vs Claude 深度实测对比</div>
+        <div class="unlock-time">2026-03-07 09:15 解锁</div>
+      </div>
+      <span class="unlock-score">9.2</span>
+      <span class="report-arrow">&#8250;</span>
+    </div>
+    <div class="unlock-item">
+      <div class="unlock-info">
+        <div class="unlock-title">一个人的露营vlog | 春天的周末</div>
+        <div class="unlock-time">2026-03-06 20:45 解锁</div>
+      </div>
+      <span class="unlock-score">7.8</span>
+      <span class="report-arrow">&#8250;</span>
+    </div>
+    <div class="unlock-item">
+      <div class="unlock-info">
+        <div class="unlock-title">新手做自媒体千万别犯这3个错误</div>
+        <div class="unlock-time">2026-03-05 16:20 解锁</div>
+      </div>
+      <span class="unlock-score">8.8</span>
+      <span class="report-arrow">&#8250;</span>
+    </div>
+    <div class="unlock-item">
+      <div class="unlock-info">
+        <div class="unlock-title">5分钟学会Excel数据透视表</div>
+        <div class="unlock-time">2026-03-04 11:10 解锁</div>
+      </div>
+      <span class="unlock-score">8.0</span>
+      <span class="report-arrow">&#8250;</span>
+    </div>
+    <div style="text-align:center;padding:24px;font-size:12px;color:var(--text3);">共 5 份报告</div>
+  </div>
+</div>
+<div class="screen-label">15. 已解锁报告</div>
+</div>
+
+<!-- Screen 16: Settings -->
+<div class="screen-wrap">
+<div class="phone">
+  <div class="status-bar">&#8249; 偏好设置</div>
+  <div class="content-no-tab">
+    <div class="setting-section">
+      <div class="setting-title">关注行业</div>
+      <div class="tag-grid">
+        <span class="tag-item active">美食</span>
+        <span class="tag-item active">科技</span>
+        <span class="tag-item">教育</span>
+        <span class="tag-item active">健身</span>
+        <span class="tag-item">旅行</span>
+        <span class="tag-item">游戏</span>
+        <span class="tag-item">母婴</span>
+        <span class="tag-item">汽车</span>
+        <span class="tag-item">宠物</span>
+        <span class="tag-item">音乐</span>
+      </div>
+    </div>
+    <div class="setting-section">
+      <div class="setting-title">最低点赞门槛</div>
+      <div class="option-grid">
+        <span class="option-item">1w</span>
+        <span class="option-item active">5w</span>
+        <span class="option-item">10w</span>
+        <span class="option-item">50w</span>
+      </div>
+    </div>
+    <div class="setting-section">
+      <div class="setting-title">时间范围</div>
+      <div class="option-grid">
+        <span class="option-item">24小时</span>
+        <span class="option-item active">7天</span>
+        <span class="option-item">30天</span>
+      </div>
+    </div>
+    <div class="setting-section">
+      <div class="setting-title">推送通知</div>
+      <div class="switch-row">
+        <span class="switch-label">每日选题推送</span>
+        <div class="switch-toggle"><div class="knob"></div></div>
+      </div>
+    </div>
+    <div style="padding:16px;">
+      <div class="btn-primary">保存设置</div>
+    </div>
+  </div>
+</div>
+<div class="screen-label">16. 偏好设置</div>
+</div>
+
+</div>
+
+<script>
+function setTheme(theme, btn) {
+  document.body.setAttribute('data-theme', theme);
+  document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+</script>
+</body>
+</html>

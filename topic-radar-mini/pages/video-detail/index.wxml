@@ -65,15 +65,153 @@
       </view>
     </view>
 
+    <!-- 钩子深度分析（解锁后可见） -->
+    <view class="card" wx:if="{{report.isUnlocked && report.hookAnalysis}}">
+      <view class="section-title">钩子深度拆解</view>
+      <view class="hook-analysis">
+        <view class="hook-type-row">
+          <view class="hook-badge hook-badge-text">{{report.hookAnalysis.textHookType}}</view>
+          <view class="hook-badge hook-badge-visual">{{report.hookAnalysis.visualHookType}}</view>
+          <view class="hook-strength">钩子强度 {{report.hookAnalysis.textHookStrength}}/10</view>
+        </view>
+        <view class="hook-detail-item">
+          <text class="hook-detail-label">文案钩子</text>
+          <text class="hook-detail-text">{{report.hookAnalysis.textHookContent}}</text>
+        </view>
+        <view class="hook-detail-item">
+          <text class="hook-detail-label">视觉钩子</text>
+          <text class="hook-detail-text">{{report.hookAnalysis.visualHookDesc}}</text>
+        </view>
+        <view class="hook-detail-item">
+          <text class="hook-detail-label">文案x视觉配合</text>
+          <text class="hook-detail-text">{{report.hookAnalysis.synergy}}</text>
+        </view>
+        <view class="hook-detail-item" wx:if="{{report.hookAnalysis.soundDesign}}">
+          <text class="hook-detail-label">声音设计</text>
+          <text class="hook-detail-text">{{report.hookAnalysis.soundDesign}}</text>
+        </view>
+      </view>
+    </view>
+
     <!-- 脚本拆解（解锁后可见） -->
     <view class="card" wx:if="{{report.isUnlocked && report.scriptStructure}}">
       <view class="section-title">脚本结构拆解</view>
       <script-timeline segments="{{report.scriptStructure}}" />
     </view>
 
-    <!-- 内容摘要（解锁后可见） -->
-    <view class="card" wx:if="{{report.isUnlocked && report.summary}}">
-      <view class="section-title">内容摘要</view>
+    <!-- 留存机制分析（解锁后可见） -->
+    <view class="card" wx:if="{{report.isUnlocked && report.retentionAnalysis}}">
+      <view class="section-title">留存机制分析</view>
+      <view class="retention-section">
+        <view class="retention-item" wx:if="{{report.retentionAnalysis.openLoops.length > 0}}">
+          <text class="retention-label">开放回路</text>
+          <view class="retention-tags">
+            <text class="retention-tag" wx:for="{{report.retentionAnalysis.openLoops}}" wx:key="*this">{{item}}</text>
+          </view>
+        </view>
+        <view class="retention-item" wx:if="{{report.retentionAnalysis.patternInterrupts.length > 0}}">
+          <text class="retention-label">模式打断</text>
+          <view class="retention-tags">
+            <text class="retention-tag tag-orange" wx:for="{{report.retentionAnalysis.patternInterrupts}}" wx:key="*this">{{item}}</text>
+          </view>
+        </view>
+        <view class="retention-item" wx:if="{{report.retentionAnalysis.curiosityGaps.length > 0}}">
+          <text class="retention-label">悬念缺口</text>
+          <view class="retention-tags">
+            <text class="retention-tag tag-purple" wx:for="{{report.retentionAnalysis.curiosityGaps}}" wx:key="*this">{{item}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 病毒系数（解锁后可见） -->
+    <view class="card" wx:if="{{report.isUnlocked && report.viralScore}}">
+      <view class="section-title">病毒传播系数</view>
+      <view class="viral-grid">
+        <view class="viral-item">
+          <text class="viral-num">{{report.viralScore.shareability}}</text>
+          <text class="viral-label">传播力</text>
+        </view>
+        <view class="viral-item">
+          <text class="viral-num">{{report.viralScore.commentBait}}</text>
+          <text class="viral-label">评论诱饵</text>
+        </view>
+        <view class="viral-item">
+          <text class="viral-num">{{report.viralScore.saveability}}</text>
+          <text class="viral-label">收藏力</text>
+        </view>
+        <view class="viral-item viral-total">
+          <text class="viral-num">{{report.viralScore.totalViralScore}}</text>
+          <text class="viral-label">总分/70</text>
+        </view>
+      </view>
+      <view class="viral-verdict">{{report.viralScore.viralVerdict}}</view>
+      <text class="viral-reason" wx:if="{{report.viralScore.shareReason}}">传播分析: {{report.viralScore.shareReason}}</text>
+    </view>
+
+    <!-- 情感弧线（解锁后可见） -->
+    <view class="card" wx:if="{{report.isUnlocked && report.emotionalArc}}">
+      <view class="section-title">情感弧线</view>
+      <view class="emotion-arc-type">{{report.emotionalArc.arcType}}</view>
+      <text class="emotion-arc-desc">{{report.emotionalArc.arcDescription}}</text>
+      <view class="emotion-keywords" wx:if="{{report.emotionalArc.triggerWords.length > 0}}">
+        <text class="emotion-keyword" wx:for="{{report.emotionalArc.triggerWords}}" wx:key="*this">{{item}}</text>
+      </view>
+      <text class="emotion-peak" wx:if="{{report.emotionalArc.peakMoment}}">情绪峰值: {{report.emotionalArc.peakMoment}}</text>
+    </view>
+
+    <!-- 可复制要素（解锁后可见） -->
+    <view class="card" wx:if="{{report.isUnlocked && report.replicableElements}}">
+      <view class="section-title">可复制要素</view>
+      <view class="replicate-framework" wx:if="{{report.replicableElements.templateFramework}}">
+        <text class="framework-text">{{report.replicableElements.templateFramework}}</text>
+      </view>
+      <view class="replicate-group" wx:if="{{report.replicableElements.canCopy.length > 0}}">
+        <text class="replicate-label replicate-green">可直接复用</text>
+        <text class="replicate-item" wx:for="{{report.replicableElements.canCopy}}" wx:key="*this">{{item}}</text>
+      </view>
+      <view class="replicate-group" wx:if="{{report.replicableElements.needAdapt.length > 0}}">
+        <text class="replicate-label replicate-orange">需要调整</text>
+        <text class="replicate-item" wx:for="{{report.replicableElements.needAdapt}}" wx:key="*this">{{item}}</text>
+      </view>
+      <view class="replicate-group" wx:if="{{report.replicableElements.cannotCopy.length > 0}}">
+        <text class="replicate-label replicate-gray">无法复制</text>
+        <text class="replicate-item" wx:for="{{report.replicableElements.cannotCopy}}" wx:key="*this">{{item}}</text>
+      </view>
+    </view>
+
+    <!-- 创作者实操建议（解锁后可见） -->
+    <view class="card" wx:if="{{report.isUnlocked && report.creatorTips}}">
+      <view class="section-title">创作实操建议</view>
+      <view class="tips-section" wx:if="{{report.creatorTips.hookTemplates.length > 0}}">
+        <text class="tips-label">开头模板</text>
+        <view class="tips-list">
+          <text class="tips-item" wx:for="{{report.creatorTips.hookTemplates}}" wx:key="*this">{{index + 1}}. {{item}}</text>
+        </view>
+      </view>
+      <view class="tips-section" wx:if="{{report.creatorTips.titleTemplates.length > 0}}">
+        <text class="tips-label">标题模板</text>
+        <view class="tips-list">
+          <text class="tips-item" wx:for="{{report.creatorTips.titleTemplates}}" wx:key="*this">{{index + 1}}. {{item}}</text>
+        </view>
+      </view>
+      <view class="tips-section" wx:if="{{report.creatorTips.abTestSuggestions.length > 0}}">
+        <text class="tips-label">A/B测试建议</text>
+        <view class="tips-list">
+          <text class="tips-item" wx:for="{{report.creatorTips.abTestSuggestions}}" wx:key="*this">{{item}}</text>
+        </view>
+      </view>
+      <view class="tips-section" wx:if="{{report.creatorTips.commonMistakes.length > 0}}">
+        <text class="tips-label tips-warn">常见错误</text>
+        <view class="tips-list">
+          <text class="tips-item tips-warn-item" wx:for="{{report.creatorTips.commonMistakes}}" wx:key="*this">{{item}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- AI分析总结（解锁后可见） -->
+    <view class="card summary-card" wx:if="{{report.isUnlocked && report.summary}}">
+      <view class="section-title">AI分析总结</view>
       <text class="summary-text">{{report.summary}}</text>
     </view>
 

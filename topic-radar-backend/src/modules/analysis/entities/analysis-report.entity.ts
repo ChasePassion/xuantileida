@@ -29,6 +29,30 @@ export class AnalysisReport {
   @Column({ type: 'text', nullable: true })
   summary: string;
 
+  /** 钩子深度分析 (文案钩子类型/视觉钩子/强度评分/逐帧拆解) */
+  @Column({ name: 'hook_analysis', type: 'jsonb', nullable: true })
+  hookAnalysis: any;
+
+  /** 留存机制分析 (开放回路/模式打断/悬念缺口/情绪节奏) */
+  @Column({ name: 'retention_analysis', type: 'jsonb', nullable: true })
+  retentionAnalysis: any;
+
+  /** 病毒系数 (传播力/评论诱饵/分享触发/收藏触发) */
+  @Column({ name: 'viral_score', type: 'jsonb', nullable: true })
+  viralScore: any;
+
+  /** 情感弧线 (弧线类型/触发词/身份认同钩子) */
+  @Column({ name: 'emotional_arc', type: 'jsonb', nullable: true })
+  emotionalArc: any;
+
+  /** 可复制要素 (可直接复用/需要调整/不可复制) */
+  @Column({ name: 'replicable_elements', type: 'jsonb', nullable: true })
+  replicableElements: any;
+
+  /** 创作建议 (标题模板/开头模板/CTA模板/A/B测试建议) */
+  @Column({ name: 'creator_tips', type: 'jsonb', nullable: true })
+  creatorTips: any;
+
   @Column({ length: 20, default: 'pending' })
   status: string;
 

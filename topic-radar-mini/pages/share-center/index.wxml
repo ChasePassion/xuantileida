@@ -1,0 +1,99 @@
+<view class="page-share-center">
+  <!-- 头部 -->
+  <view class="header">
+    <text class="header-title">分享中心</text>
+    <text class="header-desc">一键生成专属推广文案</text>
+  </view>
+
+  <!-- 平台选择 -->
+  <view class="platform-card card">
+    <view class="platform-tabs">
+      <view
+        class="tab-item {{selectedPlatform === 'xiaohongshu' ? 'active' : ''}}"
+        data-platform="xiaohongshu"
+        bind:tap="onPlatformChange">
+        小红书
+      </view>
+      <view
+        class="tab-item {{selectedPlatform === 'douyin' ? 'active' : ''}}"
+        data-platform="douyin"
+        bind:tap="onPlatformChange">
+        抖音
+      </view>
+      <view
+        class="tab-item {{selectedPlatform === 'moments' ? 'active' : ''}}"
+        data-platform="moments"
+        bind:tap="onPlatformChange">
+        朋友圈
+      </view>
+    </view>
+  </view>
+
+  <!-- AI生成按钮 -->
+  <view class="generate-card card">
+    <button
+      class="generate-btn btn-primary"
+      bind:tap="generateContent"
+      disabled="{{generating}}">
+      {{generating ? 'AI生成中...' : 'AI生成文案'}}
+    </button>
+    <text class="generate-hint">根据您的平台选择，AI将生成3种不同风格的推广文案</text>
+  </view>
+
+  <!-- 生成的内容 -->
+  <view class="content-section" wx:if="{{generatedContents.length > 0}}">
+    <view class="section-header">
+      <text class="section-title">生成内容</text>
+      <text class="section-subtitle">选择喜欢的文案，一键复制</text>
+    </view>
+
+    <view class="content-list">
+      <view class="content-card card" wx:for="{{generatedContents}}" wx:key="id">
+        <view class="content-header">
+          <view class="style-badge {{item.style}}">{{item.styleName}}</view>
+          <view class="copy-btn" data-content="{{item.content}}" data-id="{{item.id}}" bind:tap="onCopy">
+            复制
+          </view>
+        </view>
+        <view class="content-body">
+          <text class="content-text">{{item.content}}</text>
+        </view>
+        <view class="content-tags" wx:if="{{item.hashtags && item.hashtags.length > 0}}">
+          <text class="tag-item" wx:for="{{item.hashtags}}" wx:key="*this" wx:for-item="tag">
+            #{{tag}}
+          </text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 推荐模板 -->
+  <view class="template-section" wx:if="{{templates.length > 0}}">
+    <view class="section-header">
+      <text class="section-title">推荐模板</text>
+      <text class="section-subtitle">经过验证的优质文案模板</text>
+    </view>
+
+    <view class="template-list">
+      <view class="template-card card" wx:for="{{templates}}" wx:key="id">
+        <view class="template-header">
+          <text class="template-title">{{item.title}}</text>
+          <view class="copy-btn" data-content="{{item.content}}" bind:tap="onCopy">
+            复制
+          </view>
+        </view>
+        <view class="template-body">
+          <text class="template-text">{{item.content}}</text>
+        </view>
+        <view class="template-stats">
+          <text class="stat-item">使用 {{item.usageCount}} 次</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 空状态 -->
+  <view class="empty-state" wx:if="{{!generating && generatedContents.length === 0}}">
+    <text class="empty-text">点击"AI生成文案"开始创作</text>
+  </view>
+</view>

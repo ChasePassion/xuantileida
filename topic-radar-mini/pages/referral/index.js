@@ -10,6 +10,20 @@ Page({
       totalVipDaysEarned: 0,
     },
     referrals: [],
+    myTier: {
+      tier: 'bronze',
+      name: '青铜',
+      icon: '🥉',
+      current: 0,
+      nextTarget: 10,
+      progressPercent: 0,
+      signupBonus: 10,
+      rechargeBonus: 20,
+      vipBonus: 0,
+    },
+    leaderboard: [],
+    myRank: 0,
+    tierRules: [],
     loading: true,
     posterVisible: false,
     posterUrl: '',
@@ -21,6 +35,8 @@ Page({
     this.setData({ userId: userInfo.id || '' });
     this.loadStats();
     this.loadReferrals();
+    this.loadTierInfo();
+    this.loadLeaderboard();
   },
 
   async loadStats() {
@@ -44,6 +60,93 @@ Page({
       console.warn('加载推荐列表失败:', e);
       this.setData({ loading: false });
     }
+  },
+
+  async loadTierInfo() {
+    try {
+      // 加载等级规则
+      const tierRules = await api.referral.getTiers();
+      const formattedRules = tierRules.map(tier => ({
+        ...tier,
+        icon: this.getTierIcon(tier.tier),
+        name: this.getTierName(tier.tier),
+        requirement: this.formatRequirement(tier.minReferrals),
+      }));
+
+      // 加载我的等级
+      const myTier = await api.referral.getMyTier();
+      const formattedMyTier = {
+        ...myTier,
+        icon: this.getTierIcon(myTier.tier),
+        name: this.getTierName(myTier.tier),
+        progressPercent: myTier.nextTarget > 0
+          ? Math.min(100, (myTier.current / myTier.nextTarget) * 100)
+          : 100,
+      };
+
+      this.setData({
+        tierRules: formattedRules,
+        myTier: formattedMyTier,
+      });
+    } catch (e) {
+      console.warn('加载等级信息失败:', e);
+    }
+  },
+
+  async loadLeaderboard() {
+    try {
+      const data = await api.referral.getLeaderboard();
+      const leaderboard = data.leaderboard || [];
+      const myRank = data.myRank || 0;
+
+      // 格式化排行榜数据
+      const formattedLeaderboard = leaderboard.map((item, index) => ({
+        ...item,
+        rank: index + 1,
+        userName: this.maskUserId(item.userId),
+        tierName: this.getTierName(item.tier),
+        isCurrentUser: item.userId === this.data.userId,
+      }));
+
+      this.setData({
+        leaderboard: formattedLeaderboard,
+        myRank,
+      });
+    } catch (e) {
+      console.warn('加载排行榜失败:', e);
+    }
+  },
+
+  getTierIcon(tier) {
+    const iconMap = {
+      bronze: '🥉',
+      silver: '🥈',
+      gold: '🥇',
+      diamond: '💎',
+    };
+    return iconMap[tier] || '🥉';
+  },
+
+  getTierName(tier) {
+    const nameMap = {
+      bronze: '青铜',
+      silver: '白银',
+      gold: '黄金',
+      diamond: '钻石',
+    };
+    return nameMap[tier] || '青铜';
+  },
+
+  formatRequirement(minReferrals) {
+    if (minReferrals === 0) return '新用户';
+    return `邀请${minReferrals}人`;
+  },
+
+  maskUserId(userId) {
+    if (!userId) return '用户***';
+    const str = String(userId);
+    if (str.length <= 4) return '用户***';
+    return `用户${str.substring(0, 2)}***${str.substring(str.length - 2)}`;
   },
 
   onShareTap() {

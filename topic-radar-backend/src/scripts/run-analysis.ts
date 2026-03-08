@@ -38,9 +38,14 @@ async function main() {
   console.log(`分析视频: ${video.title}`);
   console.log(`平台: ${video.platform}, 点赞: ${video.likeCount}\n`);
 
-  // 调用LLM分析
-  console.log('正在调用火山方舟LLM进行拆解分析...');
-  const result = await llmService.analyzeVideo(video.title, '');
+  // 调用LLM专业级分析
+  console.log('正在调用火山方舟LLM进行7维度专业拆解分析...');
+  const result = await llmService.analyzeVideo(
+    video.title,
+    '',
+    video.platform,
+    video.duration || 60,
+  );
 
   if (!result) {
     console.log('LLM分析返回空结果');
@@ -50,12 +55,21 @@ async function main() {
 
   console.log(`\nLLM分析完成! 总分: ${result.overallScore}`);
   console.log(`摘要: ${result.summary}\n`);
+  console.log(`钩子类型: ${result.hookAnalysis?.textHookType || 'N/A'}`);
+  console.log(`病毒系数: ${result.viralScore?.totalViralScore || 'N/A'}/70`);
+  console.log(`可复用框架: ${result.replicableElements?.templateFramework || 'N/A'}\n`);
 
-  // 保存分析报告
+  // 保存分析报告（含扩展字段）
   const report = reportRepo.create({
     videoId: video.id,
     overallScore: result.overallScore,
     summary: result.summary,
+    hookAnalysis: result.hookAnalysis || null,
+    retentionAnalysis: result.retentionAnalysis || null,
+    viralScore: result.viralScore || null,
+    emotionalArc: result.emotionalArc || null,
+    replicableElements: result.replicableElements || null,
+    creatorTips: result.creatorTips || null,
     status: 'completed',
   });
   await reportRepo.save(report);
@@ -86,6 +100,8 @@ async function main() {
         endTime: seg.endTime,
         originalText: seg.text,
         technique: seg.technique,
+        techniqueDetail: seg.techniqueDetail || null,
+        psychologyPrinciple: seg.psychologyPrinciple || null,
         sortOrder: i,
       });
       await segRepo.save(segment);

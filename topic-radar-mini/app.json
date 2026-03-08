@@ -9,7 +9,10 @@
     "pages/my-unlocks/index",
     "pages/settings/index",
     "pages/referral/index",
-    "pages/redemption/index"
+    "pages/redemption/index",
+    "pages/promo-notes/index",
+    "pages/share-center/index",
+    "pages/achievements/index"
   ],
   "window": {
     "navigationBarBackgroundColor": "#ffffff",

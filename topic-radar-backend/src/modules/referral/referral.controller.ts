@@ -1,7 +1,8 @@
-import { Controller, Get, Post, Body, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Query, UseGuards } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiBearerAuth, ApiQuery } from '@nestjs/swagger';
 import { ReferralService } from './referral.service';
 import { CurrentUser } from '../../common/decorators/current-user.decorator';
+import { AuthGuard } from '../../common/guards/auth.guard';
 import { IsNotEmpty, IsString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
@@ -55,5 +56,25 @@ export class ReferralController {
       qrCodePath: `pages/discover/index?ref=${userId}`,
       totalReferred: stats.totalReferred,
     };
+  }
+
+  @Get('tiers')
+  @ApiOperation({ summary: '获取推荐阶梯配置' })
+  async getTiers() {
+    return this.referralService.getTiers();
+  }
+
+  @Get('my-tier')
+  @ApiOperation({ summary: '获取我的推荐等级' })
+  @UseGuards(AuthGuard)
+  async getMyTier(@CurrentUser('sub') userId: string) {
+    return this.referralService.getMyTier(userId);
+  }
+
+  @Get('leaderboard')
+  @ApiOperation({ summary: '推荐排行榜' })
+  @ApiQuery({ name: 'limit', required: false, type: Number })
+  async getLeaderboard(@Query('limit') limit?: number) {
+    return this.referralService.getLeaderboard(limit || 20);
   }
 }

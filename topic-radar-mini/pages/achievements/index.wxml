@@ -1,0 +1,129 @@
+<view class="page-achievements">
+  <!-- 头部 -->
+  <view class="header">
+    <text class="header-title">我的成就</text>
+    <text class="header-desc">已解锁 {{unlockedCount}}/{{totalCount}}</text>
+    <view class="progress-bar">
+      <view class="progress-fill" style="width: {{progressPercent}}%"></view>
+    </view>
+  </view>
+
+  <!-- 基础成就 -->
+  <view class="achievement-section" wx:if="{{basicAchievements.length > 0}}">
+    <view class="section-header">
+      <text class="section-title">基础成就</text>
+      <text class="section-count">{{basicUnlockedCount}}/{{basicAchievements.length}}</text>
+    </view>
+
+    <view class="achievement-list">
+      <view
+        class="achievement-card card {{item.isUnlocked ? 'unlocked' : ''}}"
+        wx:for="{{basicAchievements}}"
+        wx:key="id">
+        <view class="achievement-icon {{item.rarity}}">
+          <text>{{item.icon}}</text>
+        </view>
+        <view class="achievement-info">
+          <view class="achievement-header">
+            <text class="achievement-title">{{item.title}}</text>
+            <view class="unlock-badge" wx:if="{{item.isUnlocked}}">已解锁</view>
+          </view>
+          <text class="achievement-desc">{{item.description}}</text>
+          <view class="achievement-progress" wx:if="{{!item.isUnlocked}}">
+            <view class="progress-bar-mini">
+              <view class="progress-fill-mini" style="width: {{item.progressPercent}}%"></view>
+            </view>
+            <text class="progress-text">{{item.current}}/{{item.target}}</text>
+          </view>
+          <view class="achievement-reward" wx:if="{{item.isUnlocked}}">
+            <text>奖励: {{item.rewardText}}</text>
+          </view>
+        </view>
+        <view class="share-btn-mini" wx:if="{{item.isUnlocked}}" data-id="{{item.id}}" bind:tap="shareAchievement">
+          分享
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 进阶成就 -->
+  <view class="achievement-section" wx:if="{{advancedAchievements.length > 0}}">
+    <view class="section-header">
+      <text class="section-title">进阶成就</text>
+      <text class="section-count">{{advancedUnlockedCount}}/{{advancedAchievements.length}}</text>
+    </view>
+
+    <view class="achievement-list">
+      <view
+        class="achievement-card card {{item.isUnlocked ? 'unlocked' : ''}}"
+        wx:for="{{advancedAchievements}}"
+        wx:key="id">
+        <view class="achievement-icon {{item.rarity}}">
+          <text>{{item.icon}}</text>
+        </view>
+        <view class="achievement-info">
+          <view class="achievement-header">
+            <text class="achievement-title">{{item.title}}</text>
+            <view class="unlock-badge" wx:if="{{item.isUnlocked}}">已解锁</view>
+          </view>
+          <text class="achievement-desc">{{item.description}}</text>
+          <view class="achievement-progress" wx:if="{{!item.isUnlocked}}">
+            <view class="progress-bar-mini">
+              <view class="progress-fill-mini" style="width: {{item.progressPercent}}%"></view>
+            </view>
+            <text class="progress-text">{{item.current}}/{{item.target}}</text>
+          </view>
+          <view class="achievement-reward" wx:if="{{item.isUnlocked}}">
+            <text>奖励: {{item.rewardText}}</text>
+          </view>
+        </view>
+        <view class="share-btn-mini" wx:if="{{item.isUnlocked}}" data-id="{{item.id}}" bind:tap="shareAchievement">
+          分享
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 稀有成就 -->
+  <view class="achievement-section" wx:if="{{rareAchievements.length > 0}}">
+    <view class="section-header">
+      <text class="section-title">稀有成就</text>
+      <text class="section-count">{{rareUnlockedCount}}/{{rareAchievements.length}}</text>
+    </view>
+
+    <view class="achievement-list">
+      <view
+        class="achievement-card card {{item.isUnlocked ? 'unlocked' : ''}}"
+        wx:for="{{rareAchievements}}"
+        wx:key="id">
+        <view class="achievement-icon {{item.rarity}}">
+          <text>{{item.icon}}</text>
+        </view>
+        <view class="achievement-info">
+          <view class="achievement-header">
+            <text class="achievement-title">{{item.title}}</text>
+            <view class="unlock-badge" wx:if="{{item.isUnlocked}}">已解锁</view>
+          </view>
+          <text class="achievement-desc">{{item.description}}</text>
+          <view class="achievement-progress" wx:if="{{!item.isUnlocked}}">
+            <view class="progress-bar-mini">
+              <view class="progress-fill-mini" style="width: {{item.progressPercent}}%"></view>
+            </view>
+            <text class="progress-text">{{item.current}}/{{item.target}}</text>
+          </view>
+          <view class="achievement-reward" wx:if="{{item.isUnlocked}}">
+            <text>奖励: {{item.rewardText}}</text>
+          </view>
+        </view>
+        <view class="share-btn-mini" wx:if="{{item.isUnlocked}}" data-id="{{item.id}}" bind:tap="shareAchievement">
+          分享
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 加载状态 -->
+  <view class="loading-wrap" wx:if="{{loading}}">
+    <text>加载中...</text>
+  </view>
+</view>

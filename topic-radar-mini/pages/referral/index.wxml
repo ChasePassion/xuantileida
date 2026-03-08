@@ -53,6 +53,74 @@
     </view>
   </view>
 
+  <!-- 我的等级 -->
+  <view class="tier-card card">
+    <text class="section-title">我的等级</text>
+    <view class="tier-content">
+      <view class="tier-badge {{myTier.tier}}">
+        <text class="tier-icon">{{myTier.icon}}</text>
+        <text class="tier-name">{{myTier.name}}</text>
+      </view>
+      <view class="tier-info">
+        <view class="tier-progress-wrap">
+          <text class="tier-progress-label">距离下一等级</text>
+          <view class="tier-progress-bar">
+            <view class="tier-progress-fill" style="width: {{myTier.progressPercent}}%"></view>
+          </view>
+          <text class="tier-progress-text">{{myTier.current}}/{{myTier.nextTarget}}</text>
+        </view>
+        <view class="tier-benefits">
+          <text class="benefit-title">当前奖励</text>
+          <text class="benefit-item">注册奖励: +{{myTier.signupBonus}}币</text>
+          <text class="benefit-item">充值奖励: +{{myTier.rechargeBonus}}币</text>
+          <text class="benefit-item" wx:if="{{myTier.vipBonus > 0}}">VIP奖励: +{{myTier.vipBonus}}天</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 排行榜 -->
+  <view class="leaderboard-card card">
+    <text class="section-title">排行榜 TOP 20</text>
+    <view class="leaderboard-list">
+      <view class="leaderboard-item {{item.isCurrentUser ? 'current-user' : ''}}" wx:for="{{leaderboard}}" wx:key="userId">
+        <view class="rank-badge rank-{{item.rank}}" wx:if="{{item.rank <= 3}}">
+          {{item.rank}}
+        </view>
+        <text class="rank-text" wx:else>{{item.rank}}</text>
+        <view class="user-info">
+          <text class="user-name">{{item.userName}}</text>
+          <text class="user-tier">{{item.tierName}}</text>
+        </view>
+        <text class="referral-count">{{item.referralCount}}人</text>
+      </view>
+    </view>
+    <view class="my-rank" wx:if="{{myRank > 20}}">
+      <text>我的排名: 第 {{myRank}} 名</text>
+    </view>
+  </view>
+
+  <!-- 等级规则 -->
+  <view class="tier-rules-card card">
+    <text class="section-title">等级规则</text>
+    <view class="tier-rule-list">
+      <view class="tier-rule-item" wx:for="{{tierRules}}" wx:key="tier">
+        <view class="tier-rule-header">
+          <view class="tier-rule-badge {{item.tier}}">
+            <text class="tier-rule-icon">{{item.icon}}</text>
+            <text class="tier-rule-name">{{item.name}}</text>
+          </view>
+          <text class="tier-requirement">{{item.requirement}}</text>
+        </view>
+        <view class="tier-rule-rewards">
+          <text class="reward-item">注册: +{{item.signupBonus}}币</text>
+          <text class="reward-item">充值: +{{item.rechargeBonus}}币</text>
+          <text class="reward-item" wx:if="{{item.vipBonus > 0}}">VIP: +{{item.vipBonus}}天</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
   <!-- 分享操作 -->
   <view class="share-actions">
     <button class="share-btn btn-primary" open-type="share">

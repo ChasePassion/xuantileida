@@ -97,12 +97,45 @@ const referral = {
   getStats: () => request({ url: '/referral/stats' }),
   getList: (params) => request({ url: '/referral/list', data: params }),
   getPosterData: () => request({ url: '/referral/poster-data' }),
+  getTiers: () => request({ url: '/referral/tiers' }),
+  getMyTier: () => request({ url: '/referral/my-tier' }),
+  getLeaderboard: () => request({ url: '/referral/leaderboard' }),
 };
 
 // ===== 兑换码 =====
 const redemption = {
   redeem: (code) => request({ url: '/redemption/redeem', method: 'POST', data: { code } }),
   getRecords: () => request({ url: '/redemption/records' }),
+};
+
+// ===== 推广笔记 =====
+const promo = {
+  getRules: () => request({ url: '/promo/rules' }),
+  submit: (data) => request({ url: '/promo/submit', method: 'POST', data }),
+  getRecords: (params) => request({ url: '/promo/my-records', data: params }),
+};
+
+// ===== 推广内容 =====
+const promoContent = {
+  generate: (params) => request({ url: '/promo-content/generate', data: params }),
+  getTemplates: (params) => request({ url: '/promo-content/templates', data: params }),
+  markUsed: (data) => request({ url: '/promo-content/mark-used', method: 'POST', data }),
+};
+
+// ===== 活动 =====
+const campaign = {
+  getActive: () => request({ url: '/campaigns/active' }),
+  participate: (id, data) => request({ url: `/campaigns/${id}/participate`, method: 'POST', data }),
+  getAchievements: () => request({ url: '/campaigns/achievements' }),
+  checkAchievements: () => request({ url: '/campaigns/achievements/check', method: 'POST' }),
+  shareAchievement: (id) => request({ url: `/campaigns/achievements/${id}/share`, method: 'POST' }),
+};
+
+// ===== 挽留 =====
+const retention = {
+  getOffers: () => request({ url: '/retention/my-offers' }),
+  acceptOffer: (id) => request({ url: `/retention/accept/${id}`, method: 'POST' }),
+  dismissOffer: (id) => request({ url: `/retention/dismiss/${id}`, method: 'POST' }),
 };
 
 module.exports = {
@@ -115,4 +148,8 @@ module.exports = {
   billing,
   referral,
   redemption,
+  promo,
+  promoContent,
+  campaign,
+  retention,
 };

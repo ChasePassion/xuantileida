@@ -14,20 +14,28 @@ import {
   ReportAlreadyUnlockedException,
 } from '../../common/exceptions/business.exceptions';
 
-const DIMENSION_LABELS: Record<string, { label: string; color: string }> = {
-  topic_angle: { label: '选题角度', color: 'violet' },
-  opening_hook: { label: '开头吸引力', color: 'cyan' },
-  info_density: { label: '信息密度', color: 'violet' },
-  emotional_resonance: { label: '情感共鸣', color: 'fire' },
-  cta_effectiveness: { label: 'CTA有效性', color: 'cyan' },
+const DIMENSION_LABELS: Record<string, { label: string; color: string; icon: string }> = {
+  topic_power: { label: '选题力', color: '#7C3AED', icon: '🎯' },
+  hook_power: { label: '钩子力', color: '#EF4444', icon: '🪝' },
+  rhythm_power: { label: '节奏力', color: '#F59E0B', icon: '🎵' },
+  performance_power: { label: '表现力', color: '#10B981', icon: '🎬' },
+  retention_power: { label: '留存力', color: '#3B82F6', icon: '🧲' },
+  emotion_power: { label: '情感力', color: '#EC4899', icon: '💡' },
+  monetize_power: { label: '变现力', color: '#06B6D4', icon: '💰' },
+  // 向后兼容旧维度
+  topic_angle: { label: '选题角度', color: '#7C3AED', icon: '🎯' },
+  opening_hook: { label: '开头吸引力', color: '#EF4444', icon: '🪝' },
+  info_density: { label: '信息密度', color: '#F59E0B', icon: '🎵' },
+  emotional_resonance: { label: '情感共鸣', color: '#EC4899', icon: '💡' },
+  cta_effectiveness: { label: 'CTA有效性', color: '#06B6D4', icon: '💰' },
 };
 
-const SEGMENT_LABELS: Record<string, string> = {
-  hook: 'Hook钩子',
-  pain: '痛点切入',
-  core: '核心内容',
-  climax: '高潮转折',
-  cta: '行动号召',
+const SEGMENT_LABELS: Record<string, { label: string; color: string }> = {
+  hook: { label: '开场钩子', color: '#EF4444' },
+  pain: { label: '痛点切入', color: '#F59E0B' },
+  core: { label: '核心内容', color: '#7C3AED' },
+  climax: { label: '情绪高潮', color: '#EC4899' },
+  cta: { label: '行动引导', color: '#10B981' },
 };
 
 @Injectable()
@@ -156,6 +164,13 @@ export class AnalysisService {
     unlockPrice: number,
   ) {
     const video = report.video;
+    const dimOrder = [
+      'topic_power', 'hook_power', 'rhythm_power', 'performance_power',
+      'retention_power', 'emotion_power', 'monetize_power',
+      // 兼容旧维度
+      'topic_angle', 'opening_hook', 'info_density', 'emotional_resonance', 'cta_effectiveness',
+    ];
+
     return {
       reportId: report.id,
       videoId: report.videoId,
@@ -167,32 +182,72 @@ export class AnalysisService {
       isUnlocked,
       unlockPrice,
       unlockCount: report.unlockCount,
+
+      // 7维度评分（始终返回分数和标签，评语仅解锁后可见）
       dimensions: (report.dimensions || [])
-        .sort((a, b) => {
-          const order = Object.keys(DIMENSION_LABELS);
-          return order.indexOf(a.dimension) - order.indexOf(b.dimension);
-        })
+        .sort((a, b) => dimOrder.indexOf(a.dimension) - dimOrder.indexOf(b.dimension))
         .map((d) => ({
           dimension: d.dimension,
           label: DIMENSION_LABELS[d.dimension]?.label || d.dimension,
+          icon: DIMENSION_LABELS[d.dimension]?.icon || '📊',
           score: Number(d.score),
-          color: DIMENSION_LABELS[d.dimension]?.color || 'violet',
+          color: DIMENSION_LABELS[d.dimension]?.color || '#7C3AED',
           comment: isUnlocked ? d.comment : null,
         })),
+
+      // 脚本时间线（解锁后）
       scriptStructure: isUnlocked
         ? (report.scriptSegments || [])
             .sort((a, b) => a.sortOrder - b.sortOrder)
             .map((s) => ({
               time: s.startTime != null && s.endTime != null
-                ? `${s.startTime}-${s.endTime}s`
+                ? `${this.formatTime(s.startTime)}-${this.formatTime(s.endTime)}`
                 : '',
               type: s.segmentType,
-              label: SEGMENT_LABELS[s.segmentType] || s.segmentType,
+              label: SEGMENT_LABELS[s.segmentType]?.label || s.segmentType,
+              color: SEGMENT_LABELS[s.segmentType]?.color || '#7C3AED',
               text: s.originalText || '',
               technique: s.technique || '',
+              techniqueDetail: s.techniqueDetail || '',
+              psychologyPrinciple: s.psychologyPrinciple || '',
             }))
         : null,
+
+      // 专业总结（解锁后）
       summary: isUnlocked ? report.summary : null,
+
+      // === 以下为专业版深度分析（解锁后可见）===
+
+      // 钩子深度分析
+      hookAnalysis: isUnlocked ? report.hookAnalysis : (report.hookAnalysis ? {
+        textHookType: report.hookAnalysis.textHookType,
+        textHookStrength: report.hookAnalysis.textHookStrength,
+        // 未解锁只显示类型和强度，不显示详情
+      } : null),
+
+      // 留存机制分析
+      retentionAnalysis: isUnlocked ? report.retentionAnalysis : null,
+
+      // 病毒系数
+      viralScore: isUnlocked ? report.viralScore : (report.viralScore ? {
+        totalViralScore: report.viralScore.totalViralScore,
+        viralVerdict: report.viralScore.viralVerdict,
+      } : null),
+
+      // 情感弧线
+      emotionalArc: isUnlocked ? report.emotionalArc : null,
+
+      // 可复制要素
+      replicableElements: isUnlocked ? report.replicableElements : null,
+
+      // 创作者实操建议
+      creatorTips: isUnlocked ? report.creatorTips : null,
     };
+  }
+
+  private formatTime(seconds: number): string {
+    const m = Math.floor(seconds / 60);
+    const s = Math.floor(seconds % 60);
+    return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
   }
 }

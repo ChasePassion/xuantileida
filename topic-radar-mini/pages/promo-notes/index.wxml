@@ -1,0 +1,128 @@
+<view class="page-promo-notes">
+  <!-- 头部 -->
+  <view class="header">
+    <text class="header-title">推广换VIP</text>
+    <text class="header-desc">分享笔记，赚取VIP时长</text>
+  </view>
+
+  <!-- 奖励规则 -->
+  <view class="rules-card card">
+    <text class="section-title">奖励规则</text>
+    <view class="rule-list">
+      <view class="rule-item">
+        <view class="rule-icon xiaohongshu">小红书</view>
+        <view class="rule-content">
+          <text class="rule-text">发布笔记 +3天VIP</text>
+          <text class="rule-note">每月最多2次</text>
+        </view>
+      </view>
+      <view class="rule-item">
+        <view class="rule-icon douyin">抖音</view>
+        <view class="rule-content">
+          <text class="rule-text">发布视频 +3天VIP</text>
+          <text class="rule-note">每月最多2次</text>
+        </view>
+      </view>
+      <view class="rule-item">
+        <view class="rule-icon wechat">朋友圈</view>
+        <view class="rule-content">
+          <text class="rule-text">发布朋友圈 +1天VIP</text>
+          <text class="rule-note">每月最多2次</text>
+        </view>
+      </view>
+    </view>
+    <view class="bonus-tip">
+      <text>首次发布奖励翻倍！</text>
+    </view>
+  </view>
+
+  <!-- 平台选择 -->
+  <view class="platform-card card">
+    <text class="section-title">选择平台</text>
+    <view class="platform-tabs">
+      <view
+        class="tab-item {{selectedPlatform === 'xiaohongshu' ? 'active' : ''}}"
+        data-platform="xiaohongshu"
+        bind:tap="onPlatformChange">
+        小红书
+      </view>
+      <view
+        class="tab-item {{selectedPlatform === 'douyin' ? 'active' : ''}}"
+        data-platform="douyin"
+        bind:tap="onPlatformChange">
+        抖音
+      </view>
+      <view
+        class="tab-item {{selectedPlatform === 'moments' ? 'active' : ''}}"
+        data-platform="moments"
+        bind:tap="onPlatformChange">
+        朋友圈
+      </view>
+    </view>
+  </view>
+
+  <!-- 上传区域 -->
+  <view class="upload-card card">
+    <text class="section-title">上传截图</text>
+    <view class="upload-area" bind:tap="chooseImage">
+      <view class="upload-content" wx:if="{{!screenshot}}">
+        <text class="upload-icon">+</text>
+        <text class="upload-text">点击上传截图</text>
+        <text class="upload-hint">请上传包含笔记内容的截图</text>
+      </view>
+      <image wx:else class="upload-preview" src="{{screenshot}}" mode="aspectFit" />
+    </view>
+
+    <!-- 链接输入 -->
+    <view class="url-input-wrap">
+      <text class="input-label">笔记链接（选填）</text>
+      <input
+        class="url-input"
+        placeholder="请输入笔记链接"
+        value="{{noteUrl}}"
+        bindinput="onUrlInput" />
+    </view>
+
+    <!-- 提交按钮 -->
+    <button
+      class="submit-btn btn-primary"
+      bind:tap="submitNote"
+      disabled="{{!screenshot || submitting}}">
+      {{submitting ? '提交中...' : '提交审核'}}
+    </button>
+  </view>
+
+  <!-- 我的记录 -->
+  <view class="records-card card" wx:if="{{records.length > 0}}">
+    <text class="section-title">我的记录</text>
+    <view class="record-list">
+      <view class="record-item" wx:for="{{records}}" wx:key="id">
+        <view class="record-header">
+          <view class="platform-badge {{item.platform}}">
+            {{item.platformName}}
+          </view>
+          <view class="record-status {{item.status}}">
+            {{item.statusText}}
+          </view>
+        </view>
+        <view class="record-body">
+          <image class="record-thumb" src="{{item.screenshotUrl}}" mode="aspectFill" />
+          <view class="record-info">
+            <text class="record-time">{{item.createdAt}}</text>
+            <text class="record-reward" wx:if="{{item.status === 'approved'}}">
+              已获得 {{item.rewardDays}} 天VIP
+            </text>
+            <text class="record-note" wx:if="{{item.rejectReason}}">
+              {{item.rejectReason}}
+            </text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 空状态 -->
+  <view class="empty-state" wx:if="{{!loading && records.length === 0}}">
+    <text class="empty-text">暂无推广记录</text>
+  </view>
+</view>

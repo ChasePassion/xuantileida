@@ -28,6 +28,9 @@ import { ExternalModule } from './modules/external/external.module';
 import { ReferralModule } from './modules/referral/referral.module';
 import { RedemptionModule } from './modules/redemption/redemption.module';
 import { AdminModule } from './modules/admin/admin.module';
+import { PromotionModule } from './modules/promotion/promotion.module';
+import { RetentionModule } from './modules/retention/retention.module';
+import { CampaignModule } from './modules/campaign/campaign.module';
 
 // Entity imports
 import { User } from './modules/users/entities/user.entity';
@@ -52,6 +55,16 @@ import { ReferralReward } from './modules/referral/entities/referral-reward.enti
 import { DailyViewLog } from './modules/referral/entities/daily-view-log.entity';
 import { RedemptionCode } from './modules/redemption/entities/redemption-code.entity';
 import { RedemptionRecord } from './modules/redemption/entities/redemption-record.entity';
+import { ReferralTier } from './modules/referral/entities/referral-tier.entity';
+import { PromoNote } from './modules/promotion/entities/promo-note.entity';
+import { PromoTemplate } from './modules/promotion/entities/promo-template.entity';
+import { UserPromoContent } from './modules/promotion/entities/user-promo-content.entity';
+import { RetentionOffer } from './modules/retention/entities/retention-offer.entity';
+import { UserHealthScore } from './modules/retention/entities/user-health-score.entity';
+import { Campaign } from './modules/campaign/entities/campaign.entity';
+import { CampaignParticipation } from './modules/campaign/entities/campaign-participation.entity';
+import { Achievement } from './modules/campaign/entities/achievement.entity';
+import { UserAchievement } from './modules/campaign/entities/user-achievement.entity';
 
 @Module({
   imports: [
@@ -81,6 +94,10 @@ import { RedemptionRecord } from './modules/redemption/entities/redemption-recor
           TaskLog,
           Referral, ReferralReward, DailyViewLog,
           RedemptionCode, RedemptionRecord,
+          ReferralTier,
+          PromoNote, PromoTemplate, UserPromoContent,
+          RetentionOffer, UserHealthScore,
+          Campaign, CampaignParticipation, Achievement, UserAchievement,
         ],
         synchronize: config.get('database.synchronize'),
         logging: config.get('database.logging'),
@@ -116,6 +133,9 @@ import { RedemptionRecord } from './modules/redemption/entities/redemption-recor
     ReferralModule,
     RedemptionModule,
     AdminModule,
+    PromotionModule,
+    RetentionModule,
+    CampaignModule,
   ],
   providers: [
     // 全局 AuthGuard

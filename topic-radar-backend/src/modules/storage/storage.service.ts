@@ -1,13 +1,15 @@
-import { Injectable, Logger, BadRequestException } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
+import {
+  Injectable,
+  Logger,
+  BadRequestException,
+  NotImplementedException,
+} from '@nestjs/common';
 import * as crypto from 'crypto';
 import * as path from 'path';
 
 @Injectable()
 export class StorageService {
   private readonly logger = new Logger(StorageService.name);
-
-  constructor(private readonly configService: ConfigService) {}
 
   /**
    * 生成 COS 预签名上传 URL
@@ -17,36 +19,22 @@ export class StorageService {
     filename: string,
     contentType: string,
   ) {
-    const bucket = this.configService.get<string>('COS_BUCKET') || 'topic-radar-dev';
-    const region = this.configService.get<string>('COS_REGION') || 'ap-guangzhou';
     const ext = path.extname(filename);
     const key = `uploads/${userId}/${Date.now()}_${crypto.randomBytes(8).toString('hex')}${ext}`;
-
-    // 生产环境: 使用腾讯云 COS SDK 生成真正的预签名 URL
-    // 开发环境: 返回模拟 URL
-    const uploadUrl = `https://${bucket}.cos.${region}.myqcloud.com/${key}?sign=dev_placeholder`;
-    const accessUrl = `https://${bucket}.cos.${region}.myqcloud.com/${key}`;
-
-    return {
-      uploadUrl,
-      accessUrl,
-      key,
-      contentType,
-      expiresIn: 3600,
-    };
+    this.logger.warn(`COS 预签名上传未接入 SDK，已阻止生成假地址: ${key}`);
+    throw new NotImplementedException(
+      `文件存储尚未接入腾讯云 COS 预签名能力，上传功能已禁用。目标对象: ${key}，内容类型: ${contentType}`,
+    );
   }
 
   /**
    * 生成 COS 预签名下载 URL
    */
   async getPresignedDownloadUrl(key: string) {
-    const bucket = this.configService.get<string>('COS_BUCKET') || 'topic-radar-dev';
-    const region = this.configService.get<string>('COS_REGION') || 'ap-guangzhou';
-
-    return {
-      downloadUrl: `https://${bucket}.cos.${region}.myqcloud.com/${key}?sign=dev_placeholder`,
-      expiresIn: 3600,
-    };
+    this.logger.warn(`COS 预签名下载未接入 SDK，已阻止生成假地址: ${key}`);
+    throw new NotImplementedException(
+      `文件存储尚未接入腾讯云 COS 预签名能力，下载功能已禁用。目标对象: ${key}`,
+    );
   }
 
   /**

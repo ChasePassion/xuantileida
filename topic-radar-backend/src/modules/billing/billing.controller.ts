@@ -1,25 +1,17 @@
-import { Controller, Get, Post, Body, Query } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiBearerAuth, ApiQuery } from '@nestjs/swagger';
+import { Controller, Get, Post, Body, Query, Headers } from '@nestjs/common';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiBearerAuth,
+  ApiQuery,
+  ApiHeader,
+} from '@nestjs/swagger';
 import { BillingService } from './billing.service';
 import { CurrentUser } from '../../common/decorators/current-user.decorator';
 import { Public } from '../../common/decorators/public.decorator';
-import { IsNotEmpty, IsNumber, IsIn, IsString } from 'class-validator';
-import { ApiProperty } from '@nestjs/swagger';
-
-class CreateRechargeDto {
-  @ApiProperty({ description: '充值金额（元）', enum: [9.9, 29.9, 59.9, 99.9] })
-  @IsNotEmpty()
-  @IsNumber()
-  amount: number;
-}
-
-class PurchaseMembershipDto {
-  @ApiProperty({ description: '会员类型', enum: ['monthly', 'yearly'] })
-  @IsNotEmpty()
-  @IsString()
-  @IsIn(['monthly', 'yearly'])
-  plan: string;
-}
+import { CreateRechargeDto } from './dto/create-recharge.dto';
+import { PurchaseMembershipDto } from './dto/purchase-membership.dto';
+import { WechatPayCallbackDto } from './dto/wechat-pay-callback.dto';
 
 @ApiTags('计费')
 @Controller('billing')
@@ -56,11 +48,20 @@ export class BillingController {
   @Public()
   @Post('wechat-callback')
   @ApiOperation({ summary: '微信支付回调' })
-  async wechatCallback(@Body() body: any) {
-    return this.billingService.handleWechatCallback(
-      body.transaction_id,
-      body.out_trade_no,
-    );
+  @ApiHeader({ name: 'x-wechat-signature', required: true })
+  @ApiHeader({ name: 'x-wechat-timestamp', required: true })
+  @ApiHeader({ name: 'x-wechat-nonce', required: true })
+  async wechatCallback(
+    @Body() body: WechatPayCallbackDto,
+    @Headers('x-wechat-signature') signature?: string,
+    @Headers('x-wechat-timestamp') timestamp?: string,
+    @Headers('x-wechat-nonce') nonce?: string,
+  ) {
+    return this.billingService.handleWechatCallback(body, JSON.stringify(body), {
+      signature,
+      timestamp,
+      nonce,
+    });
   }
 
   @ApiBearerAuth()

@@ -26,7 +26,10 @@ Thumbs.db
 logs/
 
 # Database
-database/
+database/*
+!database/migration_001_core_schema.sql
+!database/migration_003_marketing_growth.sql
+!database/migration_004_billing_security.sql
 
 # Temp files
 tmp/

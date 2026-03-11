@@ -15,7 +15,7 @@ import { UserBalance } from '../users/entities/user-balance.entity';
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: (config: ConfigService) => ({
-        secret: config.get<string>('JWT_SECRET') || 'default-secret',
+        secret: config.get<string>('JWT_SECRET')!,
         signOptions: {
           expiresIn: (config.get<string>('JWT_EXPIRES_IN') || '7d') as any,
         },

@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { ViralVideo } from './entities/viral-video.entity';
 import { TopicVideo } from './entities/topic-video.entity';
 import { AnalysisReport } from '../analysis/entities/analysis-report.entity';
@@ -48,18 +48,26 @@ export class VideosService {
       .take(limit);
 
     const [topicVideos, total] = await qb.getManyAndCount();
+    const videoIds = topicVideos.map((tv) => tv.video.id);
+    const reports = videoIds.length
+      ? await this.reportRepo.find({
+          where: { videoId: In(videoIds), status: 'completed' },
+        })
+      : [];
+    const reportByVideoId = new Map(reports.map((report) => [report.videoId, report]));
+    const reportIds = reports.map((report) => report.id);
+    const unlocks = reportIds.length
+      ? await this.unlockRepo.find({
+          where: { userId, reportId: In(reportIds) },
+        })
+      : [];
+    const unlockedReportIds = new Set(unlocks.map((unlock) => unlock.reportId));
 
     const videos = await Promise.all(
       topicVideos.map(async (tv) => {
         const v = tv.video;
-        const report = await this.reportRepo.findOne({
-          where: { videoId: v.id, status: 'completed' },
-        });
-        const isUnlocked = report
-          ? !!(await this.unlockRepo.findOne({
-              where: { userId, reportId: report.id },
-            }))
-          : false;
+        const report = reportByVideoId.get(v.id);
+        const isUnlocked = report ? unlockedReportIds.has(report.id) : false;
 
         const now = new Date();
         const pubDate = v.firstSeenAt || v.createdAt;

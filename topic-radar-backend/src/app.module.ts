@@ -8,6 +8,7 @@ import databaseConfig from './config/database.config';
 import redisConfig from './config/redis.config';
 import wechatConfig from './config/wechat.config';
 import apiConfig from './config/api.config';
+import { validateEnvironment } from './config/env.validation';
 
 import { AuthGuard } from './common/guards/auth.guard';
 import { ThrottleGuard } from './common/guards/throttle.guard';
@@ -72,6 +73,7 @@ import { UserAchievement } from './modules/campaign/entities/user-achievement.en
     ConfigModule.forRoot({
       isGlobal: true,
       load: [databaseConfig, redisConfig, wechatConfig, apiConfig],
+      validate: validateEnvironment,
     }),
 
     // TypeORM 数据库连接
@@ -109,7 +111,7 @@ import { UserAchievement } from './modules/campaign/entities/user-achievement.en
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: (config: ConfigService) => ({
-        secret: config.get<string>('JWT_SECRET') || 'default-secret',
+        secret: config.get<string>('JWT_SECRET')!,
         signOptions: {
           expiresIn: (config.get<string>('JWT_EXPIRES_IN') || '7d') as any,
         },

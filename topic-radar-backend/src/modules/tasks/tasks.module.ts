@@ -28,7 +28,6 @@ import { PaymentOrder } from '../payment/entities/payment-order.entity';
       UserConfig,
       PaymentOrder,
     ]),
-    ExternalModule,
   ],
   providers: [DailyCrawlService, PushNotificationService, OrderTimeoutService],
 })

@@ -74,6 +74,7 @@ import { PaymentOrder } from './modules/payment/entities/payment-order.entity';
     // 配置模块
     ConfigModule.forRoot({
       isGlobal: true,
+      envFilePath: process.env.NODE_ENV === 'production' ? '.env.production' : '.env',
       load: [databaseConfig, redisConfig, wechatConfig, apiConfig],
       validate: validateEnvironment,
     }),

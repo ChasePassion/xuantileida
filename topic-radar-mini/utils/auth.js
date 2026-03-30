@@ -15,10 +15,11 @@ function login() {
           wx.setStorageSync('token', data.token);
           wx.setStorageSync('userInfo', {
             id: data.user?.id,
-            name: data.user?.name,
+            nickname: data.user?.nickname,
             avatar: data.user?.avatarUrl,
-            plan: data.user?.plan,
+            role: data.user?.role,
             membership: data.user?.membership,
+            membershipExpiresAt: data.user?.membershipExpiresAt,
           });
           resolve(data);
         }).catch(reject);

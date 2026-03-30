@@ -15,6 +15,7 @@ import { ConsumeRecord } from './entities/consume-record.entity';
 import { UserBalance } from '../users/entities/user-balance.entity';
 import { User } from '../users/entities/user.entity';
 import { WechatPayCallbackDto } from './dto/wechat-pay-callback.dto';
+import { PaymentService } from '../payment/payment.service';
 
 // VIP订阅价格
 export const VIP_PLANS = {
@@ -47,6 +48,7 @@ export class BillingService {
   constructor(
     private readonly dataSource: DataSource,
     private readonly configService: ConfigService,
+    private readonly paymentService: PaymentService,
     @InjectRepository(RechargeOrder)
     private readonly orderRepo: Repository<RechargeOrder>,
     @InjectRepository(ConsumeRecord)
@@ -74,28 +76,35 @@ export class BillingService {
   }
 
   async createRechargeOrder(userId: string, amount: number) {
-    this.assertWechatPayConfigured();
-
     const pkg = COIN_PACKAGES.find((p) => p.amount === amount);
     if (!pkg) {
       throw new BadRequestException('无效的充值金额');
     }
 
-    throw new ServiceUnavailableException(
-      `微信支付下单接口未接入，已禁用创建充值订单。目标套餐: ${pkg.label}`,
+    return this.paymentService.createOrder(
+      userId,
+      'recharge',
+      `coin_${Math.round(pkg.amount * 100)}`,
+      `雷达币充值${pkg.coins + pkg.bonus}币`,
+      pkg.amount,
+      pkg.coins + pkg.bonus,
     );
   }
 
   async createVipOrder(userId: string, plan: string) {
-    this.assertWechatPayConfigured();
-
     const planConfig = VIP_PLANS[plan];
     if (!planConfig) {
       throw new BadRequestException('无效的会员类型');
     }
 
-    throw new ServiceUnavailableException(
-      `微信支付下单接口未接入，已禁用创建会员订单。目标套餐: ${planConfig.label}`,
+    return this.paymentService.createOrder(
+      userId,
+      'vip',
+      `vip_${plan}`,
+      `VIP会员${planConfig.label}`,
+      planConfig.price,
+      undefined,
+      planConfig.days,
     );
   }
 

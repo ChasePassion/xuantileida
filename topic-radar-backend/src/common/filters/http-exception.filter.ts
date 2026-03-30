@@ -27,6 +27,11 @@ export class HttpExceptionFilter implements ExceptionFilter {
         ? exception.message
         : '服务器内部错误';
 
+    if (request.url.startsWith('/rest/')) {
+      response.status(status).json({ success: false, code: status });
+      return;
+    }
+
     const errorResponse = {
       code: status,
       message,

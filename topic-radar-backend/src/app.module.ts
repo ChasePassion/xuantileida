@@ -32,6 +32,7 @@ import { AdminModule } from './modules/admin/admin.module';
 import { PromotionModule } from './modules/promotion/promotion.module';
 import { RetentionModule } from './modules/retention/retention.module';
 import { CampaignModule } from './modules/campaign/campaign.module';
+import { PaymentModule } from './modules/payment/payment.module';
 
 // Entity imports
 import { User } from './modules/users/entities/user.entity';
@@ -66,6 +67,7 @@ import { Campaign } from './modules/campaign/entities/campaign.entity';
 import { CampaignParticipation } from './modules/campaign/entities/campaign-participation.entity';
 import { Achievement } from './modules/campaign/entities/achievement.entity';
 import { UserAchievement } from './modules/campaign/entities/user-achievement.entity';
+import { PaymentOrder } from './modules/payment/entities/payment-order.entity';
 
 @Module({
   imports: [
@@ -93,6 +95,7 @@ import { UserAchievement } from './modules/campaign/entities/user-achievement.en
           ViralVideo, TopicVideo,
           AnalysisReport, DimensionScore, ScriptSegment, ReportUnlock,
           PricingRule, RechargeOrder, ConsumeRecord,
+          PaymentOrder,
           TaskLog,
           Referral, ReferralReward, DailyViewLog,
           RedemptionCode, RedemptionRecord,
@@ -129,6 +132,7 @@ import { UserAchievement } from './modules/campaign/entities/user-achievement.en
     VideosModule,
     AnalysisModule,
     BillingModule,
+    PaymentModule,
     StorageModule,
     ExternalModule,
     TasksModule,

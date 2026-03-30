@@ -1,5 +1,5 @@
 import { NestFactory } from '@nestjs/core';
-import { ValidationPipe, Logger } from '@nestjs/common';
+import { ValidationPipe, Logger, RequestMethod } from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { join } from 'path';
@@ -15,7 +15,12 @@ async function bootstrap() {
   app.useStaticAssets(join(__dirname, '..', 'public'));
 
   // 全局前缀
-  app.setGlobalPrefix(process.env.API_PREFIX || 'api');
+  app.setGlobalPrefix(process.env.API_PREFIX || 'api', {
+    exclude: [
+      { path: 'rest/getPaymentAmountAndStatus', method: RequestMethod.POST },
+      { path: 'rest/returnPaymentStatus', method: RequestMethod.POST },
+    ],
+  });
 
   // 全局验证管道
   app.useGlobalPipes(

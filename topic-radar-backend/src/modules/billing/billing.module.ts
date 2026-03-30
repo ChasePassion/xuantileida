@@ -6,9 +6,11 @@ import { PricingRule } from './entities/pricing-rule.entity';
 import { RechargeOrder } from './entities/recharge-order.entity';
 import { ConsumeRecord } from './entities/consume-record.entity';
 import { UserBalance } from '../users/entities/user-balance.entity';
+import { PaymentModule } from '../payment/payment.module';
 
 @Module({
   imports: [
+    PaymentModule,
     TypeOrmModule.forFeature([
       PricingRule,
       RechargeOrder,

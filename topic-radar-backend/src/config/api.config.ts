@@ -16,4 +16,7 @@ export default registerAs('api', () => ({
     bucket: process.env.COS_BUCKET,
     region: process.env.COS_REGION || 'ap-guangzhou',
   },
+  thirdPartyPayment: {
+    url: process.env.THIRD_PARTY_PAYMENT_URL || 'https://applet.jutongbao.online/wechat/api/v1/applet/payment/pay',
+  },
 }));

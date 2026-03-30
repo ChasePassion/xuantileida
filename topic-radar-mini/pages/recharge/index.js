@@ -95,15 +95,21 @@ Page({
             wx.showToast({ title: '订阅成功', icon: 'success' });
             this.loadVipStatus();
           },
-          fail: () => {
-            wx.showToast({ title: '支付已取消', icon: 'none' });
+          fail: (err) => {
+            if (err.errMsg && err.errMsg.indexOf('cancel') > -1) {
+              wx.showToast({ title: '支付已取消', icon: 'none' });
+            } else {
+              wx.showToast({ title: '支付失败，请重试', icon: 'none' });
+            }
           },
         });
       } else {
         wx.showToast({ title: '订阅成功', icon: 'success' });
         this.loadVipStatus();
       }
-    } catch (e) {}
+    } catch (e) {
+      wx.showToast({ title: e.message || '操作失败', icon: 'none' });
+    }
     this.setData({ loading: false });
   },
 
@@ -119,15 +125,21 @@ Page({
             wx.showToast({ title: '充值成功', icon: 'success' });
             this.loadBalance();
           },
-          fail: () => {
-            wx.showToast({ title: '支付已取消', icon: 'none' });
+          fail: (err) => {
+            if (err.errMsg && err.errMsg.indexOf('cancel') > -1) {
+              wx.showToast({ title: '支付已取消', icon: 'none' });
+            } else {
+              wx.showToast({ title: '支付失败，请重试', icon: 'none' });
+            }
           },
         });
       } else {
         wx.showToast({ title: '充值成功', icon: 'success' });
         this.loadBalance();
       }
-    } catch (e) {}
+    } catch (e) {
+      wx.showToast({ title: e.message || '操作失败', icon: 'none' });
+    }
     this.setData({ loading: false });
   },
 });

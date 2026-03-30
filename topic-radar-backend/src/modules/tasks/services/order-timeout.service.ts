@@ -30,7 +30,7 @@ export class OrderTimeoutService {
       },
     );
 
-    if (result.affected > 0) {
+    if (result.affected && result.affected > 0) {
       this.logger.log(`已将 ${result.affected} 个超时订单标记为已取消`);
     }
   }

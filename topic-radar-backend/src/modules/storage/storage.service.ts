@@ -65,7 +65,7 @@ export class StorageService {
   /**
    * 保存图片到本地存储
    */
-  async saveImage(userId: string, file: Express.Multer.File): Promise<{ url: string }> {
+  async saveImage(userId: string, file: any): Promise<{ url: string }> {
     const ext = path.extname(file.originalname) || '.jpg';
     const filename = `${Date.now()}_${crypto.randomBytes(8).toString('hex')}${ext}`;
     const userDir = path.join(this.uploadDir, userId);

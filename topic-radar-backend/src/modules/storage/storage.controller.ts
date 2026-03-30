@@ -75,7 +75,7 @@ export class StorageController {
   )
   async uploadImage(
     @CurrentUser('sub') userId: string,
-    @UploadedFile() file: Express.Multer.File,
+    @UploadedFile() file: any,
   ) {
     return this.storageService.saveImage(userId, file);
   }

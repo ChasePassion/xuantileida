@@ -16,7 +16,7 @@ export class PromoNote {
   id: string;
 
   @Index()
-  @Column({ name: 'user_id', length: 36 })
+  @Column({ name: 'user_id' })
   userId: string;
 
   @Column({ length: 50 })
@@ -40,7 +40,7 @@ export class PromoNote {
   @Column({ name: 'reward_value', type: 'int', nullable: true })
   rewardValue: number;
 
-  @Column({ name: 'reviewer_id', length: 36, nullable: true })
+  @Column({ name: 'reviewer_id', nullable: true })
   reviewerId: string;
 
   @Column({ name: 'reviewed_at', type: 'timestamptz', nullable: true })

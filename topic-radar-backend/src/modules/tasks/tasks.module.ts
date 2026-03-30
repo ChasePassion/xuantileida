@@ -13,6 +13,7 @@ import { ViralVideo } from '../videos/entities/viral-video.entity';
 import { TopicVideo } from '../videos/entities/topic-video.entity';
 import { UserConfig } from '../users/entities/user-config.entity';
 import { PaymentOrder } from '../payment/entities/payment-order.entity';
+import { ExternalModule } from '../external/external.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { PaymentOrder } from '../payment/entities/payment-order.entity';
       UserConfig,
       PaymentOrder,
     ]),
+    ExternalModule,
   ],
   providers: [DailyCrawlService, PushNotificationService, OrderTimeoutService],
 })

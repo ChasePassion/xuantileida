@@ -1,7 +1,9 @@
-import { Controller, Get, Post, Body } from '@nestjs/common';
+import { Controller, Get, Post, Body, UseGuards } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
 import { RedemptionService } from './redemption.service';
 import { CurrentUser } from '../../common/decorators/current-user.decorator';
+import { AuthGuard } from '../../common/guards/auth.guard';
+import { AdminGuard } from '../../common/guards/admin.guard';
 import { IsNotEmpty, IsString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
@@ -34,7 +36,8 @@ export class RedemptionController {
   }
 
   @Post('generate')
-  @ApiOperation({ summary: '批量生成兑换码（管理接口）' })
+  @UseGuards(AuthGuard, AdminGuard)
+  @ApiOperation({ summary: '批量生成兑换码（管理员）' })
   async generate(@Body() body: any) {
     return this.redemptionService.generateCodes({
       codeType: body.codeType || 'vip_days',

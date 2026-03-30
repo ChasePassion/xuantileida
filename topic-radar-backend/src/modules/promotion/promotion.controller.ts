@@ -45,7 +45,7 @@ class ReviewNoteDto {
 }
 
 @ApiTags('推广激励')
-@Controller('api/promo')
+@Controller('promo')
 export class PromotionController {
   constructor(private readonly promotionService: PromotionService) {}
 

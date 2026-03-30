@@ -7,7 +7,7 @@ import { AuthGuard } from '../../common/guards/auth.guard';
 @ApiTags('留存激励')
 @ApiBearerAuth()
 @UseGuards(AuthGuard)
-@Controller('api/retention')
+@Controller('retention')
 export class RetentionController {
   constructor(private readonly retentionService: RetentionService) {}
 

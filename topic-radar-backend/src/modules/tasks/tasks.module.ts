@@ -3,6 +3,7 @@ import { ScheduleModule } from '@nestjs/schedule';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DailyCrawlService } from './services/daily-crawl.service';
 import { PushNotificationService } from './services/push-notification.service';
+import { OrderTimeoutService } from './services/order-timeout.service';
 import { TaskLog } from './entities/task-log.entity';
 import { DailyBatch } from '../topics/entities/daily-batch.entity';
 import { Topic } from '../topics/entities/topic.entity';
@@ -11,7 +12,7 @@ import { Category } from '../topics/entities/category.entity';
 import { ViralVideo } from '../videos/entities/viral-video.entity';
 import { TopicVideo } from '../videos/entities/topic-video.entity';
 import { UserConfig } from '../users/entities/user-config.entity';
-import { ExternalModule } from '../external/external.module';
+import { PaymentOrder } from '../payment/entities/payment-order.entity';
 
 @Module({
   imports: [
@@ -25,9 +26,10 @@ import { ExternalModule } from '../external/external.module';
       ViralVideo,
       TopicVideo,
       UserConfig,
+      PaymentOrder,
     ]),
     ExternalModule,
   ],
-  providers: [DailyCrawlService, PushNotificationService],
+  providers: [DailyCrawlService, PushNotificationService, OrderTimeoutService],
 })
 export class TasksModule {}

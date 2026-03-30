@@ -12,7 +12,7 @@ import { AuthGuard } from '../../common/guards/auth.guard';
 import { AdminGuard } from '../../common/guards/admin.guard';
 import { CurrentUser } from '../../common/decorators/current-user.decorator';
 
-@Controller('api/campaigns')
+@Controller('campaigns')
 export class CampaignController {
   constructor(private readonly campaignService: CampaignService) {}
 

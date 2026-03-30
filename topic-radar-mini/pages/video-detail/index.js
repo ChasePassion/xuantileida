@@ -79,8 +79,23 @@ Page({
         unlockLoading: false,
       });
     } catch (e) {
-      this.setData({ unlockLoading: false });
-      // error toast is handled by api wrapper
+      this.setData({ unlockLoading: false, showUnlockModal: false });
+      const msg = e.message || '';
+      if (msg.includes('余额不足') || msg.includes('雷达币不足') || msg.includes('insufficient')) {
+        wx.showModal({
+          title: '余额不足',
+          content: '您的雷达币不足，是否前往充值？',
+          confirmText: '去充值',
+          cancelText: '取消',
+          success: (res) => {
+            if (res.confirm) {
+              wx.navigateTo({ url: '/pages/recharge/index?tab=coins' });
+            }
+          },
+        });
+      } else {
+        wx.showToast({ title: msg || '解锁失败', icon: 'none' });
+      }
     }
   },
 

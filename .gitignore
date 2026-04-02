@@ -42,3 +42,10 @@ topic-radar-mini/.miniprogram/
 
 # Claude
 claude.md
+
+# 交接文档（包含敏感信息，不提交到仓库）
+HANDOVER.md
+docs/
+
+# CI 上传密钥（敏感信息）
+topic-radar-mini/private.*.key

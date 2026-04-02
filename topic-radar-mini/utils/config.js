@@ -3,8 +3,8 @@ const ENV = __wxConfig.envVersion; // 'develop' | 'trial' | 'release'
 
 const ENV_CONFIG = {
   develop: 'http://localhost:3000/api',           // 开发版（本地）
-  trial: 'https://xuanti.jutongbao.online/api',    // 体验版（线上）
-  release: 'https://xuanti.jutongbao.online/api',  // 正式版（线上）
+  trial: 'https://xuantileida.jutongbao.online/api',    // 体验版（线上）
+  release: 'https://xuantileida.jutongbao.online/api',  // 正式版（线上）
 };
 
 const BASE_URL = ENV_CONFIG[ENV] || ENV_CONFIG.release;
@@ -13,7 +13,7 @@ module.exports = {
   BASE_URL,
   REST_URL: ENV === 'develop'
     ? 'http://localhost:3000'
-    : 'https://xuanti.jutongbao.online',
+    : 'https://xuantileida.jutongbao.online',
   // 平台映射
   PLATFORMS: [
     { key: '', label: '全部' },
